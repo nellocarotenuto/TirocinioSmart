@@ -64,6 +64,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>TirocinioSmart</finalName>
 	</build>
 
 
