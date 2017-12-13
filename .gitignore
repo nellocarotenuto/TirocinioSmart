@@ -34,6 +34,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+.project
 
 # External tool builders
 .externalToolBuilders/
@@ -63,6 +64,8 @@ local.properties
 .texlipse
 
 # STS (Spring Tool Suite)
+.apt_generated
+.classpath
 .springBeans
 
 # Code Recommenders
@@ -72,3 +75,7 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
