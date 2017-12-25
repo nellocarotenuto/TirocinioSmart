@@ -1,9 +1,9 @@
-package DomandeTirocinio;
+package it.unisa.di.tirociniosmart.domandetirocinio;
 
 import java.time.LocalDateTime;
 
-import ProgettiFormativi.ProgettoFormativo;
-import Studenti.Studente;
+import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
+import it.unisa.di.tirociniosmart.studenti.Studente;
 
 public class DomandaTirocinio {
 

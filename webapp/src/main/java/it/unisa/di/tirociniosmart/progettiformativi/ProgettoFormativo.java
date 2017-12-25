@@ -1,6 +1,6 @@
-package ProgettiFormativi;
+package it.unisa.di.tirociniosmart.progettiformativi;
 
-import Convenzioni.Azienda;
+import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 
 public class ProgettoFormativo {
 

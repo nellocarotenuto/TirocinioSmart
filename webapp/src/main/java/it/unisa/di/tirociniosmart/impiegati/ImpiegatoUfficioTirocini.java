@@ -1,6 +1,6 @@
-package Impiegati;
+package it.unisa.di.tirociniosmart.impiegati;
 
-import Utenza.UtenteRegistrato;
+import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
 public class ImpiegatoUfficioTirocini extends UtenteRegistrato{
 

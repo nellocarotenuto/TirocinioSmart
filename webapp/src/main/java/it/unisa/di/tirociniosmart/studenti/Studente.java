@@ -1,7 +1,8 @@
-package Studenti;
+package it.unisa.di.tirociniosmart.studenti;
 
 import java.time.LocalDateTime;
-import Utenza.UtenteRegistrato;
+
+import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
 public class Studente extends UtenteRegistrato {
 	

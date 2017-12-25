@@ -1,4 +1,4 @@
-package Studenti;
+package it.unisa.di.tirociniosmart.studenti;
 
 import java.time.LocalDateTime;
 
