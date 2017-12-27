@@ -2,6 +2,7 @@ package it.unisa.di.tirociniosmart.convenzioni;
 
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ public class Azienda {
   public Azienda() {
     this.richiesta = new RichiestaConvenzionamento(this);
     this.delegato = new DelegatoAziendale(this);
+    this.progettiFormativi = new ArrayList<ProgettoFormativo>();
   }
   
   /**
@@ -31,7 +33,6 @@ public class Azienda {
     }
     
     Azienda azienda = (Azienda) object;
-    
     return id.equals(azienda.getId());
   }
 
@@ -171,6 +172,19 @@ public class Azienda {
    */
   public List<ProgettoFormativo> getProgettiFormativi() {
     return progettiFormativi;
+  }
+  
+  /**
+   * Permette di aggiungere un progetto formativo alla lista di quelli offerti dall'azienda.
+   * 
+   * @param progettoFormativo {@link ProgettoFormativo} che modella il progetto formativo che si
+   *                          vuole aggiungere alla lista di quelli offerti dall'azienda
+   */
+  public void addProgettoFormativo(ProgettoFormativo progettoFormativo) {
+    if (!progettiFormativi.contains(progettoFormativo)) {
+      this.progettiFormativi.add(progettoFormativo);
+      progettoFormativo.setAzienda(this);
+    }
   }
   
   /**

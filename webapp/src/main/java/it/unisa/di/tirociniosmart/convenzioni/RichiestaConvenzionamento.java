@@ -28,6 +28,24 @@ public class RichiestaConvenzionamento {
   RichiestaConvenzionamento(Azienda azienda) {
     this.azienda = azienda;
   }
+  
+  /**
+   * Determina se due oggetti rappresentano la stessa richiesta di convenzionamento in base
+   * all'identificatore.
+   */
+  @Override
+  public boolean equals(Object object) {
+    if (object == null) {
+      return false;
+    }
+    
+    if (object.getClass() != getClass()) {
+      return false;
+    }
+    
+    RichiestaConvenzionamento richiestaConvenzionamento = (RichiestaConvenzionamento) object;
+    return id == richiestaConvenzionamento.getId();
+  }
 
   /**
    * Permette di ottenere l'identificatore della richiesta di convenzionamento.

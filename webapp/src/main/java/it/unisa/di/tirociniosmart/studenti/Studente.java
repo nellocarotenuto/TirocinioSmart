@@ -1,9 +1,12 @@
 package it.unisa.di.tirociniosmart.studenti;
 
+import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinio;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe che modella uno studente che ha richiesto l'iscrizione alla piattaforma.
@@ -17,6 +20,15 @@ public class Studente extends UtenteRegistrato {
    */
   public Studente() {
     this.richiestaIscrizione = new RichiestaIscrizione(this);
+    this.domandeTirocinio = new ArrayList<DomandaTirocinio>();
+  }
+  
+  /**
+   * Determina se due oggetti rappresentano lo stesso delegato guardando agli username dei suddetti.
+   */
+  @Override
+  public boolean equals(Object object) {
+    return super.equals(object);
   }
   
   /**
@@ -59,7 +71,7 @@ public class Studente extends UtenteRegistrato {
    * @param matricola Stringa numerica che rappresenta la matricola dello studente.
    * 
    * @pre matricola != null
-   * @pre matricola matches ^[0-9]{10}$
+   * @pre matricola matches {@link Studente#MATRICOLA_PATTERN}
    * 
    * @post getMatricola().equals(matricola)
    */
@@ -168,6 +180,28 @@ public class Studente extends UtenteRegistrato {
     return richiestaIscrizione;
   }
   
+  /**
+   * Permette di ottenere la lista delle domande di tirocinio inviate dallo studente.
+   * 
+   * @return Lista delle domande di tirocinio inviate dallo studente
+   */
+  public List<DomandaTirocinio> getDomandeTirocinio() {
+    return domandeTirocinio;
+  }
+  
+  /**
+   * Permette di aggiungere una domanda di tirocinio alla lista di quelle inviate dallo studente.
+   * 
+   * @param domandaTirocinio Oggetto {@link DomandaTirocinio} che rappresenta la domanda che si
+   *                         si vuole aggiungere alla lista di quelle inviate dallo studente
+   */
+  public void addDomandaTirocinio(DomandaTirocinio domandaTirocinio) {
+    if (!domandeTirocinio.contains(domandaTirocinio)) {
+      domandeTirocinio.add(domandaTirocinio);
+      domandaTirocinio.setStudente(this);
+    }
+  }
+  
   private LocalDateTime dataRegistrazione;
   private String matricola;
   private String indirizzo;
@@ -175,5 +209,9 @@ public class Studente extends UtenteRegistrato {
   private char sesso;
   private String telefono;
   private RichiestaIscrizione richiestaIscrizione;
+  private List<DomandaTirocinio> domandeTirocinio;
+  
+  /** Espressione regolare che definisce il formato del campo matricola. */
+  public static final String MATRICOLA_PATTERN = "^[0-9]{10}$";
   
 }

@@ -2,69 +2,27 @@ package it.unisa.di.tirociniosmart.impiegati;
 
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
-public class ImpiegatoUfficioTirocini extends UtenteRegistrato{
+/**
+ * Classe che modella un impiegato dell'ufficio tirocini.
+ * 
+ * @see UtenteRegistrato
+ */
+public class ImpiegatoUfficioTirocini extends UtenteRegistrato {
 
-	public ImpiegatoUfficioTirocini() {
-	}
-
-	public String getUsername() {
-		return super.getUsername();
-	}
-
-	public void setUsername(String username) {
-		super.setUsername(username);
-	}
-
-	public String getPassword() {
-		return super.getPassword();
-	}
-
-	public void setPassword(String password) {
-		super.setPassword(password);
-	}
-
-	public String getNome() {
-		return super.getNome();
-	}
-
-	public void setNome(String nome) {
-		super.setNome(nome);
-	}
-
-	public String getCognome() {
-		return super.getCognome();
-	}
-
-	public void setCognome(String cognome) {
-		super.setCognome(cognome);
-	}
-
-	public String getEmail() {
-		return super.getEmail();
-	}
-
-	public void setEmail(String email) {
-		super.setEmail(email);
-	}
-
-	protected Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
-	public boolean equals(Object arg0) {
-		return super.equals(arg0);
-	}
-
-	protected void finalize() throws Throwable {
-		super.finalize();
-	}
-
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	public String toString() {
-		return super.toString();
-	}
-
+  /**
+   * Costruisce un oggetto ImpiegatoUfficioTirocini dotato solo delle proprietà definite
+   * nella superclasse {@link UtenteRegistrato}.
+   */
+  public ImpiegatoUfficioTirocini() {
+    super();
+  }
+  
+  /**
+   * Determina se due oggetti rappresentano lo stesso impiegato guardando agli username dei
+   * suddetti.
+   */
+  public boolean equals(Object object) {
+    return super.equals(object);
+  }
+  
 }

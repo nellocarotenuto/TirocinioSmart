@@ -2,6 +2,13 @@ package it.unisa.di.tirociniosmart.studenti;
 
 import java.time.LocalDateTime;
 
+/**
+ * Classe che modella una richiesta d'iscrizione inviata da uno studente.
+ * <b>Questa classe non può essere istanziata dall'esterno ma sue istanze possono essere ottenute
+ * solo tramite {@link Studente#getRichiestaIscrizione()}.</b>
+ * 
+ * @see Studente
+ */
 public class RichiestaIscrizione {
 
   /**
@@ -20,6 +27,24 @@ public class RichiestaIscrizione {
    */
   RichiestaIscrizione(Studente studente) {
     this.studente = studente;
+  }
+  
+  /**
+   * Permette di determinare se due oggetti rappresentano la stessa richiesta d'iscrizione sulla
+   * base dell'identificatore.
+   */
+  public boolean equals(Object object) {
+    if (object == null) {
+      return false;
+    }
+    
+    if (getClass() != object.getClass()) {
+      return false;
+    }
+    
+    RichiestaIscrizione richiestaIscrizione = (RichiestaIscrizione) object;
+    
+    return id == richiestaIscrizione.getId();
   }
   
   /**
@@ -91,10 +116,12 @@ public class RichiestaIscrizione {
     return studente;
   }
   
+  
   private long id;
   private int status;
   private LocalDateTime dataRichiesta;
   private Studente studente;
+  
   
   /**
    * Costante che rappresenta lo stato "in attesa" di una richiesta d'iscrizione.
