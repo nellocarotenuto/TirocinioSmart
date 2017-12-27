@@ -4,15 +4,28 @@ import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
 /**
  * Classe che modella un delegato rappresentante un'azienda convenzionata con il dipartimento.
+ * <b>Questa classe non può essere istanziata dall'esterno ma sue istanze possono essere ottenute
+ * solo tramite {@link Azienda#getDelegato()}.</b>
  * 
  * @see Azienda
  */
 public class DelegatoAziendale extends UtenteRegistrato {
 
   /**
-   * Costruisce un oggetto DelegatoAziendale vuoto che dev'essere popolato tramite i metodi setters.
+   * Costruisce un oggetto DelegatoAziendale vuoto.
+   * <b>Questo costruttore non dev'essere mai utilizzato</b>, è presente solo per esigenze del
+   * container.
    */
-  public DelegatoAziendale() {
+  DelegatoAziendale() {
+  }
+  
+  /**
+   * Costruisce un oggetto DelegatoAziendale vuoto che dev'essere popolato tramite i metodi setters.
+   * Questo costruttore ha visibilità di pacchetto e non può essere utilizzato all'esterno. Istanze
+   * di questa classe si possono ottenere solo tramite {@link Azienda#getDelegato()}.
+   */
+  DelegatoAziendale(Azienda azienda) {
+    this.azienda = azienda;
   }
 
   /**
@@ -50,7 +63,7 @@ public class DelegatoAziendale extends UtenteRegistrato {
   /**
    * Permette di ottenere il numero di telefono del delegato aziendale.
    * 
-   * @return Stringa numerica che rappresenta il numero di telefono del delegato azienfale.
+   * @return Stringa numerica che rappresenta il numero di telefono del delegato aziendale.
    */
   public String getTelefono() {
     return telefono;
@@ -64,7 +77,7 @@ public class DelegatoAziendale extends UtenteRegistrato {
    * @pre telefono.length() >= 10 and telefono.length() <= 11
    * @pre telefono matches {@link UtenteRegistrato#TELEFONO_PATTERN}
    * 
-   * @post getTelefono() = telefono
+   * @post getTelefono().equals(telefono)
    */
   public void setTelefono(String telefono) {
     this.telefono = telefono;
@@ -79,19 +92,6 @@ public class DelegatoAziendale extends UtenteRegistrato {
     return azienda;
   }
 
-  /**
-   * Permette di specificare l'azienda che è rappresentata dal delegato aziendale.
-   * 
-   * @param azienda {@link Azienda} rappresentata dal delegato aziendale
-   * 
-   * @pre azienda != null
-   */
-  public void setAzienda(Azienda azienda) {
-    if (!azienda.equals(this.azienda)) {
-      this.azienda = azienda;
-      azienda.setDelegato(this);
-    }
-  }
 
   private char sesso;
   private String telefono;

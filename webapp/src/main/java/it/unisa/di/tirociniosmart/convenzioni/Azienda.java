@@ -13,6 +13,8 @@ public class Azienda {
    * Costruisce un oggetto Azienda vuoto che deve essere popolata con i metodi setters.
    */
   public Azienda() {
+    this.richiesta = new RichiestaConvenzionamento(this);
+    this.delegato = new DelegatoAziendale(this);
   }
   
   /**
@@ -120,7 +122,7 @@ public class Azienda {
    * @param indirizzo Stringa che rappresenta l'indirizzo dell'azienda
    * 
    * @pre indirizzo != null
-   * @pre indirizzo.length() >= 2 and nome.length() <= 255
+   * @pre indirizzo.length() > 0
    * 
    * @post getIndirizzo() = indirizzo
    */
@@ -160,22 +162,6 @@ public class Azienda {
     return delegato;
   }
   
-  /**
-   * Permette di specificare il {@link DelegatoAziendale} che rappresenta l'azienda.
-   * 
-   * @param delegato {@link DelegatoAziendale} che rappresenta l'azienda
-   * 
-   * @pre delegato != null
-   * 
-   * @post getDelegato() = delegato
-   */
-  public void setDelegato(DelegatoAziendale delegato) {
-    if (!delegato.equals(this.delegato)) {
-      this.delegato = delegato;
-      delegato.setAzienda(this);
-    }
-  }
-  
   // TODO (1) Definire l'associazione uno a molti con i progetti formativi
   
   /**
@@ -188,16 +174,12 @@ public class Azienda {
   }
   
   /**
-   * Permette di specificare la lista dei progetti formativi offerti dall'azienda.
+   * Permette di ottenere la richiesta di convenzionamento associata all'azienda.
    * 
-   * @param progettiFormativi Lista di oggetti {@link ProgettoFormativo} offerti dall'azienda
-   * 
-   * @pre progettiFormativi != null
-   * 
-   * @post getProgettiFormativi() = progettiFormativi
+   * @return La {@link RichiestaConvenzionamento} associata all'azienda
    */
-  public void setProgettiFormativi(List<ProgettoFormativo> progettiFormativi) {
-    this.progettiFormativi = progettiFormativi;
+  public RichiestaConvenzionamento getRichiesta() {
+    return richiesta;
   }
 
   private String id;
@@ -207,6 +189,7 @@ public class Azienda {
   private boolean senzaBarriere;
   private DelegatoAziendale delegato;
   private List<ProgettoFormativo> progettiFormativi;
+  private RichiestaConvenzionamento richiesta;
   
   
   /** Espressione regolare che definisce il formato del campo id. */

@@ -4,16 +4,31 @@ import java.time.LocalDateTime;
 
 /**
  * Classe che modella una richiesta di convenzionamento con il dipartimento.
+ * <b>Questa classe non può essere istanziata dall'esterno ma sue istanze possono essere ottenute
+ * solo tramite {@link Azienda#getRichiesta()}.</b>
+ * 
+ * @see Azienda
  */
 public class RichiestaConvenzionamento {
 
   /**
-   * Costruisce un oggetto RichiestaConvenzionamento vuoto che dev'essere popolato tramite i metodi
-   * setters.
+   * Costruisce un oggetto RichiestaConvenzionamento vuoto.
+   * <b>Questo costruttore non dev'essere mai utilizzato</b>, è presente solo per esigenze del
+   * container.
    */
-  public RichiestaConvenzionamento() {
+  RichiestaConvenzionamento() {
   }
   
+  /**
+   * Costruisce un oggetto RichiestaConvenzionamento vuoto che dev'essere popolato tramite i metodi
+   * setters.
+   * Questo costruttore ha visibilità di pacchetto e non può essere utilizzato all'esterno. Istanze
+   * di questa classe si possono ottenere solo tramite {@link Azienda#getRichiesta()}.
+   */
+  RichiestaConvenzionamento(Azienda azienda) {
+    this.azienda = azienda;
+  }
+
   /**
    * Permette di ottenere l'identificatore della richiesta di convenzionamento.
    * 
@@ -21,15 +36,6 @@ public class RichiestaConvenzionamento {
    */
   public long getId() {
     return id;
-  }
-  
-  /**
-   * Permette di specificare l'identificatore della richiesta di convenzionamento.
-   * 
-   * @param id Long che rappresenta l'identificatore della richiesta di convenzionamento
-   */
-  public void setId(long id) {
-    this.id = id;
   }
   
   /**
@@ -59,137 +65,65 @@ public class RichiestaConvenzionamento {
     this.status = status;
   }
   
+  /**
+   * Permette di ottenere la data e l'ora in cui è stata inviata la richiesta.
+   * 
+   * @return La data e l'ora in cui è stata inviata la richiesta
+   */
   public LocalDateTime getDataRichiesta() {
     return dataRichiesta;
   }
   
+  /**
+   * Permette di specificare la data e l'ora in cui è stata inviata la richiesta di
+   * convenzionamento.
+   *  
+   * @param dataRichiesta Oggetto LocalDateTime che rappresenta la data e l'ora in cui è stata
+   *                      inviata la richiesta di convenzionamento.
+   * 
+   * @pre dataRichiesta != null
+   * 
+   * @post getDataRichiesta().equals(dataRichiesta)
+   */
   public void setDataRichiesta(LocalDateTime dataRichiesta) {
     this.dataRichiesta = dataRichiesta;
   }
   
-  public LocalDateTime getDataGestione() {
-    return dataGestione;
+  /**
+   * Permette di ottenere l'azienda associata alla richiesta di convenzionamento.
+   * 
+   * @return L'oggetto {@link Azienda} che rappresenta l'azienda associata alla richiesta di
+   *         convenzionamento
+   */
+  public Azienda getAzienda() {
+    return azienda;
   }
   
-  public void setDataGestione(LocalDateTime dataGestione) {
-    this.dataGestione = dataGestione;
-  }
-  
-  public String getPartitaIvaAzienda() {
-    return partitaIvaAzienda;
-  }
-  
-  public void setPartitaIvaAzienda(String partitaIvaAzienda) {
-    this.partitaIvaAzienda = partitaIvaAzienda;
-  }
-  
-  public String getIndirizzoAzienda() {
-    return indirizzoAzienda;
-  }
-  
-  public void setIndirizzoAzienda(String indirizzoAzienda) {
-    this.indirizzoAzienda = indirizzoAzienda;
-  }
-  
-  public String getNomeAzienda() {
-    return nomeAzienda;
-  }
-  
-  public void setNomeAzienda(String nomeAzienda) {
-    this.nomeAzienda = nomeAzienda;
-  }
-  
-  public String getIdAzienda() {
-    return idAzienda;
-  }
-  
-  public void setIdAzienda(String idAzienda) {
-    this.idAzienda = idAzienda;
-  }
-  
-  public boolean isAziendaSenzaBarriere() {
-    return aziendaSenzaBarriere;
-  }
-  
-  public void setAziendaSenzaBarriere(boolean aziendaSenzaBarriere) {
-    this.aziendaSenzaBarriere = aziendaSenzaBarriere;
-  }
-  
-  public String getUsernameDelegato() {
-    return usernameDelegato;
-  }
-  
-  public void setUsernameDelegato(String usernameDelegato) {
-    this.usernameDelegato = usernameDelegato;
-  }
-  
-  public String getPasswordDelegato() {
-    return passwordDelegato;
-  }
-  
-  public void setPasswordDelegato(String passwordDelegato) {
-    this.passwordDelegato = passwordDelegato;
-  }
-  
-  public String getNomeDelegato() {
-    return nomeDelegato;
-  }
-  
-  public void setNomeDelegato(String nomeDelegato) {
-    this.nomeDelegato = nomeDelegato;
-  }
-  
-  public String getCognomeDelegato() {
-    return cognomeDelegato;
-  }
-  
-  public void setCognomeDelegato(String cognomeDelegato) {
-    this.cognomeDelegato = cognomeDelegato;
-  }
-  
-  public String getEmailDelegato() {
-    return emailDelegato;
-  }
-  
-  public void setEmailDelegato(String emailDelegato) {
-    this.emailDelegato = emailDelegato;
-  }
-  
-  public char getSessoDelegato() {
-    return sessoDelegato;
-  }
-  
-  public void setSessoDelegato(char sessoDelegato) {
-    this.sessoDelegato = sessoDelegato;
-  }
-  
-  public String getTelefonoDelegato() {
-    return telefonoDelegato;
-  }
-  
-  public void setTelefonoDelegato(String telefonoDelegato) {
-    this.telefonoDelegato = telefonoDelegato;
-  }
-  
+
   private long id;
   private int status;
   private LocalDateTime dataRichiesta;
-  private LocalDateTime dataGestione;
-  private String partitaIvaAzienda;
-  private String indirizzoAzienda;
-  private String nomeAzienda;
-  private String idAzienda;
-  private boolean aziendaSenzaBarriere;
-  private String usernameDelegato;
-  private String passwordDelegato;
-  private String nomeDelegato;
-  private String cognomeDelegato;
-  private String emailDelegato;
-  private char sessoDelegato;
-  private String telefonoDelegato;
+  private Azienda azienda;
   
+  
+  /**
+   * Costante che rappresenta lo stato "in attesa" di una richiesta di convenzionamento.
+   * Una richiesta si trova in questo stato quando non è ancora stata gestita dall'ufficio tirocini.
+   */
   public static final int IN_ATTESA = 0;
+  
+  /**
+   * Costante che rappresenta lo stato "approvato" di una richiesta di convenzionamento.
+   * Una richiesta si trova in questo stato quando è stata esaminata ed approvata dall'ufficio
+   * tirocini.
+   */
   public static final int APPROVATA = 1;
+  
+  /**
+   * Costante che rappresenta lo stato "rifiutato" di una richiesta di convenzionamento.
+   * Una richiesta si trova in questo stato quando è stata esaminata e rifiutata dall'ufficio
+   * tirocini.
+   */
   public static final int RIFIUTATA = 2;
 
 }

@@ -169,4 +169,5 @@ public abstract class UtenteRegistrato {
   
   /** Costante che rappresenta il genere femminile per l'utente. */
   public static final char SESSO_FEMMINILE = 'F';
+  
 }
