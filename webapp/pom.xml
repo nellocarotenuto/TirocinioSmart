@@ -9,7 +9,10 @@
 	<packaging>war</packaging>
 
 	<name>webapp</name>
-	<description>Applicazione web per la gestione dei tirocini formativi sviluppata per il Dipartimento di Informatica dell&#39;Università degli Studi di Salerno</description>
+	<description>
+	  Applicazione web per la gestione dei tirocini formativi sviluppata per il Dipartimento di
+	  Informatica dell&#39;Università degli Studi di Salerno
+	</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
