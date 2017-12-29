@@ -14,7 +14,6 @@ public class ImpiegatoUfficioTirocini extends UtenteRegistrato {
    * nella superclasse {@link UtenteRegistrato}.
    */
   public ImpiegatoUfficioTirocini() {
-    super();
   }
   
   /**
