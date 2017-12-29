@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
  * 
  * @see RichiestaConvenzionamento
  */
-
 @Repository
 public interface RichiestaConvenzionamentoRepository extends 
     JpaRepository<RichiestaConvenzionamento, Long> {
@@ -17,8 +16,8 @@ public interface RichiestaConvenzionamentoRepository extends
   /**
    * Permette di ottenere l'elenco delle richieste di convenzionamento salvate nel Database.
    * 
-   * @return List<RichiestaConvenzionamento> che rappresenta la lista delle richieste 
-   *                                         di convenzionamento
+   * @return lista di {@link RichiestaConvenzionamento} che rappresenta la lista delle richieste 
+   *                                                   di convenzionamento
    */
   List<RichiestaConvenzionamento> findAll();
   
@@ -28,7 +27,7 @@ public interface RichiestaConvenzionamentoRepository extends
    * @param id numero di tipo long che rappresenta l'identificativo della richiesta di
    *           convenzionamento
    *           
-   * @return RichiestaConvenzionamento che rappresenta la richiesta di convenzionamento.
+   * @return {@link RichiestaConvenzionamento} che rappresenta la richiesta di convenzionamento.
    * 
    * @pre id > 0
    */
@@ -40,8 +39,8 @@ public interface RichiestaConvenzionamentoRepository extends
    * @param status Intero che rappresenta lo stato assegnato alla richiesta di
    *               convenzionamento
    *           
-   * @return List<RichiestaConvenzionamento> che rappresenta la lista delle richieste 
-   *                                         di convenzionamento
+   * @return lista di {@link RichiestaConvenzionamento} che rappresenta la lista delle richieste 
+   *                                                    di convenzionamento
    *                                         
    * @pre status = {@link RichiestaConvenzionamento#IN_ATTESA} or
    *      status = {@link RichiestaConvenzionamento#APPROVATA} or
@@ -53,8 +52,8 @@ public interface RichiestaConvenzionamentoRepository extends
    * Permette di verificare se una richiesta di convenzionamento esiste nel database attraverso il 
    * proprio identificatore.
    * 
-   * @param id numero di tipo long che rappresenta l'identificativo della richiesta di
-   *            convenzionamento
+   * @param id Numero di tipo long che rappresenta l'identificativo della richiesta di
+   *           convenzionamento
    *               
    * @return true se la richiesta di convenzionamento esiste,
    *         false se la richiesta di convenzionamento non esiste
