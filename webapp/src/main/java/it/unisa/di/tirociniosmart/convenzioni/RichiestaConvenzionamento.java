@@ -2,6 +2,13 @@ package it.unisa.di.tirociniosmart.convenzioni;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToOne;
+
+import org.springframework.data.annotation.Id;
+
 /**
  * Classe che modella una richiesta di convenzionamento con il dipartimento.
  * <b>Questa classe non può essere istanziata dall'esterno ma sue istanze possono essere ottenute
@@ -9,6 +16,7 @@ import java.time.LocalDateTime;
  * 
  * @see Azienda
  */
+@Entity
 public class RichiestaConvenzionamento {
 
   /**
@@ -117,10 +125,14 @@ public class RichiestaConvenzionamento {
     return azienda;
   }
   
-
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
+  
   private int status;
   private LocalDateTime dataRichiesta;
+  
+  @OneToOne(mappedBy = "richiestaConvenzionamento")
   private Azienda azienda;
   
   

@@ -5,16 +5,23 @@ import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
+import org.springframework.data.annotation.Id;
+
 /**
  * Classe che modella un'azienda convenzionata con il dipartimento.
  */
+@Entity
 public class Azienda {
 
   /**
    * Costruisce un oggetto Azienda vuoto che deve essere popolata con i metodi setters.
    */
   public Azienda() {
-    this.richiesta = new RichiestaConvenzionamento(this);
+    this.richiestaConvenzionamento = new RichiestaConvenzionamento(this);
     this.delegato = new DelegatoAziendale(this);
     this.progettiFormativi = new ArrayList<ProgettoFormativo>();
   }
@@ -193,17 +200,25 @@ public class Azienda {
    * @return La {@link RichiestaConvenzionamento} associata all'azienda
    */
   public RichiestaConvenzionamento getRichiesta() {
-    return richiesta;
+    return richiestaConvenzionamento;
   }
 
+  
+  @Id
   private String id;
+  
   private String partitaIva;
   private String nome;
   private String indirizzo;
   private boolean senzaBarriere;
+  
+  @OneToOne(cascade = CascadeType.ALL)
   private DelegatoAziendale delegato;
+  
   private List<ProgettoFormativo> progettiFormativi;
-  private RichiestaConvenzionamento richiesta;
+  
+  @OneToOne(cascade = CascadeType.ALL)
+  private RichiestaConvenzionamento richiestaConvenzionamento;
   
   
   /** Espressione regolare che definisce il formato del campo id. */

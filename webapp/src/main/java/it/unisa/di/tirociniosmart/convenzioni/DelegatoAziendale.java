@@ -2,6 +2,9 @@ package it.unisa.di.tirociniosmart.convenzioni;
 
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
 /**
  * Classe che modella un delegato rappresentante un'azienda convenzionata con il dipartimento.
  * <b>Questa classe non può essere istanziata dall'esterno ma sue istanze possono essere ottenute
@@ -9,6 +12,7 @@ import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
  * 
  * @see Azienda
  */
+@Entity
 public class DelegatoAziendale extends UtenteRegistrato {
 
   /**
@@ -95,6 +99,8 @@ public class DelegatoAziendale extends UtenteRegistrato {
 
   private char sesso;
   private String telefono;
+  
+  @OneToOne(mappedBy = "delegato")
   private Azienda azienda;
   
 }
