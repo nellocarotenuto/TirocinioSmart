@@ -10,24 +10,24 @@ import org.springframework.stereotype.Repository;
  * @see RichiestaConvenzionamento
  */
 @Repository
-public interface RichiestaConvenzionamentoRepository extends 
-    JpaRepository<RichiestaConvenzionamento, Long> {
+public interface RichiestaConvenzionamentoRepository
+       extends JpaRepository<RichiestaConvenzionamento, Long> {
   
   /**
-   * Permette di ottenere l'elenco delle richieste di convenzionamento salvate nel Database.
+   * Permette di ottenere l'elenco delle richieste di convenzionamento salvate nel database.
    * 
-   * @return lista di {@link RichiestaConvenzionamento} che rappresenta la lista delle richieste 
-   *                                                   di convenzionamento
+   * @return Lista di {@link RichiestaConvenzionamento} che rappresenta la lista delle richieste 
+   *         di convenzionamento
    */
   List<RichiestaConvenzionamento> findAll();
   
   /**
    * Permette di ottenere una richiesta di convenzionamento a partire dal suo identificatore.
    * 
-   * @param id numero di tipo long che rappresenta l'identificativo della richiesta di
+   * @param id Numero di tipo long che rappresenta l'identificativo della richiesta di
    *           convenzionamento
    *           
-   * @return {@link RichiestaConvenzionamento} che rappresenta la richiesta di convenzionamento.
+   * @return {@link RichiestaConvenzionamento} che rappresenta la richiesta di convenzionamento
    * 
    * @pre id > 0
    */
@@ -39,8 +39,8 @@ public interface RichiestaConvenzionamentoRepository extends
    * @param status Intero che rappresenta lo stato assegnato alla richiesta di
    *               convenzionamento
    *           
-   * @return lista di {@link RichiestaConvenzionamento} che rappresenta la lista delle richieste 
-   *                                                    di convenzionamento
+   * @return Lista di {@link RichiestaConvenzionamento} che rappresenta la lista delle richieste 
+   *         di convenzionamento
    *                                         
    * @pre status = {@link RichiestaConvenzionamento#IN_ATTESA} or
    *      status = {@link RichiestaConvenzionamento#APPROVATA} or

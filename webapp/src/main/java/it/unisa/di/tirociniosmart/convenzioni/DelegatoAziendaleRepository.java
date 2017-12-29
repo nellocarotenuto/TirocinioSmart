@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * @see DelegatoAziendale
  */
 @Repository
-public interface DelegatoAziendaleRepository extends JpaRepository<DelegatoAziendale, String>{
+public interface DelegatoAziendaleRepository extends JpaRepository<DelegatoAziendale, String> {
 
   /**
    * Permette di ottenere un delegato aziendale a partire dalle proprie credenziali di accesso.
@@ -18,7 +18,7 @@ public interface DelegatoAziendaleRepository extends JpaRepository<DelegatoAzien
    * @param password Stringa che rappresenta la password del delegato aziendale
    * @param username Stringa che rappresenta il nome utente del delegato aziendale     
    * 
-   * @return {@link DelegatoAziendale} che rappresenta il delegato aziendale.
+   * @return {@link DelegatoAziendale} che rappresenta il delegato aziendale
    * 
    * @pre username != null && password != null
    */
@@ -29,7 +29,7 @@ public interface DelegatoAziendaleRepository extends JpaRepository<DelegatoAzien
    * 
    * @param username Stringa che rappresenta il nome utente del delegato aziendale     
    * 
-   * @return {@link DelegatoAziendale} che rappresenta il delegato aziendale.
+   * @return {@link DelegatoAziendale} che rappresenta il delegato aziendale
    * 
    * @pre username != null
    */
