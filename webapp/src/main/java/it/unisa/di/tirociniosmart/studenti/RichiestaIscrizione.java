@@ -2,6 +2,9 @@ package it.unisa.di.tirociniosmart.studenti;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
 /**
  * Classe che modella una richiesta d'iscrizione inviata da uno studente.
  * <b>Questa classe non può essere istanziata dall'esterno ma sue istanze possono essere ottenute
@@ -9,6 +12,7 @@ import java.time.LocalDateTime;
  * 
  * @see Studente
  */
+@Entity
 public class RichiestaIscrizione {
 
   /**
@@ -120,6 +124,8 @@ public class RichiestaIscrizione {
   private long id;
   private int status;
   private LocalDateTime dataRichiesta;
+  
+  @OneToOne(mappedBy = "richiestaIscrizione")
   private Studente studente;
   
   

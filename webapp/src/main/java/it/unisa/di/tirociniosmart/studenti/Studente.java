@@ -8,11 +8,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
 /**
  * Classe che modella uno studente che ha richiesto l'iscrizione alla piattaforma.
  * 
  * @see UtenteRegistrato
  */
+@Entity
 public class Studente extends UtenteRegistrato {
   
   /**
@@ -208,6 +213,8 @@ public class Studente extends UtenteRegistrato {
   private LocalDate dataDiNascita;
   private char sesso;
   private String telefono;
+  
+  @OneToOne(cascade = CascadeType.ALL)
   private RichiestaIscrizione richiestaIscrizione;
   private List<DomandaTirocinio> domandeTirocinio;
   
