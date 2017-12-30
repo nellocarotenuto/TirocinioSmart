@@ -30,7 +30,7 @@ public interface RichiestaConvenzionamentoRepository
    * @return Oggetto {@link RichiestaConvenzionamento} che rappresenta la richiesta 
    *         di convenzionamento
    *         <b>Può essere null</b> se nel database non è presente una richiesta di convenzionamento
-   *         con l'id passato come parametro
+   *         con l'id specificato come parametro
    * 
    * @pre id > 0
    */

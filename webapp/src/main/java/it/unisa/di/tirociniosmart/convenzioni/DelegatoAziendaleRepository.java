@@ -34,7 +34,6 @@ public interface DelegatoAziendaleRepository extends JpaRepository<DelegatoAzien
    * @return Oggetto {@link DelegatoAziendale} che rappresenta il delegato aziendale
    * <b>     Può essere null</b> se nel database non è presente un delegato aziendale 
    *         con username e password passati come parametro
-   *         
    * @pre username != null
    */
   DelegatoAziendale findByUsername(String username);
