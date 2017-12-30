@@ -27,10 +27,9 @@ public interface RichiestaConvenzionamentoRepository
    * @param id Numero di tipo long che rappresenta l'identificativo della richiesta di
    *           convenzionamento
    *           
-   * @return Oggetto {@link RichiestaConvenzionamento} che rappresenta la richiesta 
-   *         di convenzionamento
-   *         <b>Può essere null</b> se nel database non è presente una richiesta di convenzionamento
-   *         con l'id specificato come parametro
+   * @return Oggetto {@link RichiestaConvenzionamento} che rappresenta la richiesta di 
+   *         convenzionamento. <b>Può essere null</b> se nel database non è presente 
+   *         una richiesta di convenzionamento con l'id specificato come parametro
    * 
    * @pre id > 0
    */
