@@ -17,9 +17,9 @@ before_script:
  - echo "Set MySQL root password.."
  - mysql -u travis -e "CREATE DATABASE tirociniosmart;"
  - echo "TirocinioSmart schema created.."
- - chmod +x mvnw
- - echo "Set maven wrapper execution permission.."
  - cd webapp
  - echo "Moved to webapp root.."
+ - chmod +x mvnw
+ - echo "Set maven wrapper execution permission.."
 
 script: ./mvnw clean install spring-boot:repackage
