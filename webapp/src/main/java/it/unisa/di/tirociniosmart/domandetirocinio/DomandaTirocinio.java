@@ -43,6 +43,21 @@ public class DomandaTirocinio {
   }
   
   /**
+   * Permette di definire una stringa che può essere considerata come la 
+   * "rappresentazione testuale" dell'oggetto DomandaTirocinio.
+   * 
+   * @return Stringa che rappresenta una descrizione più accurata e consona dell'oggetto
+   */
+  @Override
+  public String toString() {
+    return "DomandaTirocinio [id=" + id + ", status=" + status + ", data=" + data
+        + ", inizioTirocinio=" + inizioTirocinio + ", fineTirocinio=" + fineTirocinio
+        + ", commentoAzienda=" + commentoAzienda + ", commentoStudente=" + commentoStudente
+        + ", cfu=" + cfu + ", studente=" + studente + ", progettoFormativo=" + progettoFormativo
+        + "]";
+  }
+
+  /**
    * Permette di ottenere l'identificatore della domanda di tirocinio.
    * 
    * @return Long che rappresenta l'identificatore della domanda di tirocinio

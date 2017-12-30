@@ -32,6 +32,20 @@ public abstract class UtenteRegistrato {
   }
   
   /**
+   * Permette di definire una stringa che può essere considerata come la 
+   * "rappresentazione testuale" dell'oggetto UtenteRegistrato.
+   * 
+   * @return Stringa che rappresenta una descrizione più accurata e consona dell'oggetto
+   */
+  @Override
+  public String toString() {
+    return "UtenteRegistrato [username=" + username + ", password=" + password + ", nome=" + nome
+        + ", cognome=" + cognome + ", email=" + email + "]";
+  }
+
+
+
+  /**
    * Permette di ottenere l'username dell'utente.
    * 
    * @return Stringa che rappresenta l'username dell'utente

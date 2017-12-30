@@ -41,6 +41,19 @@ public class DelegatoAziendale extends UtenteRegistrato {
   }
   
   /**
+   * Permette di definire una stringa che può essere considerata come la 
+   * "rappresentazione testuale" dell'oggetto Delegato Aziendale.
+   * 
+   * @return Stringa che rappresenta una descrizione più accurata e consona dell'oggetto
+   */
+  @Override
+  public String toString() {
+    return "DelegatoAziendale [sesso=" + sesso + ", telefono=" + telefono + ", azienda=" + azienda
+        + ", username=" + username + ", password=" + password + ", nome=" + nome + ", cognome="
+        + cognome + ", email=" + email + "]";
+  }
+
+  /**
    * Permette di ottenere il sesso del delegato aziendale.
    * 
    * @return {@link UtenteRegistrato#SESSO_MASCHILE} se il delegato è uomo,

@@ -54,6 +54,18 @@ public class RichiestaConvenzionamento {
     RichiestaConvenzionamento richiestaConvenzionamento = (RichiestaConvenzionamento) object;
     return id == richiestaConvenzionamento.getId();
   }
+  
+  /**
+   * Permette di definire una stringa che può essere considerata come la 
+   * "rappresentazione testuale" dell'oggetto RichiestaConvenzionamento.
+   * 
+   * @return Stringa che rappresenta una descrizione più accurata e consona dell'oggetto
+   */
+  @Override
+  public String toString() {
+    return "RichiestaConvenzionamento [id=" + id + ", status=" + status + ", dataRichiesta="
+        + dataRichiesta + ", azienda=" + azienda + "]";
+  }
 
   /**
    * Permette di ottenere l'identificatore della richiesta di convenzionamento.

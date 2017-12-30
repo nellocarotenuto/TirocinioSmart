@@ -49,6 +49,19 @@ public class ProgettoFormativo {
   }
   
   /**
+   * Permette di definire una stringa che può essere considerata come la 
+   * "rappresentazione testuale" dell'oggetto ProgettoFormativo.
+   * 
+   * @return Stringa che rappresenta una descrizione più accurata e consona dell'oggetto
+   */
+  @Override
+  public String toString() {
+    return "ProgettoFormativo [id=" + id + ", nome=" + nome + ", descrizione=" + descrizione
+        + ", status=" + status + ", azienda=" + azienda + ", domandeTirocinio=" + domandeTirocinio
+        + "]";
+  }
+
+  /**
    * Permette di ottenere l'identificatore del progetto formativo.
    * 
    * @return Long che rappresenta l'identificatore del progetto formativo
