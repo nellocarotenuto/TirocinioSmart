@@ -13,9 +13,9 @@ services:
   - mysql
 
 before_script:
- - mysql -u root -e "UPDATE mysql.user SET Password = PASSWORD('root') WHERE User = 'root'; FLUSH PRIVILEGES;"
+ - mysql -u root -e "UPDATE mysql.user SET password = PASSWORD('root') WHERE user = 'root'; FLUSH PRIVILEGES;"
  - echo "Set MySQL root password"
- - mysql -e 'CREATE DATABASE tirociniosmart;'
+ - mysql -u travis -e "CREATE DATABASE tirociniosmart;"
  - echo "TirocinioSmart schema created"
  - cd webapp
  - echo "Moved to webapp root"
