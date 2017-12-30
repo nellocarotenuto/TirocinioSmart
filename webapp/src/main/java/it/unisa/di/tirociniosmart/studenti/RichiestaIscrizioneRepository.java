@@ -14,7 +14,8 @@ import org.springframework.stereotype.Repository;
 public interface RichiestaIscrizioneRepository extends JpaRepository<RichiestaIscrizione, Long> {
 
   /**
-   * Permette di ottenere l'elenco delle richieste d'iscrizione aventi un determinato status assegnato.
+   * Permette di ottenere l'elenco delle richieste d'iscrizione aventi un determinato 
+   * status assegnato.
    * 
    * @param status Intero che rappresenta lo stato assegnato alla richiesta d'iscrizione
    *           
