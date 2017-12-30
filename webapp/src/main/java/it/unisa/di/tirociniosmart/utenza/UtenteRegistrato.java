@@ -1,8 +1,16 @@
 package it.unisa.di.tirociniosmart.utenza;
 
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+import org.springframework.data.annotation.Id;
+
 /**
  * Classe astratta che modella un utente generico registrato alla piattaforma.
  */
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class UtenteRegistrato {
 
   /**
@@ -137,6 +145,7 @@ public abstract class UtenteRegistrato {
     this.email = email;
   }
 
+  @Id
   protected String username;
   protected String password;
   protected String nome;
