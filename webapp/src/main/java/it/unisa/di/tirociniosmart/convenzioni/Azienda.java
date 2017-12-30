@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.Id;
@@ -215,6 +217,7 @@ public class Azienda {
   @OneToOne(cascade = CascadeType.ALL)
   private DelegatoAziendale delegato;
   
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "azienda")
   private List<ProgettoFormativo> progettiFormativi;
   
   @OneToOne(cascade = CascadeType.ALL)

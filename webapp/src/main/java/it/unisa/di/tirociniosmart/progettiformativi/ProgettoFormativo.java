@@ -6,11 +6,19 @@ import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinio;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
+
+import org.springframework.data.annotation.Id;
+
 /**
  * Classe che modella un progetto formativo offerto da un'azienda.
  * 
  * @see Azienda
  */
+@Entity
 public class ProgettoFormativo {
 
   /**
@@ -163,11 +171,14 @@ public class ProgettoFormativo {
     }
   }
   
-
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
   private String nome;
   private String descrizione;
   private int status;
+  
+  @ManyToOne
   private Azienda azienda;
   private List<DomandaTirocinio> domandeTirocinio;
   
