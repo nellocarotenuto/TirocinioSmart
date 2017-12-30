@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.data.annotation.Id;
 
@@ -180,6 +182,8 @@ public class ProgettoFormativo {
   
   @ManyToOne
   private Azienda azienda;
+  
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "progettoFormativo")
   private List<DomandaTirocinio> domandeTirocinio;
   
   

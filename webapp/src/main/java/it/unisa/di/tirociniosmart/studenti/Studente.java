@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -216,6 +218,8 @@ public class Studente extends UtenteRegistrato {
   
   @OneToOne(cascade = CascadeType.ALL)
   private RichiestaIscrizione richiestaIscrizione;
+  
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "studente")
   private List<DomandaTirocinio> domandeTirocinio;
   
   /** Espressione regolare che definisce il formato del campo matricola. */

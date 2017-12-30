@@ -6,9 +6,16 @@ import it.unisa.di.tirociniosmart.studenti.Studente;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 /**
  * Classe che modella una domanda di tirocinio.
  */
+@Entity
 public class DomandaTirocinio {
 
   /**
@@ -262,7 +269,8 @@ public class DomandaTirocinio {
     }
   }
 
-
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
   private int status;
   private LocalDateTime data;
@@ -271,7 +279,11 @@ public class DomandaTirocinio {
   private String commentoAzienda;
   private String commentoStudente;
   private int cfu;
+  
+  @ManyToOne
   private Studente studente;
+  
+  @ManyToOne
   private ProgettoFormativo progettoFormativo;
   
   
