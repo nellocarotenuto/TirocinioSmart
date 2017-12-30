@@ -2,11 +2,14 @@ package it.unisa.di.tirociniosmart.impiegati;
 
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
+import javax.persistence.Entity;
+
 /**
  * Classe che modella un impiegato dell'ufficio tirocini.
  * 
  * @see UtenteRegistrato
  */
+@Entity
 public class ImpiegatoUfficioTirocini extends UtenteRegistrato {
 
   /**
