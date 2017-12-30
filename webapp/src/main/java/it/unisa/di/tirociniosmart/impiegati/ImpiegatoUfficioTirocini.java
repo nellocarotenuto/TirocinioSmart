@@ -23,5 +23,18 @@ public class ImpiegatoUfficioTirocini extends UtenteRegistrato {
   public boolean equals(Object object) {
     return super.equals(object);
   }
+
+  /**
+   * Permette di definire una stringa che può essere considerata come la 
+   * "rappresentazione testuale" dell'oggetto ImpiegatoUfficioTirocini.
+   * 
+   * @return Stringa che rappresenta una descrizione più accurata e consona dell'oggetto
+   */
+  @Override
+  public String toString() {
+    return "ImpiegatoUfficioTirocini [username=" + username + ", password=" + password + ", nome="
+        + nome + ", cognome=" + cognome + ", email=" + email + "]";
+  }
+  
   
 }

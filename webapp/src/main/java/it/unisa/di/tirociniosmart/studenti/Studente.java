@@ -39,6 +39,21 @@ public class Studente extends UtenteRegistrato {
   }
   
   /**
+   * Permette di definire una stringa che può essere considerata come la 
+   * "rappresentazione testuale" dell'oggetto Studente.
+   * 
+   * @return Stringa che rappresenta una descrizione più accurata e consona dell'oggetto
+   */
+  @Override
+  public String toString() {
+    return "Studente [dataRegistrazione=" + dataRegistrazione + ", matricola=" + matricola
+        + ", indirizzo=" + indirizzo + ", dataDiNascita=" + dataDiNascita + ", sesso=" + sesso
+        + ", telefono=" + telefono + ", richiestaIscrizione=" + richiestaIscrizione
+        + ", domandeTirocinio=" + domandeTirocinio + ", username=" + username + ", password="
+        + password + ", nome=" + nome + ", cognome=" + cognome + ", email=" + email + "]";
+  }
+
+  /**
    * Permette di ottenere la data e l'ora di registrazione dello studente alla piattaforma.
    * 
    * @return Oggetto LocalDateTime che rappresenta la data e l'ora in cui è stata

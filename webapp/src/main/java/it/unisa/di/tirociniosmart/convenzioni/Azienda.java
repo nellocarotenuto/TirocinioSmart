@@ -44,6 +44,20 @@ public class Azienda {
     Azienda azienda = (Azienda) object;
     return id.equals(azienda.getId());
   }
+  
+  /**
+   * Permette di definire una stringa che può essere considerata come la 
+   * "rappresentazione testuale" dell'oggetto Azienda.
+   * 
+   * @return Stringa che rappresenta una descrizione più accurata e consona dell'oggetto
+   */
+  @Override
+  public String toString() {
+    return "Azienda [id=" + id + ", partitaIva=" + partitaIva + ", nome=" + nome + ", indirizzo="
+        + indirizzo + ", senzaBarriere=" + senzaBarriere + ", delegato=" + delegato
+        + ", progettiFormativi=" + progettiFormativi + ", richiestaConvenzionamento="
+        + richiestaConvenzionamento + "]";
+  }
 
   /**
    * Permette di ottenere l'id dell'azienda.

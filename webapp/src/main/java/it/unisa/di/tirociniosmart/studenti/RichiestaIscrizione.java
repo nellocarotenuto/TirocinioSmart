@@ -52,6 +52,18 @@ public class RichiestaIscrizione {
   }
   
   /**
+   * Permette di definire una stringa che può essere considerata come la 
+   * "rappresentazione testuale" dell'oggetto RichiestaIscrizione.
+   * 
+   * @return Stringa che rappresenta una descrizione più accurata e consona dell'oggetto
+   */
+  @Override
+  public String toString() {
+    return "RichiestaIscrizione [id=" + id + ", status=" + status + ", dataRichiesta="
+        + dataRichiesta + ", studente=" + studente + "]";
+  }
+
+  /**
    * Permette di ottenere l'identificatore della richiesta d'iscrizione.
    * 
    * @return Long che rappresenta l'identificatore della richiesta d'iscrizione
