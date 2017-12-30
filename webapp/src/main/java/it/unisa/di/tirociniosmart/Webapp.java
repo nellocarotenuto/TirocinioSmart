@@ -1,4 +1,4 @@
-package it.unisa.di.tirociniosmart.webapp;
+package it.unisa.di.tirociniosmart;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

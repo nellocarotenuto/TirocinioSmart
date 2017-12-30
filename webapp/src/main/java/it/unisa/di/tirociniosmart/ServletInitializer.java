@@ -1,4 +1,4 @@
-package it.unisa.di.tirociniosmart.webapp;
+package it.unisa.di.tirociniosmart;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
