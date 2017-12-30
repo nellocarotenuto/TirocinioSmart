@@ -1,6 +1,11 @@
 dist: trusty
 sudo: required
 
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+
 language: java
 
 jdk: oraclejdk8
