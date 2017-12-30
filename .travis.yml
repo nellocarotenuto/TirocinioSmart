@@ -1,0 +1,11 @@
+language: java
+jdk: oraclejdk8
+
+cache:
+  directories:
+  - $HOME/.m2
+
+install: true
+
+before_script: cd webapp
+script: ./mvnw clean install spring-boot:repackage
