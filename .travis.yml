@@ -14,10 +14,12 @@ services:
 
 before_script:
  - mysql -u root -e "UPDATE mysql.user SET password = PASSWORD('root') WHERE user = 'root'; FLUSH PRIVILEGES;"
- - echo "Set MySQL root password"
+ - echo "Set MySQL root password.."
  - mysql -u travis -e "CREATE DATABASE tirociniosmart;"
- - echo "TirocinioSmart schema created"
+ - echo "TirocinioSmart schema created.."
+ - chmod +x mvnw
+ - echo "Set maven wrapper execution permission.."
  - cd webapp
- - echo "Moved to webapp root"
+ - echo "Moved to webapp root.."
 
 script: ./mvnw clean install spring-boot:repackage
