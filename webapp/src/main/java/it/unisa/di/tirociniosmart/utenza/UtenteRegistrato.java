@@ -1,10 +1,9 @@
 package it.unisa.di.tirociniosmart.utenza;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-
-import org.springframework.data.annotation.Id;
 
 /**
  * Classe astratta che modella un utente generico registrato alla piattaforma.

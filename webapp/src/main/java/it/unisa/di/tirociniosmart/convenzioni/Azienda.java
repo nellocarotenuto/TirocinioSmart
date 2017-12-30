@@ -8,10 +8,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import org.springframework.data.annotation.Id;
 
 /**
  * Classe che modella un'azienda convenzionata con il dipartimento.

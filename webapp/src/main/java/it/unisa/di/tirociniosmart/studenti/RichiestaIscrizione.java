@@ -3,6 +3,7 @@ package it.unisa.di.tirociniosmart.studenti;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 /**
@@ -133,6 +134,7 @@ public class RichiestaIscrizione {
   }
   
   
+  @Id
   private long id;
   private int status;
   private LocalDateTime dataRichiesta;
