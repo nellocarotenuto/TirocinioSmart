@@ -9,3 +9,6 @@ install: true
 
 before_script: cd webapp
 script: ./mvnw clean install spring-boot:repackage
+
+before_install:
+  - chmod +x mvn
