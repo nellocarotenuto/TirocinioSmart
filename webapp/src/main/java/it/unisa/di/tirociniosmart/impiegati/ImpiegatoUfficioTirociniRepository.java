@@ -2,7 +2,6 @@ package it.unisa.di.tirociniosmart.impiegati;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 
 /**
  * Classe che definisce le operazioni per la modellazione e l'accesso 
