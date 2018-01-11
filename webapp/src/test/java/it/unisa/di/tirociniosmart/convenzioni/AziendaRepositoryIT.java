@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-public class AziendaRepositoryTest {
+public class AziendaRepositoryIT {
 
   @Autowired
   private AziendaRepository aziendaRepository;
