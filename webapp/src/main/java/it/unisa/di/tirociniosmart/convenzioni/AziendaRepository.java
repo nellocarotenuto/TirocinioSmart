@@ -44,6 +44,19 @@ public interface AziendaRepository extends JpaRepository<Azienda, String> {
   List<Azienda> findAllBySenzaBarriere(boolean senzaBarriere);
 
   /**
+   * Permette di ottenere l'elenco delle aziende in base allo stato della richiesta di convenzione.
+   * 
+   * @param status Intero che indica lo stato della richiesta associata all'azienda
+   * 
+   * @return L'elenco di {@link Azienda} la cui richiesta si trova nello stato specificato
+   * 
+   * @pre status = {@link RichiestaConvenzionamento#IN_ATTESA} or
+   *      status = {@link RichiestaConvenzionamento#APPROVATA} or
+   *      status = {@link RichiestaConvenzionamento#RIFIUTATA}
+   */
+  List<Azienda> findAllByRichiestaConvenzionamentoStatus(int status);
+  
+  /**
    * Permette di verificare se un'Azienda esiste nel database attraverso il proprio identificatore.
    * 
    * @param id Stringa che rappresenta l'identificativo dell'Azienda
