@@ -25,6 +25,8 @@ public class UtenteRegistratoService {
    * @return L'oggetto utente preso in input i cui campi sono stati ripuliti in modo da renderlo
    *         pronto ad essere inserito nel sistema.
    * 
+   * @pre utente != null
+   * 
    * @throws UsernameNonValidoException se l'username non è specificato oppure se non rispetta il
    *                                    formato {@link UtenteRegistrato#USERNAME_PATTERN}
    * 
