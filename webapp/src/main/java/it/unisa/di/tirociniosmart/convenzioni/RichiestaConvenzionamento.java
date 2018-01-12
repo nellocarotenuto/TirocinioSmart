@@ -112,6 +112,29 @@ public class RichiestaConvenzionamento {
   }
   
   /**
+   * Permette di ottenere il commento alla richiesta fatto dall'ufficio tirocini.
+   *   
+   * @return La stringa che rappresenta il commento alla richiesta da parte dell'ufficio tirocini
+   */
+  public String getCommentoUfficioTirocini() {
+    return commentoUfficioTirocini;
+  }
+
+  /**
+   * Permette di specificare il commento alla richiesta da parte dell'ufficio tirocini.
+   * 
+   * @param commentoUfficioTirocini Stringa che rappresenta il commento che si vuole assegnare
+   *                                alla richiesta
+   *                                
+   * @pre commentoUfficioTirocini != null
+   * 
+   * @post getCommentoUfficioTirocini().equals(commentoUfficioTirocini)
+   */
+  public void setCommentoUfficioTirocini(String commentoUfficioTirocini) {
+    this.commentoUfficioTirocini = commentoUfficioTirocini;
+  }
+
+  /**
    * Permette di specificare la data e l'ora in cui è stata inviata la richiesta di
    * convenzionamento.
    *  
@@ -142,6 +165,7 @@ public class RichiestaConvenzionamento {
   
   private int status;
   private LocalDateTime dataRichiesta;
+  private String commentoUfficioTirocini;
   
   @OneToOne(mappedBy = "richiestaConvenzionamento")
   private Azienda azienda;
