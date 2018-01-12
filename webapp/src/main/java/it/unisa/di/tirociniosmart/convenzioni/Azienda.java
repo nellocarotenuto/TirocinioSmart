@@ -243,4 +243,16 @@ public class Azienda {
   /** Espressione regolare che definisce il formato del campo partita IVA. */
   public static final String PARTITA_IVA_PATTERN = "^[0-9]{11}$";
   
+  /** Costante che definisce la minima lunghezza del campo nome. */
+  public static final int MIN_LUNGHEZZA_NOME = 2;
+  
+  /** Costante che definisce la massima lunghezza del campo nome. */
+  public static final int MAX_LUNGHEZZA_NOME = 255;
+  
+  /** Costante che definisce la minima lunghezza del campo indirizzo. */
+  public static final int MIN_LUNGHEZZA_INDIRIZZO = 2;
+  
+  /** Costante che definisce la massima lunghezza del campo indirizzo. */
+  public static final int MAX_LUNGHEZZA_INDIRIZZO = 255;
+  
 }
