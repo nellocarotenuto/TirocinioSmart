@@ -44,19 +44,28 @@ public interface AziendaRepository extends JpaRepository<Azienda, String> {
   List<Azienda> findAllBySenzaBarriere(boolean senzaBarriere);
 
   /**
-   * Permette di verificare se un'Azienda esiste nel database attraverso il 
-   * proprio identificatore e la propria partita IVA.
+   * Permette di verificare se un'Azienda esiste nel database attraverso il proprio identificatore.
    * 
    * @param id Stringa che rappresenta l'identificativo dell'Azienda
-   *           
-   * @param partitaIva Stringa che rappresenta la partita IVA dell'Azienda
    *               
    * @return true se l'azienda esiste nel database,
    *         false se l'azienda non esiste nel database
    *         
-   * @pre id != null && partitaIva != null
+   * @pre id != null
    */
-  boolean existsByIdOrPartitaIva(String id, String partitaIva);
+  boolean existsById(String id);
+  
+  /**
+   * Permette di verificare se un'Azienda esiste nel database attraverso la propria partita IVA.
+   * 
+   * @param partitaIva Stringa che rappresenta la partita IVA dell'azienda
+   *               
+   * @return true se l'azienda esiste nel database,
+   *         false se l'azienda non esiste nel database
+   *         
+   * @pre partitaIva != null
+   */
+  boolean existsByPartitaIva(String partitaIva);
 
 }
 
