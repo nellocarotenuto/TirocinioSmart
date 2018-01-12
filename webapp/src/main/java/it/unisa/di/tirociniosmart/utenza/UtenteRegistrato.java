@@ -192,4 +192,10 @@ public abstract class UtenteRegistrato {
   /** Costante che rappresenta il genere femminile per l'utente. */
   public static final char SESSO_FEMMINILE = 'F';
   
+  /** Costante che definisce la minima lunghezza dei campi nome e cognome. */
+  public static final int MIN_LUNGHEZZA_NOME = 2;
+  
+  /** Costante che definisce la massima lunghezza dei campi nome e cognome. */
+  public static final int MAX_LUNGHEZZA_NOME = 255;
+  
 }
