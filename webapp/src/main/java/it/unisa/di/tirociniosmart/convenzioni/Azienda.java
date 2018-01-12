@@ -185,8 +185,6 @@ public class Azienda {
     return delegato;
   }
   
-  // TODO (1) Definire l'associazione uno a molti con i progetti formativi
-  
   /**
    * Permette di ottenere la lista dei progetti formativi offerti dall'azienda.
    * 
