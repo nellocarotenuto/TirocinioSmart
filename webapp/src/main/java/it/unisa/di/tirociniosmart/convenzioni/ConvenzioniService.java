@@ -5,6 +5,8 @@ import it.unisa.di.tirociniosmart.utenza.EmailEsistenteException;
 import it.unisa.di.tirociniosmart.utenza.EmailNonValidaException;
 import it.unisa.di.tirociniosmart.utenza.NomeNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.PasswordNonValidaException;
+import it.unisa.di.tirociniosmart.utenza.SessoNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.TelefonoNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.UsernameEsistenteException;
 import it.unisa.di.tirociniosmart.utenza.UsernameNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
@@ -89,6 +91,12 @@ public class ConvenzioniService {
    * @throws CognomeNonValidoException se il cognome del delegato è nullo oppure se la sua lunghezza
    *         on rientra nell'intervallo che va da {@link UtenteRegistrato#MIN_LUNGHEZZA_NOME} a
    *         {@link UtenteRegistrato#MAX_LUNGHEZZA_NOME}
+   *         
+   * @throws SessoNonValidoException se il sesso del delegato non è una delle costanti
+   *         {@link UtenteRegistrato#SESSO_MASCHILE} e {@link UtenteRegistrato#SESSO_FEMMINILE}
+   *         
+   * @throws TelefonoNonValidoException se il numero di telefono del delegato non è specificato o
+   *         non rispetta il formato definito in {@link UtenteRegistrato#TELEFONO_PATTERN}
    */
   @Transactional
   public void registraRichiestaConvenzionamento(Azienda azienda)
@@ -97,7 +105,8 @@ public class ConvenzioniService {
                 NomeAziendaNonValidoException, IndirizzoAziendaNonValidoException,
                 DelegatoNonValidoException, UsernameNonValidoException, UsernameEsistenteException,
                 PasswordNonValidaException, EmailNonValidaException, EmailEsistenteException,
-                NomeNonValidoException, CognomeNonValidoException {
+                NomeNonValidoException, CognomeNonValidoException, SessoNonValidoException,
+                TelefonoNonValidoException {
     // Controlla che l'id sia specificato, rispetti il formato, non sia già presente nel sistema
     // ed assegnalo all'azienda (poiché ne è stato effettuato il trim)
     String idAzienda = azienda.getId();
@@ -170,6 +179,24 @@ public class ConvenzioniService {
       throw new DelegatoNonValidoException();
     } else {
       delegato = (DelegatoAziendale) utenteService.validaUtente(delegato);
+      
+      char sesso = delegato.getSesso();
+      if (sesso != UtenteRegistrato.SESSO_MASCHILE && sesso != UtenteRegistrato.SESSO_FEMMINILE) {
+        throw new SessoNonValidoException();
+      }
+      
+      String telefono = delegato.getTelefono();
+      if (telefono == null) {
+        throw new TelefonoNonValidoException();
+      } else {
+        telefono = telefono.trim();
+        
+        if (!telefono.matches(UtenteRegistrato.TELEFONO_PATTERN)) {
+          throw new TelefonoNonValidoException();
+        } else {
+          delegato.setTelefono(telefono);
+        }
+      }
     }
     
     // Imposta stato e data della richiesta
