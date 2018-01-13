@@ -1,7 +1,9 @@
 package it.unisa.di.tirociniosmart;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -14,6 +16,21 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 
+  /**
+   * Definisce il message source di sistema per la risoluzione dei messaggi.
+   * 
+   * @return L'oggetto MessageSource che definisce classpath e codifica dei messaggi
+   */
+  @Bean
+  public MessageSource messageSource() {
+    ReloadableResourceBundleMessageSource source = new ReloadableResourceBundleMessageSource();
+    source.setBasenames("classpath:messages");
+    source.setUseCodeAsDefaultMessage(true);
+    source.setDefaultEncoding("ISO-8859-1");
+    source.setCacheSeconds(0);
+    return source;
+  }
+  
   /**
    * Definisce il view resolver di sistema per la mappatura delle stringhe restituite nei controller
    * in pagine JSP.
