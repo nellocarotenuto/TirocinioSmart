@@ -70,20 +70,11 @@
 
     <!-- JSTL -->
     <dependency>
-      <groupId>javax.servlet.jsp.jstl</groupId>
-      <artifactId>jstl-api</artifactId>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
       <version>1.2</version>
-      <exclusions>
-      	<exclusion>
-      		<groupId>javax.servlet</groupId>
-      		<artifactId>servlet-api</artifactId>
-      	</exclusion>
-      	<exclusion>
-      		<groupId>javax.servlet.jsp</groupId>
-      		<artifactId>jsp-api</artifactId>
-      	</exclusion>
-      </exclusions>
     </dependency>
+
 		
     <!-- MySQL -->
     <dependency>
