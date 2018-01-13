@@ -166,7 +166,7 @@ public abstract class UtenteRegistrato {
   protected String email;
   
   /** Espressione regolare che definisce il formato del campo username. */
-  public static final String USERNAME_PATTERN = "^[a-zA-Z0-9] {6,24}$";
+  public static final String USERNAME_PATTERN = "^[a-zA-Z0-9]{6,24}$";
   
   /** Espressione regolare che definisce il formato del campo password. */
   public static final String PASSWORD_PATTERN = "^[\\S]{6,24}$";
