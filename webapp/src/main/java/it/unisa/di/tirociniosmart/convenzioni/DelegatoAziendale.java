@@ -59,21 +59,21 @@ public class DelegatoAziendale extends UtenteRegistrato {
    * @return {@link UtenteRegistrato#SESSO_MASCHILE} se il delegato è uomo,
    *         {@link UtenteRegistrato#SESSO_FEMMINILE} se invece è donna
    */
-  public char getSesso() {
+  public String getSesso() {
     return sesso;
   }
   
   /**
    * Permette di specificare il sesso del delegato aziendale.
    * 
-   * @param sesso Carattere che rappresenta il sesso del delegato aziendale.
+   * @param sesso Stringa che rappresenta il sesso del delegato aziendale.
    * 
-   * @pre sesso = {@link UtenteRegistrato#SESSO_MASCHILE} or
-   *      sesso = {@link UtenteRegistrato#SESSO_FEMMINILE}
+   * @pre sesso.equals({@link UtenteRegistrato#SESSO_MASCHILE}) or
+   *      sesso.equals({@link UtenteRegistrato#SESSO_FEMMINILE})
    *      
    * @post getSesso() = sesso
    */
-  public void setSesso(char sesso) {
+  public void setSesso(String sesso) {
     this.sesso = sesso;
   }
   
@@ -110,7 +110,7 @@ public class DelegatoAziendale extends UtenteRegistrato {
   }
 
 
-  private char sesso;
+  private String sesso;
   private String telefono;
   
   @OneToOne(mappedBy = "delegato")
