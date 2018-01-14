@@ -79,3 +79,6 @@ local.properties
 # Maven
 target/
 !.mvn/wrapper/maven-wrapper.jar
+
+# Compiled scss
+.scssc
