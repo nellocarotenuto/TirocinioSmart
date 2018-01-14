@@ -81,4 +81,5 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 
 # Compiled scss
-.scssc
+.sass-cache
+*.scssc
