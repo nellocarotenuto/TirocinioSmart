@@ -160,11 +160,18 @@ public class UtenzaService {
    * @throws SessoNonValidoException se il sesso del delegato non è una delle costanti
    *         {@link UtenteRegistrato#SESSO_MASCHILE} e {@link UtenteRegistrato#SESSO_FEMMINILE}
    */
-  public char validaSesso(char sesso) throws SessoNonValidoException {
-    if (sesso != UtenteRegistrato.SESSO_MASCHILE && sesso != UtenteRegistrato.SESSO_FEMMINILE) {
+  public String validaSesso(String sesso) throws SessoNonValidoException {
+    if (sesso == null) {
       throw new SessoNonValidoException();
     } else {
-      return sesso;
+      sesso = sesso.trim();
+      
+      if (!sesso.equals(UtenteRegistrato.SESSO_MASCHILE)
+          && !sesso.equals(UtenteRegistrato.SESSO_FEMMINILE)) {
+        throw new SessoNonValidoException();
+      } else {
+        return sesso;
+      }
     }
   }
   

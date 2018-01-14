@@ -187,10 +187,10 @@ public abstract class UtenteRegistrato {
   
   
   /** Costante che rappresenta il genere maschile per l'utente. */
-  public static final char SESSO_MASCHILE = 'M';
+  public static final String SESSO_MASCHILE = "M";
   
   /** Costante che rappresenta il genere femminile per l'utente. */
-  public static final char SESSO_FEMMINILE = 'F';
+  public static final String SESSO_FEMMINILE = "F";
   
   /** Costante che definisce la minima lunghezza dei campi nome e cognome. */
   public static final int MIN_LUNGHEZZA_NOME = 2;

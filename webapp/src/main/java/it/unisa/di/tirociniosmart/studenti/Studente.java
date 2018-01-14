@@ -151,7 +151,7 @@ public class Studente extends UtenteRegistrato {
    * @return {@link UtenteRegistrato#SESSO_MASCHILE} se lo studente è uomo,
    *         {@link UtenteRegistrato#SESSO_FEMMINILE} se invece è donna
    */
-  public char getSesso() {
+  public String getSesso() {
     return sesso;
   }
   
@@ -160,12 +160,12 @@ public class Studente extends UtenteRegistrato {
    * 
    * @param sesso Carattere che rappresenta il sesso dello studente.
    * 
-   * @pre sesso = {@link UtenteRegistrato#SESSO_MASCHILE} or
-   *      sesso = {@link UtenteRegistrato#SESSO_FEMMINILE}
+   * @pre sesso.equals({@link UtenteRegistrato#SESSO_MASCHILE}) or
+   *      sesso.equals({@link UtenteRegistrato#SESSO_FEMMINILE})
    *      
    * @post getSesso() = sesso
    */
-  public void setSesso(char sesso) {
+  public void setSesso(String sesso) {
     this.sesso = sesso;
   }
   
@@ -228,7 +228,7 @@ public class Studente extends UtenteRegistrato {
   private String matricola;
   private String indirizzo;
   private LocalDate dataDiNascita;
-  private char sesso;
+  private String sesso;
   private String telefono;
   
   @OneToOne(cascade = CascadeType.ALL)
