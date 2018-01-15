@@ -79,6 +79,7 @@ local.properties
 # Maven
 target/
 !webapp/.mvn/wrapper/maven-wrapper.jar
+Users/
 
 # Compiled scss
 .sass-cache
