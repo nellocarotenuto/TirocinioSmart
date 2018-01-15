@@ -1,7 +1,5 @@
 package it.unisa.di.tirociniosmart.convenzioni;
 
-import it.unisa.di.tirociniosmart.studenti.CommentoRichiestaIscrizioneNonValidoException;
-import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizione;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
@@ -163,7 +161,7 @@ public class ConvenzioniService {
       }
     }
   
-}
+  }
   
   /**
    * Permette di ottenere la lista delle richieste di convenzionamento non ancora gestite.
