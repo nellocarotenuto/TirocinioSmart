@@ -133,11 +133,35 @@ public class RichiestaIscrizione {
     return studente;
   }
   
+  /**
+   * Permette di ottenere il commento alla richiesta fatto dall'ufficio tirocini.
+   *   
+   * @return La stringa che rappresenta il commento alla richiesta da parte dell'ufficio tirocini
+   */
+  public String getCommentoUfficioTirocini() {
+    return commentoUfficioTirocini;
+  }
+
+  /**
+   * Permette di specificare il commento alla richiesta da parte dell'ufficio tirocini.
+   * 
+   * @param commentoUfficioTirocini Stringa che rappresenta il commento che si vuole assegnare
+   *                                alla richiesta
+   *                                
+   * @pre commentoUfficioTirocini != null
+   * 
+   * @post getCommentoUfficioTirocini().equals(commentoUfficioTirocini)
+   */
+  public void setCommentoUfficioTirocini(String commentoUfficioTirocini) {
+    this.commentoUfficioTirocini = commentoUfficioTirocini;
+  }
+  
   
   @Id
   private long id;
   private int status;
   private LocalDateTime dataRichiesta;
+  private String commentoUfficioTirocini;
   
   @OneToOne(mappedBy = "richiestaIscrizione")
   private Studente studente;
