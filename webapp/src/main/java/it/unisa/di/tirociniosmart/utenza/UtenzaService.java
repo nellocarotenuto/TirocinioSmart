@@ -1,5 +1,9 @@
 package it.unisa.di.tirociniosmart.utenza;
 
+import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendaleRepository;
+import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirociniRepository;
+import it.unisa.di.tirociniosmart.studenti.StudenteRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +16,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UtenzaService {
-
+  
   @Autowired
   private UtenteRegistratoRepository utenteRepository;
+  
+  @Autowired
+  private StudenteRepository studenteRepository;
+  
+  @Autowired
+  private DelegatoAziendaleRepository delegatoRepository;
+  
+  @Autowired
+  private ImpiegatoUfficioTirociniRepository impiegatoRepository;
   
   /**
    * Controlla che l'username di un utente sia specificato e che rispetti il formato prestabilito.
@@ -199,4 +212,57 @@ public class UtenzaService {
       }
     }
   }
+  
+  /**
+   * Permette di ottenere l'utente autenticato nel sistema.
+   * 
+   * @return L'utente autenticato nel sistema, <b>null</b> se non vi è alcun utente autenticato
+   */
+  public UtenteRegistrato getUtenteAutenticato() {
+    return AutenticazioneHolder.getUtente();
+  }
+  
+  /**
+   * Permette l'autenticazione di un utente nel sistema.
+   * 
+   * @param username Stringa che rappresenta l'username dell'utente
+   * @param password Stringa che rappresenta la password dell'utente
+   * 
+   * @return L'oggetto che rappresenta l'utente autenticato nel sistema
+   * 
+   * @throws CredenzialiNonValideException se la coppia (username, password) non è presente nel
+   *         sistema
+   */
+  public UtenteRegistrato login(String username, String password)
+         throws CredenzialiNonValideException {
+    UtenteRegistrato utente;
+    
+    utente = impiegatoRepository.findByUsernameAndPassword(username, password);
+    if (utente != null) {
+      AutenticazioneHolder.setUtente(utente);
+      return utente;
+    }
+    
+    utente = delegatoRepository.findByUsernameAndPassword(username, password);
+    if (utente != null) {
+      AutenticazioneHolder.setUtente(utente);
+      return utente;
+    }
+    
+    utente = studenteRepository.findByUsernameAndPassword(username, password);
+    if (utente != null) {
+      AutenticazioneHolder.setUtente(utente);
+      return utente;
+    }
+    
+    throw new CredenzialiNonValideException();
+  }
+  
+  /**
+   * Permette la rimozione dell'utente dalla sessione.
+   */
+  public void logout() {
+    AutenticazioneHolder.setUtente(null);
+  }
+  
 }
