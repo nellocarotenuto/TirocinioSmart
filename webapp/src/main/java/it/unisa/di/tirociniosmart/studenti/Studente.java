@@ -240,4 +240,10 @@ public class Studente extends UtenteRegistrato {
   /** Espressione regolare che definisce il formato del campo matricola. */
   public static final String MATRICOLA_PATTERN = "^[0-9]{10}$";
   
+  /** Costante che definisce la minima lunghezza del campo indirizzo. */
+  public static final int MIN_LUNGHEZZA_INDIRIZZO = 2;
+  
+  /** Costante che definisce la massima lunghezza del campo indirizzo. */
+  public static final int MAX_LUNGHEZZA_INDIRIZZO = 255;
+  
 }
