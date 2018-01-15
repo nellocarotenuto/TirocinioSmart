@@ -63,7 +63,7 @@ public class RichiestaConvenzionamento {
   @Override
   public String toString() {
     return "RichiestaConvenzionamento [id=" + id + ", status=" + status + ", dataRichiesta="
-        + dataRichiesta + ", azienda=" + azienda + "]";
+        + dataRichiesta + ", azienda=" + azienda.getId() + "]";
   }
 
   /**

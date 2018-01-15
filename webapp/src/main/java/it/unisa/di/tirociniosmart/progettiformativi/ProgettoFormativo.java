@@ -56,8 +56,8 @@ public class ProgettoFormativo {
   @Override
   public String toString() {
     return "ProgettoFormativo [id=" + id + ", nome=" + nome + ", descrizione=" + descrizione
-        + ", status=" + status + ", azienda=" + azienda + ", domandeTirocinio=" + domandeTirocinio
-        + "]";
+        + ", status=" + status + ", azienda=" + azienda.getId() + ", domandeTirocinio="
+        + domandeTirocinio + "]";
   }
 
   /**

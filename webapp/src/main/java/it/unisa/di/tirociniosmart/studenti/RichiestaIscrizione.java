@@ -61,7 +61,7 @@ public class RichiestaIscrizione {
   @Override
   public String toString() {
     return "RichiestaIscrizione [id=" + id + ", status=" + status + ", dataRichiesta="
-        + dataRichiesta + ", studente=" + studente + "]";
+        + dataRichiesta + ", studente=" + studente.getUsername() + "]";
   }
 
   /**

@@ -48,9 +48,9 @@ public class DelegatoAziendale extends UtenteRegistrato {
    */
   @Override
   public String toString() {
-    return "DelegatoAziendale [sesso=" + sesso + ", telefono=" + telefono + ", azienda=" + azienda
-        + ", username=" + username + ", password=" + password + ", nome=" + nome + ", cognome="
-        + cognome + ", email=" + email + "]";
+    return "DelegatoAziendale [sesso=" + sesso + ", telefono=" + telefono + ", azienda="
+        + azienda.getId() + ", username=" + username + ", password=" + password + ", nome=" + nome
+        + ", cognome=" + cognome + ", email=" + email + "]";
   }
 
   /**

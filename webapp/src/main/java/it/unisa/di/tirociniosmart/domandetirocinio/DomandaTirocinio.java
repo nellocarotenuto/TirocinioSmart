@@ -53,8 +53,8 @@ public class DomandaTirocinio {
     return "DomandaTirocinio [id=" + id + ", status=" + status + ", data=" + data
         + ", inizioTirocinio=" + inizioTirocinio + ", fineTirocinio=" + fineTirocinio
         + ", commentoAzienda=" + commentoAzienda + ", commentoStudente=" + commentoStudente
-        + ", cfu=" + cfu + ", studente=" + studente + ", progettoFormativo=" + progettoFormativo
-        + "]";
+        + ", cfu=" + cfu + ", studente=" + studente.getUsername() + ", progettoFormativo="
+        + progettoFormativo.getId() + "]";
   }
 
   /**
