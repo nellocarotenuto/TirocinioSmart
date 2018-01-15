@@ -1,8 +1,7 @@
 package it.unisa.di.tirociniosmart.convenzioni;
 
 /**
- * Eccezione lanciata quando si fa riferimento ad una richiesta di convenzionamento con un
- * identificatore inesistente.
+ * Eccezione lanciata quando si fa riferimento ad una richiesta di convenzionamento già gestita.
  */
 public class RichiestaConvenzionamentoGestitaException extends Exception {
   
