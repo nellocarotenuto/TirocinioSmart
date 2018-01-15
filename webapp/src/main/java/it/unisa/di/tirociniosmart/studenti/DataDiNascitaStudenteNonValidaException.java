@@ -1,8 +1,8 @@
 package it.unisa.di.tirociniosmart.studenti;
 
 /**
- * Eccezione lanciata quando si tenta di inserire un'azienda il cui indirizzo non è valido oppure
- * è nullo.
+ * Eccezione lanciata quando si tenta di inserire uno studente la cui data di nascita non è valida
+ * o non rientra nell'intervallo prestabilito.
  */
 public class DataDiNascitaStudenteNonValidaException extends Exception {
   

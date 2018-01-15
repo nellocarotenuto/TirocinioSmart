@@ -5,6 +5,7 @@ import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 
 import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -49,7 +50,7 @@ public class ConvenzioniController {
   public String elaboraRichiestaConvenzionamento(
                   @ModelAttribute("convenzionamentoForm") ConvenzionamentoForm convenzionamentoForm,
                   BindingResult result,
-                  RedirectAttributes redirectAttributes) {
+                  RedirectAttributes redirectAttributes) {    
     // Controlla la validità del form ricevuto come parametro e salva il risultato in result
     formValidator.validate(convenzionamentoForm, result);
     

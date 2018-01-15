@@ -30,8 +30,8 @@ public class StudentiService {
   private UtenzaService utenzaService;
 
   /**
-   * Permette di richiedere al sistema il salvataggio di unp studente. La procedura registra
-   * uno studente assegnandole una {@link RichiestaIscrizione} inizialmente in attesa.
+   * Permette di richiedere al sistema il salvataggio di uno studente. La procedura registra
+   * uno studente assegnandogli una {@link RichiestaIscrizione} inizialmente in attesa.
    * 
    * @param studente {@link Studente} per cui si vuole registrare una richiesta di iscrizione.
    *                 Non è necessario specificare la data della richiesta di iscrizione ad essa
@@ -134,9 +134,6 @@ public class StudentiService {
    * 
    * @param commento Stringa che rappresenta il commento da controllare
    * 
-   * @param richiesta {@link RichiestaIscrizione} che rapprensenta la richiesta a cui associare
-   *        il commento
-   * 
    * @return La stringa che rappresenta il commento da controllare bonificata
    * 
    * @throws CommentoRichiestaIscrizioneNonValidoException se il commento passato come parametro
@@ -188,7 +185,6 @@ public class StudentiService {
     }
   }
   
-  
   /**
    * Controlla che l'indirizzo di uno studente sia specificato e che la sua lunghezza rispetti i
    * parametri prestabiliti.
@@ -236,7 +232,7 @@ public class StudentiService {
       throw new DataDiNascitaStudenteNonValidaException();
     } else {
       LocalDate oggi = LocalDate.now();
-      long distanza = ChronoUnit.YEARS.between(oggi, dataDiNascita);
+      long distanza = ChronoUnit.YEARS.between(dataDiNascita, oggi);
       
       if (distanza < MIN_DISTANZA_ANNO_NASCITA || distanza > MAX_DISTANZA_ANNO_NASCITA) {
         throw new DataDiNascitaStudenteNonValidaException();

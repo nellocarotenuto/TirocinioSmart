@@ -1,12 +1,12 @@
 package it.unisa.di.tirociniosmart.studenti;
 
 /**
- * Eccezione lanciata quando si tenta di inserire un'azienda il cui indirizzo non è valido oppure
+ * Eccezione lanciata quando si tenta di inserire uno studente il cui indirizzo non è valido oppure
  * è nullo.
  */
 public class IndirizzoStudenteNonValidoException extends Exception {
   
-  private static final long serialVersionUID = -4170303032370990897L;
+  private static final long serialVersionUID = -5037764297707333946L;
   
   /** Stringa che definisce il messaggio di default utilizzato nell'eccezione. */
   private static final String messaggioDefault = "Indirizzo non valido";
