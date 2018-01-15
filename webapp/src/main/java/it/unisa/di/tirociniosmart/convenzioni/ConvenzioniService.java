@@ -1,5 +1,7 @@
 package it.unisa.di.tirociniosmart.convenzioni;
 
+import it.unisa.di.tirociniosmart.studenti.CommentoRichiestaIscrizioneNonValidoException;
+import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizione;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
@@ -130,8 +132,24 @@ public class ConvenzioniService {
     } else {
       richiesta.setStatus(RichiestaConvenzionamento.RIFIUTATA);
     }
-    
-    // Controlla che il commento sia stato specificato ed associalo alla richiesta
+    validaCommento(commento, richiesta);
+  }
+  
+  /**
+   * Controlla che il commento sul rifiuto di una richiesta sia specificato.
+   * 
+   * @param commento Stringa che rappresenta il commento da controllare
+   * 
+   * @param richiesta {@link RichiestaConvenzionamento} che rapprensenta la richiesta a cui 
+   *        associare il commento
+   * 
+   * @return La stringa che rappresenta il commento da controllare bonificata
+   * 
+   * @throws CommentoRichiestaConvenzionamentoNonValidoException se il commento passato come 
+   *         parametro è nullo oppure è rappresentato da stringa vuota
+   */
+  public String validaCommento(String commento, RichiestaConvenzionamento richiesta) 
+      throws CommentoRichiestaConvenzionamentoNonValidoException {
     if (commento == null) {
       throw new CommentoRichiestaConvenzionamentoNonValidoException();
     } else {
@@ -141,9 +159,11 @@ public class ConvenzioniService {
         throw new CommentoRichiestaConvenzionamentoNonValidoException();
       } else {
         richiesta.setCommentoUfficioTirocini(commento);
+        return commento;
       }
     }
-  }
+  
+}
   
   /**
    * Permette di ottenere la lista delle richieste di convenzionamento non ancora gestite.
