@@ -34,10 +34,23 @@ public interface StudenteRepository extends JpaRepository<Studente, String> {
    * @param username Stringa che rappresenta il nome utente dello studente/tirocinante    
    * 
    * @return Oggetto {@link ImpiegatoUfficioTirocini} che rappresenta lo studente. <b>Può
-   *         essere null</b> se nel database non è presente un impiegato con l'username 
+   *         essere null</b> se nel database non è presente uno studente con l'username 
    *         passata come parametro
    *         
    * @pre username != null
    */
   Studente findByUsername(String username);
+  
+  /**
+   * Permette di verificare se uno Studente esiste nel database attraverso
+   * il proprio identificatore.
+   * 
+   * @param matricola Stringa che rappresenta la matricola dello Studente
+   *               
+   * @return true se lo studente esiste nel database,
+   *         false se lo studente non esiste nel database
+   *         
+   * @pre matricola != null
+   */
+  boolean existsByMatricola(String matricola);
 }
