@@ -125,7 +125,8 @@ public class StudentiService {
     } else {
       richiesta.setStatus(RichiestaIscrizione.RIFIUTATA);     
     }
-    validaCommento(commento,richiesta);
+    
+    richiesta.setCommentoUfficioTirocini(validaCommento(commento));
   }
   
   /**
@@ -141,7 +142,7 @@ public class StudentiService {
    * @throws CommentoRichiestaIscrizioneNonValidoException se il commento passato come parametro
    *         è nullo oppure è rappresentato da stringa vuota
    */
-  public String validaCommento(String commento, RichiestaIscrizione richiesta) 
+  public String validaCommento(String commento) 
         throws CommentoRichiestaIscrizioneNonValidoException {
     if (commento == null) {
       throw new CommentoRichiestaIscrizioneNonValidoException();
@@ -151,7 +152,6 @@ public class StudentiService {
       if (commento.equals("")) {
         throw new CommentoRichiestaIscrizioneNonValidoException();
       } else {
-        richiesta.setCommentoUfficioTirocini(commento);
         return commento;
       }
     }
