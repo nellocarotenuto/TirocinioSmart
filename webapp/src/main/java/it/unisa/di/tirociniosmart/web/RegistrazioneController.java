@@ -23,6 +23,10 @@ public class RegistrazioneController {
     if (!model.containsAttribute("convenzionamentoForm")) {
       model.addAttribute(new ConvenzionamentoForm());
     }
+   
+    if (!model.containsAttribute("richiestaIscrizioneForm")) {
+        model.addAttribute(new RichiestaIscrizioneForm());
+      }
     
     return "pages/registrazione";
   }
