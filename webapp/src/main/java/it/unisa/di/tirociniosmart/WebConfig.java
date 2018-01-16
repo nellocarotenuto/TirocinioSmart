@@ -11,7 +11,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import it.unisa.di.tirociniosmart.web.AutenticazioneManager;
+import it.unisa.di.tirociniosmart.web.AutenticazioneInterceptor;
+import it.unisa.di.tirociniosmart.web.NotificheInterceptor;
 
 /**
  * Classe che definisce la configurazione della webapp in termini di Bean disponibili a livello di
@@ -63,7 +64,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
   
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-      registry.addInterceptor(new AutenticazioneManager());
+    registry.addInterceptor(new AutenticazioneInterceptor());
+    registry.addInterceptor(new NotificheInterceptor());
   }
   
 }
