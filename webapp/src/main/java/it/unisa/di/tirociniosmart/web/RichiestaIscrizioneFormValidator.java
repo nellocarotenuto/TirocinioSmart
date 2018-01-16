@@ -9,6 +9,9 @@ import it.unisa.di.tirociniosmart.utenza.SessoNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.TelefonoNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -63,8 +66,12 @@ public class RichiestaIscrizioneFormValidator extends RegistrazioneFormValidator
     }
     
     try {
-      studentiService.validaDataDiNascitaStudente(form.getDataDiNascita());
-    } catch (DataDiNascitaStudenteNonValidaException e) {
+      LocalDate date = LocalDate.of(form.getAnnoDiNascita(),
+                                    form.getMeseDiNascita(), 
+                                    form.getGiornoDiNascita());
+      
+      studentiService.validaDataDiNascitaStudente(date);
+    } catch (DataDiNascitaStudenteNonValidaException | DateTimeException e) {
       errors.rejectValue("dataDiNascita", "richiestaIscrizioneForm.dataDiNascita.nonValida");
     } 
     

@@ -47,17 +47,37 @@ public class RichiestaIscrizioneForm extends RegistrazioneForm {
     this.matricola = matricola;
   }
 
-  public LocalDate getDataDiNascita() {
-    return dataDiNascita;
+  public int getGiornoDiNascita() {
+    return giornoDiNascita;
   }
 
-  public void setDataDiNascita(LocalDate dataDiNascita) {
-    this.dataDiNascita = dataDiNascita;
+  public void setGiornoDiNascita(int giornoDiNascita) {
+    this.giornoDiNascita = giornoDiNascita;
   }
+
+  public int getMeseDiNascita() {
+    return meseDiNascita;
+  }
+
+  public void setMeseDiNascita(int meseDiNascita) {
+    this.meseDiNascita = meseDiNascita;
+  }
+
+  public int getAnnoDiNascita() {
+    return annoDiNascita;
+  }
+
+  public void setAnnoDiNascita(int annoDiNascita) {
+    this.annoDiNascita = annoDiNascita;
+  }
+
+
 
   private String telefono;
   private String sesso;
   private String indirizzoStudente;
   private String matricola;
-  private LocalDate dataDiNascita;
+  private int giornoDiNascita;
+  private int meseDiNascita;
+  private int annoDiNascita;
 }

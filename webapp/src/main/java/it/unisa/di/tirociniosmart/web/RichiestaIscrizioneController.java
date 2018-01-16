@@ -1,5 +1,6 @@
 package it.unisa.di.tirociniosmart.web;
 
+import java.time.LocalDate;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,15 +66,20 @@ public class RichiestaIscrizioneController {
       return "redirect:/registrazione#studente";
     }
     
+   
+    LocalDate date = LocalDate.of(richiestaIscrizioneForm.getAnnoDiNascita(),
+                                  richiestaIscrizioneForm.getMeseDiNascita(),
+                                  richiestaIscrizioneForm.getGiornoDiNascita());
+    
+    
     // Istanzia un nuovo oggetto studente e richiedine la registrazione. Redirigi verso /errore
     // nel caso qualcosa vada storto.
-    
     Studente studente = new Studente();
     studente.setNome(richiestaIscrizioneForm.getNome());
     studente.setCognome(richiestaIscrizioneForm.getCognome());
     studente.setEmail(richiestaIscrizioneForm.getEmail());
     studente.setIndirizzo(richiestaIscrizioneForm.getIndirizzoStudente());
-    studente.setDataDiNascita(richiestaIscrizioneForm.getDataDiNascita());
+    studente.setDataDiNascita(date);
     studente.setMatricola(richiestaIscrizioneForm.getMatricola());
     studente.setUsername(richiestaIscrizioneForm.getUsername());
     studente.setPassword(richiestaIscrizioneForm.getPassword());
