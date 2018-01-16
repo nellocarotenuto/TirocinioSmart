@@ -3,11 +3,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<spring:message var="titoloPagina" code="pagina.registrazione.titolo" />
+<spring:message var="titoloPagina" scope="request" code="pagina.registrazione.titolo" />
 
-<jsp:include page="/WEB-INF/views/common/header.jsp">
-  <jsp:param name="titoloPagina" value="${titoloPagina}"/>
-</jsp:include>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 <main class="container">
 	<div class="row">
@@ -33,7 +31,7 @@
 	        </ul>
 	      </div>
 	      <div class="card-content grey lighten-5">
-	        <div id="studente"><jsp:include page="/WEB-INF/views/forms/iscrizione.jsp" /></div>
+	        <div id="studente">Test</div>
 	        <div id="azienda"><jsp:include page="/WEB-INF/views/forms/convenzione.jsp" /></div>
 	      </div>
 	    </div>
