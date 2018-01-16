@@ -1,7 +1,5 @@
 package it.unisa.di.tirociniosmart.web;
 
-import java.time.LocalDate;
-
 /**
  * Oggetto utilizzato per la mappatura dei campi del form di una richiesta di iscrizione HTML. 
  * Questo oggetto viene passato come parametro ai controller dalla dispatcher servlet quando un 
@@ -47,7 +45,7 @@ public class RichiestaIscrizioneForm extends RegistrazioneForm {
     this.matricola = matricola;
   }
 
-  public int getGiornoDiNascita() {
+  public Integer getGiornoDiNascita() {
     return giornoDiNascita;
   }
 
@@ -55,7 +53,7 @@ public class RichiestaIscrizioneForm extends RegistrazioneForm {
     this.giornoDiNascita = giornoDiNascita;
   }
 
-  public int getMeseDiNascita() {
+  public Integer getMeseDiNascita() {
     return meseDiNascita;
   }
 
@@ -63,7 +61,7 @@ public class RichiestaIscrizioneForm extends RegistrazioneForm {
     this.meseDiNascita = meseDiNascita;
   }
 
-  public int getAnnoDiNascita() {
+  public Integer getAnnoDiNascita() {
     return annoDiNascita;
   }
 
@@ -77,7 +75,7 @@ public class RichiestaIscrizioneForm extends RegistrazioneForm {
   private String sesso;
   private String indirizzoStudente;
   private String matricola;
-  private int giornoDiNascita;
-  private int meseDiNascita;
-  private int annoDiNascita;
+  private Integer giornoDiNascita;
+  private Integer meseDiNascita;
+  private Integer annoDiNascita;
 }

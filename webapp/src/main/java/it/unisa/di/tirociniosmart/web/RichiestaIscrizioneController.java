@@ -1,5 +1,8 @@
 package it.unisa.di.tirociniosmart.web;
 
+import it.unisa.di.tirociniosmart.studenti.Studente;
+import it.unisa.di.tirociniosmart.studenti.StudentiService;
+
 import java.time.LocalDate;
 import java.util.logging.Logger;
 
@@ -10,11 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import it.unisa.di.tirociniosmart.convenzioni.Azienda;
-import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
-import it.unisa.di.tirociniosmart.studenti.Studente;
-import it.unisa.di.tirociniosmart.studenti.StudentiService;
 
 /**
  * Controller che espone via web i servizi relativi alle convenzioni.
