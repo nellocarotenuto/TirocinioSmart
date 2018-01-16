@@ -30,7 +30,7 @@
 	background: #fff;
 }
 
-.card div.row:last-child {
+form .row, .modal .row, .card div.row:last-child {
 	margin-bottom: 0;
 }
 

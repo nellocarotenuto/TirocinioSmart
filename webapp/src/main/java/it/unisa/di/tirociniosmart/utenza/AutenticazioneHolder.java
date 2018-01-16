@@ -2,10 +2,10 @@ package it.unisa.di.tirociniosmart.utenza;
 
 /**
  * Classe utilizzata a livello di business per tenere traccia dell'utente autenticato all'interno
- * del sistema. L'iniezione avviene tramite {@link AutenticazioneManager}.
+ * del sistema. L'iniezione avviene tramite {@link AutenticazioneInterceptor}.
  * 
  * @see UtenteRegistrato
- * @see AutenticazioneManager
+ * @see AutenticazioneInterceptor
  */
 public class AutenticazioneHolder {
   

@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
  * @see UtenteRegistrato
  * @see AutenticazioneHolder
  */
-public class AutenticazioneManager implements HandlerInterceptor {
+public class AutenticazioneInterceptor implements HandlerInterceptor {
+  
+  private UtenteRegistrato utente;
   
   /**
    * Eseguito prima dell'esecuzione di un controller, determina se l'utente è in sessione, quindi
@@ -31,8 +36,11 @@ public class AutenticazioneManager implements HandlerInterceptor {
          throws Exception {
     HttpSession session = request.getSession();
     
-    UtenteRegistrato utente = (UtenteRegistrato) session.getAttribute("utente");
-    AutenticazioneHolder.setUtente(utente);
+    utente = (UtenteRegistrato) session.getAttribute("utente");
+   
+    if (utente != null) {
+      AutenticazioneHolder.setUtente(utente);
+    }
     
     return true;
   }
@@ -46,7 +54,8 @@ public class AutenticazioneManager implements HandlerInterceptor {
                          Object handler,
                          ModelAndView modelAndView)
          throws Exception {
-    
+    request.setAttribute("loginForm", new LoginForm());
+    request.setAttribute("utente", utente);
   }
 
   /**
