@@ -4,6 +4,7 @@
 
 <spring:message var="titoloPaginaHome" code="pagina.home.titolo" />
 <spring:message var="titoloPaginaAziende" code="pagina.aziende.titolo" />
+<spring:message var="testoNotifica" code="${testoNotifica}" />
 
 <!DOCTYPE html>
 <html>
@@ -12,7 +13,7 @@
     
     <!-- Definisci il titolo della pagina -->
     <title>
-      <c:out value="${param.titoloPagina}"/>
+      <c:out value="${titoloPagina}"/>
     </title>
     
     <!-- Importa le icone -->
@@ -39,8 +40,11 @@
             
     <script type="text/javascript"
             src="<c:url value="/resources/js/materialize.min.js" />" ></script>
+            
+    <script type="text/javascript"
+            src="<c:url value="/resources/js/toast.js" />" ></script>
   </head>
-  <body class="grey lighten-3">
+  <body class="grey lighten-3" onload="mostraToast('<c:out value="${testoNotifica}" />')" >
   
     <nav id="navbar" class="nav-extended">
 	    <div class="row">
@@ -54,22 +58,36 @@
 			        <i class="material-icons">menu</i>
 			      </a>
 			      <ul id="nav-mobile" class="right hide-on-med-and-down">
-			        <li>
-			          <a class="white-text waves-effect waves-light btn-flat" href="/login">
-			            <spring:message code="pagina.login.titolo" />
-			          </a>
-			        </li>
-			        <li>
-			          <a class="white-text waves-effect waves-light btn-flat"
-			             href="/registrazione"
-			             style="margin: 0;" >
-			            <spring:message code="pagina.registrazione.titolo" />
-			          </a>
-			        </li>
+			        <c:choose>
+			          <c:when test="${not empty utente}">
+                  <li>
+                    <c:out value="${utente.nome}"/> <c:out value="${utente.cognome}"/>
+                  </li>
+                  <li>
+                    <a class="white-text waves-effect waves-light btn-flat modal-trigger" href="/logout">
+                      <spring:message code="pagina.logout.titolo" />
+                    </a>
+                  </li>
+                </c:when>
+                <c:otherwise>
+		              <li>
+		                <a class="white-text waves-effect waves-light btn-flat modal-trigger" href="#login">
+		                  <spring:message code="pagina.login.titolo" />
+		                </a>
+		              </li>
+		              <li>
+		                <a class="white-text waves-effect waves-light btn-flat"
+		                   href="/registrazione"
+		                   style="margin: 0;" >
+		                  <spring:message code="pagina.registrazione.titolo" />
+		                </a>
+		              </li>
+                </c:otherwise>
+			        </c:choose>
 			      </ul>
 			      <ul class="sidenav" id="mobile-demo">
 			        <li>
-			          <a href="/login">
+			          <a href="#login modal-trigger">
 			            <spring:message code="pagina.login.titolo" />
 			          </a>
 			        </li>
@@ -99,3 +117,16 @@
 	      </ul>
 	    </div>
 	  </nav>
+	  
+	  <div id="login" class="modal">
+	    <div class="modal-content">
+	      <h4>
+          <spring:message code="pagina.login.titolo" />
+        </h4>
+	      <jsp:include page="/WEB-INF/views/forms/login.jsp" />
+	    </div>
+	  </div>
+	  
+	  <!-- Script per l'inizializzazione e la validazione del form di login -->
+		<script type="text/javascript"
+		        src="<c:url value="/resources/js/header.js" />" ></script>
