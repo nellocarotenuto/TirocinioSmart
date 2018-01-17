@@ -42,6 +42,14 @@ form .row, .modal .row, .card div.row:last-child {
 	line-height: 3rem;
 }
 
+form .row.date-input {
+	margin-bottom: 20px;
+}
+
+form .row.date-input .row-label {
+	margin-left: 3rem;
+}
+
 form .row.date-input .input-field {
 	margin-top: 0;
 	margin-bottom: 0;
