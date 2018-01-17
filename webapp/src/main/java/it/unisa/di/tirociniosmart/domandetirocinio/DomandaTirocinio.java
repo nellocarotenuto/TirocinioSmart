@@ -210,6 +210,32 @@ public class DomandaTirocinio {
   public void setCommentoStudente(String commentoStudente) {
     this.commentoStudente = commentoStudente;
   }
+  
+  /**
+   * Permette di ottenere il commento dell'impiegato dell'ufficio tirocini alla domanda di 
+   * tirocinio.
+   * 
+   * @return Stringa che rappresenta il commento dell'impiegato alla domanda di tirocinio
+   */
+  public String getCommentoImpiegato() {
+    return commentoImpiegato;
+  }
+  
+  /**
+   * Permette di specificare il commento dell'impiegatio dell'ufficio tirocini alla domanda 
+   * di tirocinio.
+   * 
+   * @param commentoImpiegato Stringa che rappresenta il commento dell'impiegato alla domanda di
+   *                          tirocinio
+   *                        
+   * @pre commentoImpiegato != null
+   * @pre commentoImpiegato.length() > 0
+   * 
+   * @post getcommentoImpiegato().equals(commentoImpiegato)
+   */
+  public void setCommentoImpiegato(String commentoImpiegato) {
+    this.commentoImpiegato = commentoImpiegato;
+  }
 
   /**
    * Permette di ottenere il numero di CFU cui il tirocinio è associato.
@@ -293,6 +319,7 @@ public class DomandaTirocinio {
   private LocalDate fineTirocinio;
   private String commentoAzienda;
   private String commentoStudente;
+  private String commentoImpiegato;
   private int cfu;
   
   @ManyToOne
