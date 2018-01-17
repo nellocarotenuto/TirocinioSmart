@@ -3,11 +3,17 @@ package it.unisa.di.tirociniosmart.web;
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
+import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirociniRepository;
+import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +35,7 @@ public class ConvenzioniController {
   
   @Autowired
   private ConvenzionamentoFormValidator formValidator;
+  
   
   /**
    * Elabora le richieste di convenzionamento effettuandone la validazione e richiedendone
@@ -92,4 +99,34 @@ public class ConvenzioniController {
     return "redirect:/";
   }
   
+  
+ /**
+  * Fornisce l'elenco delle richieste di convenzionamento non ancora gestite dall'ufficio tirocini
+  *  
+  * @return lista contenente l'elenco delle richieste di convenzionamento
+  * 
+  */
+  
+  
+ @RequestMapping(value ="/dashboard/richieste/convenzionamento", method = RequestMethod.GET)
+  public String visualizzaRichiesteConvenzionamento(
+		  RedirectAttributes redirectAttributes, 
+		  Model model)
+  {
+	 
+	 
+	   if(!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini))
+	   {
+		   redirectAttributes.addFlashAttribute("TestoNotifica" , 
+				   "toast.autorizzazioni.richiestaNonAutorizzata");
+		   return "redirect:/";
+	   } else {
+		   List<RichiestaConvenzionamento> listaRichiesteConvenzionamento = 
+					 convenzioniService.elencaRichiesteConvenzionamentoInAttesa(); 
+		   model.addAttribute("listaRichiesteConvenzionamento" ,listaRichiesteConvenzionamento);
+		   return "/pages/richiesteConvenzionamento";
+	   }
+
+	   
+  }
 }
