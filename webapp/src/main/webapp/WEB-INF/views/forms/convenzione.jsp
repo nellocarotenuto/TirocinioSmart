@@ -17,7 +17,7 @@
 	           cssClass="col s12" >
     <div class="row">
       <div class="col s12 l6">
-        <div class="row">
+        <div class="row heading">
           <div class="col s12">
 	          <h5>
 	            <spring:message code="registrazioneForm.credenziali.label"/>
@@ -68,7 +68,7 @@
 		    </div>
       </div>
       <div class="col s12 l6">
-        <div class="row">
+        <div class="row heading">
           <div class="col s12">
             <h5>
               <spring:message code="convenzionamentoForm.infoAzienda.label"/>
@@ -132,7 +132,7 @@
             </label>
 				  </div>
 				</div>
-        <div class="row">
+        <div class="row heading">
           <div class="col s12">
             <h5>
               <spring:message code="convenzionamentoForm.infoDelegato.label"/>

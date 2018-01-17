@@ -42,7 +42,9 @@ public class NotificheInterceptor implements HandlerInterceptor {
                          Object handler,
                          ModelAndView modelAndView)
          throws Exception {
-    modelAndView.addObject("testoNotifica", testoNotifica);
+    if (testoNotifica != null) {
+      modelAndView.addObject("testoNotifica", testoNotifica);
+    }
   }
 
   /**

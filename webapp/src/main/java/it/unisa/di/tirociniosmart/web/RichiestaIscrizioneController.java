@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +66,7 @@ public class RichiestaIscrizioneController {
           .addFlashAttribute("org.springframework.validation.BindingResult.richiestaIscrizioneForm",
                              result);
       redirectAttributes.addFlashAttribute("richiestaIscrizioneForm", richiestaIscrizioneForm);
+      redirectAttributes.addFlashAttribute("testoNotifica", "toast.iscrizioni.richiestaNonValida");
       return "redirect:/registrazione#studente";
     }
     
@@ -72,7 +74,6 @@ public class RichiestaIscrizioneController {
     LocalDate date = LocalDate.of(richiestaIscrizioneForm.getAnnoDiNascita(),
                                   richiestaIscrizioneForm.getMeseDiNascita(),
                                   richiestaIscrizioneForm.getGiornoDiNascita());
-    
     
     // Istanzia un nuovo oggetto studente e richiedine la registrazione. Redirigi verso /errore
     // nel caso qualcosa vada storto.
@@ -90,6 +91,7 @@ public class RichiestaIscrizioneController {
     
     try {
       studentiService.registraRichiestaIscrizione(studente);
+      redirectAttributes.addFlashAttribute("testoNotifica", "toast.iscrizioni.richiestaInviata");
     } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
@@ -105,16 +107,21 @@ public class RichiestaIscrizioneController {
    *        disponibili anche dopo un redirect
    * 
    * @return richieste lista di {@link RichiestaIscrizione} indicante l'elenco delle richieste di
-   *                   iscrizione                  
+   *         iscrizione
    */
   @RequestMapping(value = "/dashboard/richieste/iscrizione", method = RequestMethod.GET)
-  public List<RichiestaIscrizione> visualizzaRichiesteIscrizione(
-      RedirectAttributes redirectAttributes) {   
+  public String visualizzaRichiesteIscrizione(Model model, RedirectAttributes redirectAttributes) {
+    // La lista delle richieste può essere visualizzata solo dall'impiegato dell'ufficio tirocini
     if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
     }
+    
     List<RichiestaIscrizione> richieste = studentiService.elencaListaRichiesteIscrizione();
-    return richieste;
+    model.addAttribute("listaRischiesteIscrizione", richieste);
+
+    return "pages/richiesteIscrizione";
   }
+  
 }

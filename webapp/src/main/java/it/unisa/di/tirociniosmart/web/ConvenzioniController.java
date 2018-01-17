@@ -5,7 +5,6 @@ import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
-import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirociniRepository;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 
 import java.util.List;
@@ -68,6 +67,7 @@ public class ConvenzioniController {
           .addFlashAttribute("org.springframework.validation.BindingResult.convenzionamentoForm",
                              result);
       redirectAttributes.addFlashAttribute("convenzionamentoForm", convenzionamentoForm);
+      redirectAttributes.addFlashAttribute("testoNotifica", "toast.convenzioni.richiestaNonValida");
       return "redirect:/registrazione#azienda";
     }
     
@@ -91,6 +91,7 @@ public class ConvenzioniController {
     
     try {
       convenzioniService.registraRichiestaConvenzionamento(azienda);
+      redirectAttributes.addFlashAttribute("testoNotifica", "toast.convenzioni.richiestaInviata");
     } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
@@ -99,34 +100,27 @@ public class ConvenzioniController {
     return "redirect:/";
   }
   
-  
- /**
-  * Fornisce l'elenco delle richieste di convenzionamento non ancora gestite dall'ufficio tirocini
-  *  
-  * @return lista contenente l'elenco delle richieste di convenzionamento
-  * 
-  */
-  
-  
- @RequestMapping(value ="/dashboard/richieste/convenzionamento", method = RequestMethod.GET)
-  public String visualizzaRichiesteConvenzionamento(
-		  RedirectAttributes redirectAttributes, 
-		  Model model)
-  {
-	 
-	 
-	   if(!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini))
-	   {
-		   redirectAttributes.addFlashAttribute("TestoNotifica" , 
-				   "toast.autorizzazioni.richiestaNonAutorizzata");
-		   return "redirect:/";
-	   } else {
-		   List<RichiestaConvenzionamento> listaRichiesteConvenzionamento = 
-					 convenzioniService.elencaRichiesteConvenzionamentoInAttesa(); 
-		   model.addAttribute("listaRichiesteConvenzionamento" ,listaRichiesteConvenzionamento);
-		   return "/pages/richiesteConvenzionamento";
-	   }
-
-	   
+  /**
+   * Fornisce l'elenco delle richieste di convenzionamento non ancora gestite dall'ufficio tirocini.
+   *  
+   * @return Stringa indicante la vista delegata alla presentazione della lista se l'utente è
+   *         autorizzato, stringa indicante l'URL della home page (tramite redirect) altrimenti
+   */
+  @RequestMapping(value = "/dashboard/richieste/convenzionamento", method = RequestMethod.GET)
+  public String visualizzaRichiesteConvenzionamento(RedirectAttributes redirectAttributes, 
+                                                    Model model) {
+    // La lista delle richieste può essere visualizzata solo dall'impiegato dell'ufficio tirocini
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+      redirectAttributes.addFlashAttribute("TestoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+    
+    List<RichiestaConvenzionamento> listaRichiesteConvenzionamento = 
+                                    convenzioniService.elencaRichiesteConvenzionamentoInAttesa(); 
+    model.addAttribute("listaRichiesteConvenzionamento", listaRichiesteConvenzionamento);
+    
+    return "pages/richiesteConvenzionamento";
   }
+  
 }

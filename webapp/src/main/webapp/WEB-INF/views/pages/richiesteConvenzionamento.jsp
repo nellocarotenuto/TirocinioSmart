@@ -12,7 +12,7 @@
 	 	<div class="col s12">
 	 		<div class="card">
 	 			<div class="card-content">
-	 				<jsp:include page="/WEB-INF/views/list/richiesteConvenzionamento.jsp"/>
+	 				<jsp:include page="/WEB-INF/views/lists/richiesteConvenzionamento.jsp"/>
 	 			</div>
 	 			<div class="card-title">
 	 			<spring:message code="pagina.richiesteConvenzionamento.titolo"/>

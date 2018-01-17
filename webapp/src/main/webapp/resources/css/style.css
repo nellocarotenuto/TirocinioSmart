@@ -30,6 +30,10 @@
 	background: #fff;
 }
 
+form .row.heading {
+	margin-bottom: 20px;
+}
+
 form .row, .modal .row, .card div.row:last-child {
 	margin-bottom: 0;
 }
@@ -52,6 +56,10 @@ form .row.date-input .row-label {
 
 form .row.date-input .input-field {
 	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.card.single-row-header .card-title {
 	margin-bottom: 0;
 }
 
