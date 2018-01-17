@@ -1,9 +1,13 @@
 package it.unisa.di.tirociniosmart.web;
 
+import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizione;
 import it.unisa.di.tirociniosmart.studenti.Studente;
 import it.unisa.di.tirociniosmart.studenti.StudentiService;
+import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +59,7 @@ public class RichiestaIscrizioneController {
     formValidator.validate(richiestaIscrizioneForm, result);
     
     // Redirigi l'utente alla pagina del form se sono stati rilevati degli errori, altrimenti
-    // istanzia un oggetto azienda e richiedine il salvataggio
+    // istanzia un oggetto studente e richiedine il salvataggio
     if (result.hasErrors()) {
       redirectAttributes
           .addFlashAttribute("org.springframework.validation.BindingResult.richiestaIscrizioneForm",
@@ -92,5 +96,25 @@ public class RichiestaIscrizioneController {
     }
     
     return "redirect:/";
+  }
+  
+  /**
+   * Permette di prelevare dal database l'elenco delle richieste d'iscrizione.
+   * 
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
+   *        disponibili anche dopo un redirect
+   * 
+   * @return richieste lista di {@link RichiestaIscrizione} indicante l'elenco delle richieste di
+   *                   iscrizione                  
+   */
+  @RequestMapping(value = "/dashboard/richieste/iscrizione", method = RequestMethod.GET)
+  public List<RichiestaIscrizione> visualizzaRichiesteIscrizione(
+      RedirectAttributes redirectAttributes) {   
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+    }
+    List<RichiestaIscrizione> richieste = studentiService.elencaListaRichiesteIscrizione();
+    return richieste;
   }
 }
