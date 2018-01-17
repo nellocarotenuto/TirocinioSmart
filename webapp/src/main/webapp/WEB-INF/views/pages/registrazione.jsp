@@ -31,7 +31,7 @@
 	        </ul>
 	      </div>
 	      <div class="card-content grey lighten-5">
-	        <div id="studente">Test</div>
+	        <div id="studente"><jsp:include page ="/WEB-INF/views/forms/iscrizione.jsp" /></div>
 	        <div id="azienda"><jsp:include page="/WEB-INF/views/forms/convenzione.jsp" /></div>
 	      </div>
 	    </div>
