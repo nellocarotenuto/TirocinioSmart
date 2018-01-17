@@ -86,7 +86,8 @@ public class RichiestaIscrizioneFormValidator extends RegistrazioneFormValidator
     try {
       studentiService.validaIndirizzoStudente(form.getIndirizzoStudente());
     } catch (IndirizzoStudenteNonValidoException e) {
-      errors.rejectValue("indirizzoStudente", "richiestaIscrizioneForm.indirizzoStudente.nonValido");
+      errors.rejectValue("indirizzoStudente",
+                         "richiestaIscrizioneForm.indirizzoStudente.nonValido");
     }
     
     try {
