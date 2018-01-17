@@ -15,57 +15,85 @@
         <c:out value="${current.studente.nome}"/> <c:out value="${current.studente.cognome}"/>
       </div>
       <div class="collapsible-body">
-        <div class="row">
-          <div class="col s4">
-            <i class="tiny material-icons">email</i>
-            <b><spring:message code="registrazioneForm.email.label" /></b>
+        <div class="row row-group">
+          <div class="col s12">
+            <div class="row">
+              <div class="col s4">
+		            <i class="tiny material-icons">email</i>
+		            <b><spring:message code="registrazioneForm.email.label" /></b>
+		          </div>
+		          <div class="col s8">
+		            <c:out value="${current.studente.email}" />
+		          </div>
+            </div>
           </div>
-          <div class="col s8">
-            <c:out value="${current.studente.email}" />
+          
+          <div class="col s12">
+            <div class="row">
+	            <div class="col s4">
+	            <i class="tiny material-icons">cake</i>
+		            <b><spring:message code="richiestaIscrizioneForm.dataDiNascita.label" /></b>
+		          </div>
+		          <div class="col s8">
+		            <tags:localDate date="${current.studente.dataDiNascita}"/>
+		          </div>
+            </div>
           </div>
-          <div class="col s4">
-            <i class="tiny material-icons">cake</i>
-            <b><spring:message code="richiestaIscrizioneForm.dataDiNascita.label" /></b>
+          
+          <div class="col s12">
+            <div class="row">
+              <div class="col s4">
+		            <i class="tiny material-icons">wc</i>
+		            <b><spring:message code="registrazioneForm.sesso.label" /></b>
+		          </div>
+		          <div class="col s8">
+		            <c:choose>
+		              <c:when test="${current.studente.sesso == 'M'}">
+		                <spring:message code="registrazioneForm.sesso.maschile" />
+		              </c:when>
+		              <c:when test="${current.studente.sesso == 'F'}">
+		                <spring:message code="registrazioneForm.sesso.femminile" />
+		              </c:when>
+		            </c:choose>
+		          </div>
+            </div>
           </div>
-          <div class="col s8">
-            <tags:localDate date="${current.studente.dataDiNascita}"/>
+           
+          <div class="col s12">
+            <div class="row">
+		          <div class="col s4">
+		            <i class="tiny material-icons">location_city</i>
+		            <b><spring:message code="richiestaIscrizioneForm.indirizzoStudente.label" /></b>
+		          </div>
+		          <div class="col s8">
+		            <c:out value="${current.studente.indirizzo}" />
+		          </div>
+            </div>
           </div>
-          <div class="col s4">
-            <i class="tiny material-icons">wc</i>
-            <b><spring:message code="registrazioneForm.sesso.label" /></b>
-          </div>
-          <div class="col s8">
-            <c:choose>
-              <c:when test="${current.studente.sesso == 'M'}">
-                <spring:message code="registrazioneForm.sesso.maschile" />
-              </c:when>
-              <c:when test="${current.studente.sesso == 'F'}">
-                <spring:message code="registrazioneForm.sesso.femminile" />
-              </c:when>
-            </c:choose>
-          </div>
-          <div class="col s4">
-            <i class="tiny material-icons">location_city</i>
-            <b><spring:message code="richiestaIscrizioneForm.indirizzoStudente.label" /></b>
-          </div>
-          <div class="col s8">
-            <c:out value="${current.studente.indirizzo}" />
-          </div>
-          <div class="col s4">
-            <i class="tiny material-icons">phone</i>
-            <b><spring:message code="registrazioneForm.telefono.label" /></b>
-          </div>
-          <div class="col s8">
-            <c:out value="${current.studente.telefono}" />
+          
+          <div class="col s12">
+            <div class="row">
+		          <div class="col s4">
+		            <i class="tiny material-icons">phone</i>
+		            <b><spring:message code="registrazioneForm.telefono.label" /></b>
+		          </div>
+		          <div class="col s8">
+		            <c:out value="${current.studente.telefono}" />
+		          </div>
+            </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col s4">
-            <i class="tiny material-icons">assignment_ind</i>
-            <b><spring:message code="richiestaIscrizioneForm.matricola.label" /></b>
-          </div>
-          <div class="col s8">
-            <c:out value="${current.studente.matricola}" />
+        <div class="row row-group">
+          <div class="col s12">
+            <div class="row">
+              <div class="col s4">
+                <i class="tiny material-icons">assignment_ind</i>
+                <b><spring:message code="richiestaIscrizioneForm.matricola.label" /></b>
+              </div>
+              <div class="col s8">
+                <c:out value="${current.studente.matricola}" />
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -63,6 +63,10 @@ form .row.date-input .input-field {
 	margin-bottom: 0;
 }
 
+.collapsible-body .row.row-group .row {
+	margin-bottom: 0;
+}
+
 @media (max-width: 600px) {
   #navbar .brand-logo img {
     height: 48px;
