@@ -165,7 +165,7 @@
           <div class="input-field col s12">
             <i class="material-icons prefix">wc</i>
 				    <form:select path="sesso" id="convenzionamento-sesso">
-              <form:option value="" disabled="disabled" selected="selected">
+              <form:option value="" disabled="true" selected="selected">
                 <spring:message code="form.select.segnaposto"/>
               </form:option>
 				      <form:option value="M">

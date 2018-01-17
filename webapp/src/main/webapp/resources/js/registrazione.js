@@ -10,10 +10,10 @@ var convenzionamentoSenzaBarriereSelectInstance = M.Select.init(convenzionamento
 var convenzionamentoSessoSelect = document.querySelector('#convenzionamento-sesso');
 var convenzionamentoSessoSelectInstance = M.Select.init(convenzionamentoSessoSelect);
 
-//inizializza il menù dropdown per la selezione del sesso nel form di iscrizione studente
+// Inizializza il menù dropdown per la selezione del sesso nel form di iscrizione studente
 var iscrizioneSessoSelect = document.querySelector('#iscrizione-sesso');
-var iscrizioneSessoSelectInstance = M.select.init(iscrizioneSessoSelect);
+var iscrizioneSessoSelectInstance = M.Select.init(iscrizioneSessoSelect);
 
-//Inizializza il menù dropdown per la selezione del mese nella data di nascita
+// Inizializza il menù dropdown per la selezione del mese nella data di nascita
 var iscrizioneMeseSelect = document.querySelector('#iscrizione-meseDiNascita');
-var iscrizioneMeseSelectInstance = M.select.init(iscrizioneMeseSelect);
+var iscrizioneMeseSelectInstance = M.Select.init(iscrizioneMeseSelect);

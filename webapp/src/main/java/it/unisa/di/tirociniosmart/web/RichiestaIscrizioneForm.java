@@ -49,7 +49,7 @@ public class RichiestaIscrizioneForm extends RegistrazioneForm {
     return giornoDiNascita;
   }
 
-  public void setGiornoDiNascita(int giornoDiNascita) {
+  public void setGiornoDiNascita(Integer giornoDiNascita) {
     this.giornoDiNascita = giornoDiNascita;
   }
 
@@ -57,7 +57,7 @@ public class RichiestaIscrizioneForm extends RegistrazioneForm {
     return meseDiNascita;
   }
 
-  public void setMeseDiNascita(int meseDiNascita) {
+  public void setMeseDiNascita(Integer meseDiNascita) {
     this.meseDiNascita = meseDiNascita;
   }
 
@@ -65,11 +65,9 @@ public class RichiestaIscrizioneForm extends RegistrazioneForm {
     return annoDiNascita;
   }
 
-  public void setAnnoDiNascita(int annoDiNascita) {
+  public void setAnnoDiNascita(Integer annoDiNascita) {
     this.annoDiNascita = annoDiNascita;
   }
-
-
 
   private String telefono;
   private String sesso;
@@ -78,4 +76,5 @@ public class RichiestaIscrizioneForm extends RegistrazioneForm {
   private Integer giornoDiNascita;
   private Integer meseDiNascita;
   private Integer annoDiNascita;
+  
 }

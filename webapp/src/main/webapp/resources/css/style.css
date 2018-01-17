@@ -42,6 +42,11 @@ form .row, .modal .row, .card div.row:last-child {
 	line-height: 3rem;
 }
 
+form .row.date-input .input-field {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
 @media (max-width: 600px) {
   #navbar .brand-logo img {
     height: 48px;

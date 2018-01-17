@@ -25,8 +25,8 @@ public class RegistrazioneController {
     }
    
     if (!model.containsAttribute("richiestaIscrizioneForm")) {
-        model.addAttribute(new RichiestaIscrizioneForm());
-      }
+      model.addAttribute(new RichiestaIscrizioneForm());
+    }
     
     return "pages/registrazione";
   }

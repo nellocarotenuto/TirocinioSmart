@@ -96,6 +96,80 @@
             <form:errors path="cognome" cssClass="helper-text" />
 		      </div>
         </div>
+        <div class="row form-input date-input">
+          <div class="col s12">
+            <div class="row">
+              <i class="material-icons prefix"></i>
+              <label>
+                <spring:message code="richiestaIscrizioneForm.dataDiNascita.label" />
+              </label>
+            </div>
+            <div class="row">
+		          <div class="input-field col s4">
+		            <i class="material-icons prefix">cake</i>
+		            <spring:message var="giornoLabel" code="richiestaIscrizioneForm.giornoDiNascita.label" />
+		            <form:input
+		              placeholder="${giornoLabel}" 
+		              path="giornoDiNascita" id="iscrizione-giornoDiNascita" />  
+		            <form:errors path="giornoDiNascita" cssClass="helper-text" />
+		          </div>
+		          <div class="input-field col s5">
+		            <form:select path="meseDiNascita" id="iscrizione-meseDiNascita">
+		              <form:option value="" disabled="true" selected="selected">
+		                <spring:message code="form.select.segnaposto"/>
+		              </form:option>
+		              <form:option value="1">
+		                <spring:message code="form.mese.gennaio"/>
+		              </form:option>
+		              <form:option value="2">
+		                <spring:message code="form.mese.febbraio"/>
+		              </form:option>
+		              <form:option value="3">
+		                <spring:message code="form.mese.marzo"/>
+		              </form:option>
+		              <form:option value="4">
+		                <spring:message code="form.mese.aprile"/>
+		              </form:option>
+		              <form:option value="5">
+		                <spring:message code="form.mese.maggio"/>
+		              </form:option>
+		              <form:option value="6">
+		                <spring:message code="form.mese.giugno"/>
+		              </form:option>
+		              <form:option value="7">
+		                <spring:message code="form.mese.luglio"/>
+		              </form:option>
+		              <form:option value="8">
+		                <spring:message code="form.mese.agosto"/>
+		              </form:option>
+		              <form:option value="9">
+		                <spring:message code="form.mese.settembre"/>
+		              </form:option>
+		              <form:option value="10">
+		               <spring:message code="form.mese.ottobre"/>
+		              </form:option>
+		              <form:option value="11">
+		               <spring:message code="form.mese.novembre"/>
+		              </form:option>
+		              <form:option value="12">
+		               <spring:message code="form.mese.dicembre"/>
+		              </form:option>
+		            </form:select>
+		            <form:errors path="meseDiNascita" cssClass="helper-text" />
+		          </div>
+		          <div class="input-field col s3">
+		           <spring:message var="annoLabel" code="richiestaIscrizioneForm.annoDiNascita.label" />
+		            <form:input placeholder="${annoLabel}"
+		                        path="annoDiNascita"
+		                        id="iscrizione-annoDiNascita" /> 
+		            <form:errors path="annoDiNascita" cssClass="helper-text" />
+		          </div>
+            </div>
+            <div>
+            
+            </div>
+          </div> 
+        </div>
         <div class="row">
 		      <div class="input-field col s12">
 		        <i class="material-icons prefix">phone</i>
@@ -110,7 +184,7 @@
 		      <div class="input-field col s12">
 		        <i class="material-icons prefix">wc</i>
             <form:select path="sesso" id="iscrizione-sesso">
-              <form:option value="" disabled="disabled" selected="selected">
+              <form:option value="" disabled="true" selected="selected">
                 <spring:message code="form.select.segnaposto"/>
               </form:option>
 				      <form:option value="M">
@@ -131,12 +205,11 @@
             <i class="material-icons prefix">location_city</i>
             <form:input path="indirizzoStudente" id="iscrizione-indirizzo" />
             <label for=iscrizione-indirizzo>
-              <spring:message code="richiestaIscrizioneForm.indirizzoStud.label" />
+              <spring:message code="richiestaIscrizioneForm.indirizzoStudente.label" />
             </label>
             <form:errors path="indirizzoStudente" cssClass="helper-text" />
 				  </div>
 				</div>
-        
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix"></i>
@@ -145,68 +218,6 @@
 	            <spring:message code="richiestaIscrizioneForm.matricola.label" />
 	          </label>
 	          <form:errors path="matricola" cssClass="helper-text" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s3">
-            <i class="material-icons prefix"></i>
-            <spring:message var="giornoLabel" code="richiestaIscrizioneForm.giornoDiNascita.label" />
-            <form:input
-              placeholder="${giornoLabel}" 
-              path="giornoDiNascita" id="iscrizione-giornoDiNascita" />  
-            <form:errors path="giornoDiNascita" cssClass="helper-text" />
-          </div>
-          <div class="input-field col s6">
-          <form:select path="meseDiNascita" id="iscrizione-meseDiNascita">
-              <form:option value="" disabled="disabled" selected="selected">
-              <spring:message code="form.select.segnaposto"/>
-              </form:option>
-              <form:option value="1">
-                <spring:message code="form.mese.gennaio"/>
-              </form:option>
-              <form:option value="2">
-                <spring:message code="form.mese.febbraio"/>
-              </form:option>
-              <form:option value="3">
-                <spring:message code="form.mese.marzo"/>
-              </form:option>
-              <form:option value="4">
-                <spring:message code="form.mese.aprile"/>
-              </form:option>
-              <form:option value="5">
-                <spring:message code="form.mese.maggio"/>
-              </form:option>
-              <form:option value="6">
-                <spring:message code="form.mese.giugno"/>
-              </form:option>
-              <form:option value="7">
-                <spring:message code="form.mese.luglio"/>
-              </form:option>
-              <form:option value="8">
-                <spring:message code="form.mese.agosto"/>
-              </form:option>
-              <form:option value="9">
-                <spring:message code="form.mese.settembre"/>
-              </form:option>
-              <form:option value="10">
-                <spring:message code="form.mese.ottobre"/>
-              </form:option>
-              <form:option value="11">
-                <spring:message code="form.mese.novembre"/>
-              </form:option>
-              <form:option value="12">
-                <spring:message code="form.mese.dicembre"/>
-              </form:option>
-            </form:select>
-            <form:errors path="meseDiNascita" cssClass="helper-text" />
-          </div>
-          <div class="input-field col s3">
-            <i class="material-icons prefix"></i>
-           <spring:message var="annoLabel" code="richiestaIscrizioneForm.annoDiNascita.label" />
-            <form:input 
-             	placeholder="${annoLabel}"
-          	    path="annoDiNascita" id="iscrizione-annoDiNascita" /> 
-            <form:errors path="annoDiNascita" cssClass="helper-text" />
           </div>
         </div>  
       </div>

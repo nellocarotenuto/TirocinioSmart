@@ -66,19 +66,27 @@ public class RichiestaIscrizioneFormValidator extends RegistrazioneFormValidator
     }
     
     try {
+      if (form.getAnnoDiNascita() == null
+          || form.getMeseDiNascita() == null
+          || form.getGiornoDiNascita() == null) {
+        throw new DataDiNascitaStudenteNonValidaException();
+      }
+      
       LocalDate date = LocalDate.of(form.getAnnoDiNascita(),
                                     form.getMeseDiNascita(), 
                                     form.getGiornoDiNascita());
       
       studentiService.validaDataDiNascitaStudente(date);
     } catch (DataDiNascitaStudenteNonValidaException | DateTimeException e) {
-      errors.rejectValue("dataDiNascita", "richiestaIscrizioneForm.dataDiNascita.nonValida");
+      errors.rejectValue("annoDiNascita", "richiestaIscrizioneForm.dataDiNascita.nonValida");
+      errors.rejectValue("meseDiNascita", "richiestaIscrizioneForm.dataDiNascita.nonValida");
+      errors.rejectValue("giornoDiNascita", "richiestaIscrizioneForm.dataDiNascita.nonValida");
     } 
     
     try {
       studentiService.validaIndirizzoStudente(form.getIndirizzoStudente());
     } catch (IndirizzoStudenteNonValidoException e) {
-      errors.rejectValue("indirizzoStud", "richiestaIscrizioneForm.indirizzoStud.nonValido");
+      errors.rejectValue("indirizzoStudente", "richiestaIscrizioneForm.indirizzoStudente.nonValido");
     }
     
     try {

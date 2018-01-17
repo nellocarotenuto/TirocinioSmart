@@ -60,11 +60,11 @@ public class RichiestaIscrizioneController {
       redirectAttributes
           .addFlashAttribute("org.springframework.validation.BindingResult.richiestaIscrizioneForm",
                              result);
-      redirectAttributes.addFlashAttribute("convenzionamentoForm", richiestaIscrizioneForm);
+      redirectAttributes.addFlashAttribute("richiestaIscrizioneForm", richiestaIscrizioneForm);
       return "redirect:/registrazione#studente";
     }
     
-   
+    // Genera un oggetto LocalDate a partire dagli interi presenti nel form
     LocalDate date = LocalDate.of(richiestaIscrizioneForm.getAnnoDiNascita(),
                                   richiestaIscrizioneForm.getMeseDiNascita(),
                                   richiestaIscrizioneForm.getGiornoDiNascita());
