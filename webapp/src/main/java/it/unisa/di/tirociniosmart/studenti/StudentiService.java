@@ -94,9 +94,16 @@ public class StudentiService {
     }
   }
   
+  /**
+   * Permette di ottenere la lista delle richieste d'iscrizione in attesa di essere gestite.ù
+   * 
+   * @return Lista di {@link RichiestaIscrizione} contenente tutte le richieste d'iscrizione non
+   *         ancora gestite
+   */
   @Transactional
   public List<RichiestaIscrizione> elencaListaRichiesteIscrizione() {
-    List<RichiestaIscrizione> richiesteIscrizione = richiestaIscrizioneRepository.findAll();
+    List<RichiestaIscrizione> richiesteIscrizione = richiestaIscrizioneRepository.findAllByStatus(
+                                                                     RichiestaIscrizione.IN_ATTESA);
     return richiesteIscrizione;
   }
   
