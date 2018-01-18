@@ -40,7 +40,7 @@ public class StudentiService {
    * 
    * @pre studente != null
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void registraRichiestaIscrizione(Studente studente) throws Exception {
     //valida i campi dello studente
     studente.setUsername(utenzaService.validaUsername(studente.getUsername()));
@@ -76,7 +76,7 @@ public class StudentiService {
    * @throws RichiestaIscrizioneGestitaException se la richiesta identificata da idRichiesta
    *         si trova in uno stato diverso da quello in attesa
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void approvaRichiestaIscrizione(long idRichiesta)
          throws IdRichiestaIscrizioneNonValidoException,
                 RichiestaIscrizioneGestitaException {
@@ -122,7 +122,7 @@ public class StudentiService {
    * @throws CommentoRichiestaIscrizioneNonValidoException se il commento da associare alla
    *         richiesta è nullo o vuoto
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void rifiutaRichiestaIscrizione(long idRichiesta, String commento)
          throws IdRichiestaIscrizioneNonValidoException,
                 RichiestaIscrizioneGestitaException,
@@ -140,7 +140,7 @@ public class StudentiService {
       richiesta.setStatus(RichiestaIscrizione.RIFIUTATA);     
     }
     
-    richiesta.setCommentoUfficioTirocini(validaCommento(commento));
+    richiesta.setCommentoUfficioTirocini(validaCommentoRichiesta(commento));
   }
   
   /**
@@ -153,7 +153,7 @@ public class StudentiService {
    * @throws CommentoRichiestaIscrizioneNonValidoException se il commento passato come parametro
    *         è nullo oppure è rappresentato da stringa vuota
    */
-  public String validaCommento(String commento) 
+  public String validaCommentoRichiesta(String commento) 
         throws CommentoRichiestaIscrizioneNonValidoException {
     if (commento == null) {
       throw new CommentoRichiestaIscrizioneNonValidoException();

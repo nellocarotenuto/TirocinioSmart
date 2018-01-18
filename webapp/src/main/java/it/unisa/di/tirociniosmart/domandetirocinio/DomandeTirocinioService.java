@@ -23,7 +23,7 @@ public class DomandeTirocinioService {
    * 
    * @pre domanda != null
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void registraDomandaTirocinio(DomandaTirocinio domanda) throws Exception {
     //valida i campi dello studente
     domanda.setInizioTirocinio(validaDataDiInizioTirocinio(domanda.getInizioTirocinio(),
@@ -56,7 +56,7 @@ public class DomandeTirocinioService {
    * @throws DomandaTirocinioGestitaException se la domanda identificata da idDomanda
    *         si trova in uno stato diverso da quello in attesa
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void accettaDomandaTirocinio(long idDomanda)
          throws IdDomandaTirocinioNonValidoException,
                 DomandaTirocinioGestitaException {
@@ -91,7 +91,7 @@ public class DomandeTirocinioService {
    * @throws CommentoDomandaTirocinioNonValidoException se il commento da associare alla
    *         domanda è nullo o vuoto
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void rifiutaDomandaTirocinio(long idDomanda, String commento)
          throws IdDomandaTirocinioNonValidoException,
                 DomandaTirocinioGestitaException,
@@ -124,7 +124,7 @@ public class DomandeTirocinioService {
    * @throws DomandaTirocinioGestitaException se la domanda identificata da idDomanda
    *         si trova in uno stato diverso da accettata
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void approvaDomandaTirocinio(long idDomanda)
          throws IdDomandaTirocinioNonValidoException,
                 StatoDomandaNonIdoneoException {
@@ -157,7 +157,7 @@ public class DomandeTirocinioService {
    * @throws CommentoDomandaTirocinioNonValidoException se il commento da associare alla
    *         domanda è nullo o vuoto
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void respingiDomandaTirocinio(long idDomanda, String commento)
          throws IdDomandaTirocinioNonValidoException,
                 StatoDomandaNonIdoneoException,

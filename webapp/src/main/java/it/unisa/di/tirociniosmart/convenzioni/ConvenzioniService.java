@@ -6,10 +6,9 @@ import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Classe che definisce la logica di business per le operazioni possibili nell'ambito delle
@@ -41,7 +40,7 @@ public class ConvenzioniService {
    * 
    * @pre azienda != null
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void registraRichiestaConvenzionamento(Azienda azienda) throws Exception {
     // Valida i campi dell'azienda
     azienda.setId(validaIdAzienda(azienda.getId()));
@@ -80,7 +79,7 @@ public class ConvenzioniService {
    * @throws RichiestaConvenzionamentoGestitaException se la richiesta identificata da idRichiesta
    *         si trova in uno stato diverso da quello in attesa
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void approvaRichiestaConvenzionamento(long idRichiesta)
          throws IdRichiestaConvenzionamentoNonValidoException,
                 RichiestaConvenzionamentoGestitaException {
@@ -113,7 +112,7 @@ public class ConvenzioniService {
    * @throws CommentoRichiestaConvenzionamentoNonValidoException se il commento da associare alla
    *         richiesta è nullo o vuoto
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void rifiutaRichiestaConvenzionamento(long idRichiesta, String commento)
          throws IdRichiestaConvenzionamentoNonValidoException,
                 RichiestaConvenzionamentoGestitaException,
