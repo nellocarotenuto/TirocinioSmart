@@ -14,7 +14,9 @@
 <spring:message var="indirizzoLabel" code="richiestaIscrizioneForm.indirizzoStudente.label" />
 <spring:message var="telefonoLabel" code="registrazioneForm.telefono.label" />
 
-<c:forEach items="${listaRischiesteIscrizione}" var="current">
+<c:forEach items="${listaRischiesteIscrizione}" var="current" varStatus="loop">
+  <c:set var="idModalRifiuto" value="iscrizione-modal-rifiuto-${loop.index}" />
+  <c:set var="idModalApprovazione" value="iscrizione-modal-approvazione-${loop.index}" />
   <ul id="${idCollapsible}" class="collapsible">
     <li>
       <div class="collapsible-header">
@@ -131,9 +133,36 @@
             </div>
           </div>
         </div>
+        
+        <div class="row">
+          <div class="col s12 right-align">
+            <a class="btn red white-text waves-effect waves-light modal-trigger"
+               href="#<c:out value="${idModalRifiuto}"/>">
+              <spring:message code="form.rifiuta.label" />
+            </a>
+            <a class="btn green white-text waves-effect waves-light modal-trigger"
+               href="#<c:out value="${idModalApprovazione}"/>">
+              <spring:message code="form.approva.label" />
+            </a>
+          </div>
+        </div>
       </div>
     </li>
   </ul>
+  <div id="${idModalRifiuto}" class="modal">
+    <div class="modal-content">
+      <jsp:include page="/WEB-INF/views/forms/rifiutaRichiestaIscrizione.jsp">
+        <jsp:param value="${current.id}" name="idRichiesta" />
+      </jsp:include>
+    </div>
+  </div>
+  <div id="${idModalApprovazione}" class="modal">
+    <div class="modal-content">
+      <jsp:include page="/WEB-INF/views/forms/approvaRichiestaIscrizione.jsp">
+        <jsp:param value="${current.id}" name="idRichiesta" />
+      </jsp:include>
+    </div>
+  </div>
 </c:forEach>
 
 <!-- Script per l'inizializzazione e la validazione dei form -->

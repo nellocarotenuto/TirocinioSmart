@@ -34,7 +34,7 @@ form .row.heading {
 	margin-bottom: 20px;
 }
 
-form .row, .modal .row, .card div.row:last-child {
+form .row, .modal .row, .card div.row:last-child, .collapsible-body > .row:last-child {
 	margin-bottom: 0;
 }
 
@@ -63,7 +63,7 @@ form .row.date-input .input-field {
 	margin-bottom: 0;
 }
 
-.collapsible-body .row.row-group{
+.collapsible-body .row.row-group {
 	margin-bottom: 40px;
 }
 
