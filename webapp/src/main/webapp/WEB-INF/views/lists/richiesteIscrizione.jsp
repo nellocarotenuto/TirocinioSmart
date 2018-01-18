@@ -5,92 +5,127 @@
 
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<c:forEach items="${listaRischiesteIscrizione}" var="current"  varStatus="loop">
-  <c:set var="idCollapsible" value="iscrizioni-richiesta-${loop.index}" />
-  <c:set var="numeroUltimaRichiesta" value="${loop.index}" />
+<spring:message var="emailLabel" code="registrazioneForm.email.label" />
+<spring:message var="matricolaLabel" code="richiestaIscrizioneForm.matricola.label" />
+<spring:message var="dataDiNascitaLabel" code="richiestaIscrizioneForm.dataDiNascita.label" />
+<spring:message var="sessoLabel" code="registrazioneForm.sesso.label" />
+<spring:message var="sessoMaschileLabel" code="registrazioneForm.sesso.maschile" />
+<spring:message var="sessoFemminileLabel" code="registrazioneForm.sesso.femminile" />
+<spring:message var="indirizzoLabel" code="richiestaIscrizioneForm.indirizzoStudente.label" />
+<spring:message var="telefonoLabel" code="registrazioneForm.telefono.label" />
+
+<c:forEach items="${listaRischiesteIscrizione}" var="current">
   <ul id="${idCollapsible}" class="collapsible">
     <li>
       <div class="collapsible-header">
-        <i class="material-icons">account_circle</i>
-        <c:out value="${current.studente.nome}"/> <c:out value="${current.studente.cognome}"/>
+        <div class="col s8 valign-wrapper">
+	        <i class="small material-icons">account_circle</i>
+	        <c:out value="${current.studente.nome}"/> <c:out value="${current.studente.cognome}"/>
+        </div>
+        <div class="col s4 right-align">
+          <span class="right-align"><tags:localDateTime date="${current.dataRichiesta}"/></span>
+        </div>
       </div>
       <div class="collapsible-body">
-        <div class="row row-group">
+        <div class="row">
           <div class="col s12">
-            <div class="row">
-              <div class="col s4">
-		            <i class="tiny material-icons">email</i>
-		            <b><spring:message code="registrazioneForm.email.label" /></b>
+            <div class="row valign-wrapper">
+              <div class="col s1">
+                <a class="tooltipped tooltipped-icon"
+                   data-position="right"
+                   data-delay="50"
+                   data-tooltip="<c:out value="${emailLabel}"/>">
+                   <i class="small material-icons">email</i>
+                </a>
 		          </div>
-		          <div class="col s8">
+		          <div class="col s11">
 		            <c:out value="${current.studente.email}" />
 		          </div>
             </div>
           </div>
           
           <div class="col s12">
-            <div class="row">
-	            <div class="col s4">
-	            <i class="tiny material-icons">cake</i>
-		            <b><spring:message code="richiestaIscrizioneForm.dataDiNascita.label" /></b>
-		          </div>
-		          <div class="col s8">
+            <div class="row valign-wrapper">
+	            <div class="col s1">
+	              <a class="tooltipped tooltipped-icon"
+                   data-position="right"
+                   data-delay="50"
+                   data-tooltip="<c:out value="${dataDiNascitaLabel}"/>">
+                   <i class="small material-icons">cake</i>
+                </a>
+              </div>
+		          <div class="col s11">
 		            <tags:localDate date="${current.studente.dataDiNascita}"/>
 		          </div>
             </div>
           </div>
           
           <div class="col s12">
-            <div class="row">
-              <div class="col s4">
-		            <i class="tiny material-icons">wc</i>
-		            <b><spring:message code="registrazioneForm.sesso.label" /></b>
-		          </div>
-		          <div class="col s8">
-		            <c:choose>
-		              <c:when test="${current.studente.sesso == 'M'}">
-		                <spring:message code="registrazioneForm.sesso.maschile" />
-		              </c:when>
-		              <c:when test="${current.studente.sesso == 'F'}">
-		                <spring:message code="registrazioneForm.sesso.femminile" />
-		              </c:when>
-		            </c:choose>
-		          </div>
+            <div class="row valign-wrapper">
+              <div class="col s1">
+                <a class="tooltipped tooltipped-icon"
+                   data-position="right"
+                   data-delay="50"
+                   data-tooltip="<c:out value="${sessoLabel}"/>">
+                   <i class="small material-icons">wc</i>
+                </a>
+              </div>
+              <div class="col s11">
+                <c:choose>
+                  <c:when test="${current.studente.sesso == 'M'}">
+                    <c:out value="${sessoMaschileLabel}" />
+                  </c:when>
+                  <c:when test="${current.studente.sesso == 'F'}">
+                    <c:out value="${sessoFemminileLabel}" />
+                  </c:when>
+                </c:choose>
+              </div>
             </div>
           </div>
            
           <div class="col s12">
-            <div class="row">
-		          <div class="col s4">
-		            <i class="tiny material-icons">location_city</i>
-		            <b><spring:message code="richiestaIscrizioneForm.indirizzoStudente.label" /></b>
-		          </div>
-		          <div class="col s8">
-		            <c:out value="${current.studente.indirizzo}" />
-		          </div>
+            <div class="row valign-wrapper">
+              <div class="col s1">
+                <a class="tooltipped tooltipped-icon"
+                   data-position="right"
+                   data-delay="50"
+                   data-tooltip="<c:out value="${indirizzoLabel}"/>">
+                   <i class="small material-icons">location_city</i>
+                </a>
+              </div>
+              <div class="col s11">
+                <c:out value="${current.studente.indirizzo}" />
+              </div>
             </div>
           </div>
           
           <div class="col s12">
-            <div class="row">
-		          <div class="col s4">
-		            <i class="tiny material-icons">phone</i>
-		            <b><spring:message code="registrazioneForm.telefono.label" /></b>
-		          </div>
-		          <div class="col s8">
-		            <c:out value="${current.studente.telefono}" />
-		          </div>
+	          <div class="row valign-wrapper">
+	            <div class="col s1">
+	              <a class="tooltipped tooltipped-icon"
+	                 data-position="right"
+	                 data-delay="50"
+	                 data-tooltip="<c:out value="${telefonoLabel}"/>">
+	                 <i class="small material-icons">phone</i>
+	              </a>
+	            </div>
+	            <div class="col s11">
+	              <c:out value="${current.studente.telefono}" />
+	            </div>
             </div>
           </div>
-        </div>
-        <div class="row row-group">
+
           <div class="col s12">
-            <div class="row">
-              <div class="col s4">
-                <i class="tiny material-icons">assignment_ind</i>
-                <b><spring:message code="richiestaIscrizioneForm.matricola.label" /></b>
+            <div class="row valign-wrapper">
+              <div class="col s1">
+                <a class="tooltipped tooltipped-icon"
+                   data-position="right"
+                   data-delay="50"
+                   data-tooltip="<c:out value="${matricolaLabel}"/>">
+                   <i class="small material-icons">assignment_ind</i>
+                </a>
               </div>
-              <div class="col s8">
+              <div class="col s11">
                 <c:out value="${current.studente.matricola}" />
               </div>
             </div>
@@ -100,8 +135,6 @@
     </li>
   </ul>
 </c:forEach>
-
-<input type="hidden" id="numero-richieste" value="${numeroUltimaRichiesta + 1}" />
 
 <!-- Script per l'inizializzazione e la validazione dei form -->
 <script type="text/javascript"

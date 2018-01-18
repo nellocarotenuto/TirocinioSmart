@@ -1,10 +1,15 @@
-// Funzione che si occupa di inizializzare i collassabili per ogni richiesta mostrata conoscendo
-// il numero di richieste presenti nella pagina
+// Funzione che si occupa di inizializzare i collassabili per ogni richiesta mostrata
 $(document).ready(function() {
-  var totaleRichieste = document.querySelector('#numero-richieste').value;
-  var collassabili = [];
-  for (var i = 0; i < totaleRichieste; i++) {
-	  collassabili[i] = document.querySelector('#iscrizioni-richiesta-' + i);
+  var collassabili = $('.collapsible');
+  
+  for (var i = 0; i < collassabili.length; i++) {
 	  M.Collapsible.init(collassabili[i]);
+  }
+});
+
+$(document).ready(function() {
+  var tooltips = $('.tooltipped');
+  for(var j = 0; j < tooltips.length; j++) {
+    M.Tooltip.init(tooltips[j]);
   }
 });
