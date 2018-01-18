@@ -1,5 +1,9 @@
 package it.unisa.di.tirociniosmart.web;
 
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoInAttesaException;
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoRifiutataException;
+import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneInAttesaException;
+import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneRifiutataException;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.CredenzialiNonValideException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
@@ -52,13 +56,25 @@ public class AutenticazioneController {
     
     // Estrai username e password e prova ad effettuare il login (salvando l'utente in sessione),
     // mostra una notifica di errore sulle credenziali nel caso il login fallisca
+    String username = loginForm.getUsername();
+    String password = loginForm.getPassword();
+    
     try {
-      String username = loginForm.getUsername();
-      String password = loginForm.getPassword();
-      
       UtenteRegistrato utente = utenzaService.login(username, password);
       session.setAttribute("utente", utente);
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.login.loginEffettuato");
+    } catch (RichiestaConvenzionamentoRifiutataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.login.richiestaConvenzionamentoRifiutata");
+    } catch (RichiestaIscrizioneRifiutataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.login.richiestaIscrizioneRifiutata");
+    } catch (RichiestaConvenzionamentoInAttesaException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.login.richiestaConvenzionamentoInAttesa");
+    } catch (RichiestaIscrizioneInAttesaException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.login.richiestaIscrizioneInAttesa");
     } catch (CredenzialiNonValideException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",
                                            "toast.login.credenzialiNonValide");

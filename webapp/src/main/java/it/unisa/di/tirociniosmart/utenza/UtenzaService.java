@@ -1,7 +1,15 @@
 package it.unisa.di.tirociniosmart.utenza;
 
+import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendaleRepository;
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoInAttesaException;
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoRifiutataException;
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirociniRepository;
+import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizione;
+import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneInAttesaException;
+import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneRifiutataException;
+import it.unisa.di.tirociniosmart.studenti.Studente;
 import it.unisa.di.tirociniosmart.studenti.StudenteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -232,9 +240,25 @@ public class UtenzaService {
    * 
    * @throws CredenzialiNonValideException se la coppia (username, password) non è presente nel
    *         sistema
+   *         
+   * @throws RichiestaConvenzionamentoInAttesaException se l'utente che tenta di accedere è un
+   *         delegato aziendale che rappresenta un'azienda la cui richiesta di convenzionamento non
+   *         è ancora stata gestita
+   *         
+   * @throws RichiestaConvenzionamentoRifiutataException se l'utente che tenta di accedere è un
+   *         delegato aziendale che rappresenta un'azienda la cui richiesta di convenzionamento non
+   *         è stata rifiutata
+   *         
+   * @throws RichiestaIscrizioneInAttesaException se l'utente che tenta di accedere è uno studente
+   *         la cui richiesta d'iscrizione non è ancora stata gestita
+   *         
+   * @throws RichiestaIscrizioneRifiutataException se l'utente che tenta di accedere è uno studente
+   *         la cui richiesta d'iscrizione è stata rifiutata
    */
   public UtenteRegistrato login(String username, String password)
-         throws CredenzialiNonValideException {
+         throws CredenzialiNonValideException, RichiestaConvenzionamentoInAttesaException,
+                RichiestaConvenzionamentoRifiutataException, RichiestaIscrizioneInAttesaException,
+                RichiestaIscrizioneRifiutataException {
     UtenteRegistrato utente;
     
     utente = impiegatoRepository.findByUsernameAndPassword(username, password);
@@ -243,16 +267,38 @@ public class UtenzaService {
       return utente;
     }
     
+    // Controlla se le credenziali corrispondono a quelle di un delegato aziendale e, nel caso,
+    // controlla che la richiesta di convenzionamento associata alla sua azienda sia accettata
     utente = delegatoRepository.findByUsernameAndPassword(username, password);
     if (utente != null) {
-      AutenticazioneHolder.setUtente(utente);
-      return utente;
+      DelegatoAziendale delegato = (DelegatoAziendale) utente;
+      RichiestaConvenzionamento richiesta = delegato.getAzienda().getRichiesta();
+     
+      if (richiesta.getStatus() == RichiestaConvenzionamento.IN_ATTESA) {
+        throw new RichiestaConvenzionamentoInAttesaException();
+      } else if (richiesta.getStatus() == RichiestaConvenzionamento.RIFIUTATA) {
+        throw new RichiestaConvenzionamentoRifiutataException();
+      } else {
+        AutenticazioneHolder.setUtente(utente);
+        return utente;
+      }
     }
     
+    // Controlla se le credenziali corrispondono a quelle di uno studente e, nel caso, controlla
+    // che la richiesta d'iscrizione associatagli sia stata accettata
     utente = studenteRepository.findByUsernameAndPassword(username, password);
     if (utente != null) {
-      AutenticazioneHolder.setUtente(utente);
-      return utente;
+      Studente studente = (Studente) utente;
+      RichiestaIscrizione richiesta = studente.getRichiestaIscrizione();
+      
+      if (richiesta.getStatus() == RichiestaIscrizione.IN_ATTESA) {
+        throw new RichiestaIscrizioneInAttesaException();
+      } else if (richiesta.getStatus() == RichiestaIscrizione.RIFIUTATA) {
+        throw new RichiestaIscrizioneRifiutataException();
+      } else {
+        AutenticazioneHolder.setUtente(utente);
+        return utente;
+      }
     }
     
     throw new CredenzialiNonValideException();
