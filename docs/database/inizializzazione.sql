@@ -1,8 +1,5 @@
--- Script di inizializzazione da utilizzare SOLO prima dell'installazione della web app.
--- L'avvio dell'applicazione web non richiede l'esecuzione di questo script.
-
--- Creazione dello schema. Nome NON MODIFICABILE a meno di modifiche in application.properties della webapp
-CREATE SCHEMA tirocinosmart;
+-- Script per l'inserimento di uno o più impiegati nel database da utilizzare solamente dopo aver eseguito creazione.sql
+-- ed aver avviato per la prima volta la webapp.
 
 USE tirociniosmart;
 
