@@ -116,7 +116,7 @@ public class StudentiService {
    *         richiesta è nullo o vuoto
    */
   @Transactional
-  public void rifiutaRichiestaConvenzionamento(long idRichiesta, String commento)
+  public void rifiutaRichiestaIscrizione(long idRichiesta, String commento)
          throws IdRichiestaIscrizioneNonValidoException,
                 RichiestaIscrizioneGestitaException,
                 CommentoRichiestaIscrizioneNonValidoException {
