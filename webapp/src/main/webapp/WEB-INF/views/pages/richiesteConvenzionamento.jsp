@@ -10,14 +10,14 @@
 <main class="container"> 
 	<div class="row">
 	 	<div class="col s12">
-	 		<div class="card">
+	 		<div class="card signle-row-header">
 	 			<div class="card-content">
-	 				<jsp:include page="/WEB-INF/views/lists/richiesteConvenzionamento.jsp"/>
-	 			</div>
-	 			<div class="card-title">
-	 			<spring:message code="pagina.richiesteConvenzionamento.titolo"/>
+	 				<span class="card-title">
+	 					<spring:message code="pagina.richiesteConvenzionamento.titolo"/>
+	 				</span>
 	 			</div>
 	 		</div>
+	 		<jsp:include page="/WEB-INF/views/lists/richiesteConvenzionamento.jsp"/>
 	 	</div>
 	 </div>
 </main>
