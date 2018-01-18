@@ -158,7 +158,7 @@ public class RichiestaIscrizioneController {
       return "redirect:/errore";
     }
 
-    return "dashboard/richieste/iscrizione";
+    return "redirect:/dashboard/richieste/iscrizione";
   }
   
   /**
@@ -195,7 +195,7 @@ public class RichiestaIscrizioneController {
       return "redirect:/errore";
     }
 
-    return "dashboard/richieste/iscrizione";
+    return "redirect:/dashboard/richieste/iscrizione";
   }
   
 }
