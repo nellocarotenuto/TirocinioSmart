@@ -176,7 +176,7 @@ public class RichiestaIscrizioneController {
    *         Stringa indicante l'URL dell'homePage nel caso l'utente che tenta di fare l'operazione
    *                 non è un impiegato dell'Ufficio Tirocini
    */
-  @RequestMapping(value = "/dashboard/richieste/iscrizione/rifiuto", method = RequestMethod.POST)
+  @RequestMapping(value = "/dashboard/richieste/iscrizione/rifiuta", method = RequestMethod.POST)
   public String elaboraRifiutoRichiesta(RedirectAttributes redirectAttributes,
                                         @RequestParam Long idRichiesta,
                                         @RequestParam String commentoRichiesta) {
