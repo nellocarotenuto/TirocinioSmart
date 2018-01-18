@@ -3,7 +3,9 @@ package it.unisa.di.tirociniosmart.web;
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
+import it.unisa.di.tirociniosmart.convenzioni.IdRichiestaConvenzionamentoNonValidoException;
 import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoGestitaException;
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 
@@ -123,4 +125,32 @@ public class ConvenzioniController {
     return "pages/richiesteConvenzionamento";
   }
   
+  
+  /**
+   * Fornisce l'elenco delle aziende convenzionate con l'università
+   * 
+   * 
+   * @return stringa indicante la vista delegata alla presentazione della lista di aziende 
+   *         convenzionate
+   */
+  
+  @RequestMapping(value = "/aziende", method = RequestMethod.GET)
+  public String viualizzaAziendeConvenzionate (RedirectAttributes redirectAttributes,
+                                               Model model) {
+
+    List<Azienda> listaAziendeConvenzionate = convenzioniService.elencaAziendeConvenzionate();
+    model.addAttribute("listaAziendeConvenzionate", listaAziendeConvenzionate);
+    
+    return "pages/aziendeConvenzionate";
+  }
+  
+  
+  
+ 
+  
+  
+
+  
 }
+  
+

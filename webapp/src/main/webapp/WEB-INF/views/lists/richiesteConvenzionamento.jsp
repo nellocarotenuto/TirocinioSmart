@@ -6,6 +6,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <spring:message code="convenzionamentoForm.partitaIvaAzienda.label" var="partitaIvaLabel"/>
 <spring:message code="convenzionamentoForm.indirizzoAzienda.label" var="indirizzoLabel"/>
+<spring:message code="convenzionamentoForm.senzaBarriere.label" var="senzaBarriereLabel"/>
 <spring:message code="convenzionamentoForm.senzaBarriere.accessibile" var="accessibileLabel"/>
 <spring:message code="convenzionamentoForm.senzaBarriere.inaccessibile" var="inaccessibileLabel"/>
 <spring:message code="convenzionamentoForm.delegato.label" var="delegatoLabel"/>
@@ -16,7 +17,8 @@
 <spring:message code="registrazioneForm.sessoDelegato.label" var="sessoDelegatoLabel"/>
 
 
-<c:forEach items="${listaRichiesteConvenzionamento}" var="current">
+<c:forEach items="${listaRichiesteConvenzionamento}" var="current" varStatus="loop">
+	<c:set var="idModal" value="convenzione-modal-${loop.index}" />
 		<ul id="idCollapsible" class="collapsible">
 			<li>
 				<div class="collapsible-header">
@@ -28,8 +30,10 @@
        	   <span class="right-align"><tags:localDateTime date="${current.dataRichiesta}"/></span>
         </div>
       </div>
+      
       <div class="collapsible-body">
         <div class="row row-group">
+        
           <div class="col s12">
             <div class="row valign-wrapper" >
               <div class="col s1">
@@ -38,8 +42,7 @@
               		 data-delay="50"
               		 data-tooltip="${partitaIvaLabel}">
               		 <i class ="small material-icons">business_center</i>
-              	</a>
-		            
+              	</a>      
 		          </div>
 		          <div class="col s11">
 		            <c:out value="${current.azienda.partitaIva}" />
@@ -69,7 +72,7 @@
               	<a class="tooltipped tooltipped-icon" 
               		 data-position="right"
               		 data-delay="50"
-              		 data-tooltip="${partitaIvaLabel}">
+              		 data-tooltip="${senzaBarriereLabel}">
               		 <i class ="small material-icons">accessible</i>
               	</a>
 		          </div>
