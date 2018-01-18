@@ -3,9 +3,7 @@ package it.unisa.di.tirociniosmart.web;
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
-import it.unisa.di.tirociniosmart.convenzioni.IdRichiestaConvenzionamentoNonValidoException;
 import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
-import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoGestitaException;
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 
@@ -104,7 +102,12 @@ public class ConvenzioniController {
   
   /**
    * Fornisce l'elenco delle richieste di convenzionamento non ancora gestite dall'ufficio tirocini.
-   *  
+   *
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
+   *        disponibili anche dopo un redirect
+   *
+   * @param model Incapsula gli attributi da passare alla pagina delegata alla presentazione
+   * 
    * @return Stringa indicante la vista delegata alla presentazione della lista se l'utente è
    *         autorizzato, stringa indicante l'URL della home page (tramite redirect) altrimenti
    */
@@ -127,15 +130,19 @@ public class ConvenzioniController {
   
   
   /**
-   * Fornisce l'elenco delle aziende convenzionate con l'università
+   * Fornisce l'elenco delle aziende convenzionate con l'università.
    * 
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
+   *        disponibili anche dopo un redirect
+   * 
+   * @param model Incapsula gli attributi da passare alla pagina delegata alla presentazione
    * 
    * @return stringa indicante la vista delegata alla presentazione della lista di aziende 
    *         convenzionate
    */
   
   @RequestMapping(value = "/aziende", method = RequestMethod.GET)
-  public String viualizzaAziendeConvenzionate (RedirectAttributes redirectAttributes,
+  public String viualizzaAziendeConvenzionate(RedirectAttributes redirectAttributes,
                                                Model model) {
 
     List<Azienda> listaAziendeConvenzionate = convenzioniService.elencaAziendeConvenzionate();
@@ -144,13 +151,4 @@ public class ConvenzioniController {
     return "pages/aziendeConvenzionate";
   }
   
-  
-  
- 
-  
-  
-
-  
 }
-  
-
