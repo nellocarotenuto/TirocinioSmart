@@ -10,7 +10,7 @@
 <main class="container"> 
 	<div class="row">
 	 	<div class="col s12">
-	 		<div class="card signle-row-header">
+	 		<div class="card single-row-header">
 	 			<div class="card-content">
 	 				<span class="card-title">
 	 					<spring:message code="pagina.richiesteConvenzionamento.titolo"/>
