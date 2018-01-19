@@ -27,6 +27,9 @@
 	    
 	    <div class="row">
 	      <div class="col s12 right-align">
+	        <a class="btn-flat waves-effect modal-close">
+            <spring:message code="button.annulla.label" />
+          </a>
 	        <input type="hidden" name="idRichiesta" value="${param.idRichiesta}">
 		      <button class="btn waves-effect waves-light red" type="submit" name="action">
 		        <spring:message code="form.rifiuta.label" />

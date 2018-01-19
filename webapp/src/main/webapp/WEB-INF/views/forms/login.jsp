@@ -34,6 +34,9 @@
     </div>
     <div class="row">
       <div class="col s12 right-align">
+        <a class="btn-flat waves-effect modal-close">
+          <spring:message code="button.annulla.label" />
+        </a>
         <button class="btn waves-effect waves-light" type="submit" name="action">
           <spring:message code="pagina.login.titolo" />
           <i class="material-icons right">send</i>
