@@ -166,6 +166,22 @@
         </div>
 			</li>
 		</ul>
+		
+  <div id="${idModalRifiuto}" class="modal">
+    <div class="modal-content">
+      <jsp:include page="/WEB-INF/views/forms/rifiutaRichiestaConvenzionamento.jsp">
+        <jsp:param value="${current.id}" name="idRichiesta" />
+      </jsp:include>
+    </div>
+  </div>
+  <div id="${idModalApprovazione}" class="modal">
+    <div class="modal-content">
+      <jsp:include page="/WEB-INF/views/forms/approvaRichiestaConvenzionamento.jsp">
+        <jsp:param value="${current.id}" name="idRichiesta" />
+      </jsp:include>
+    </div>
+  </div>
+
 </c:forEach>
 
 <!-- Script per l'inizializzazione e la validazione dei form -->
