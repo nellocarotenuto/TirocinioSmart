@@ -12,4 +12,8 @@
   <jsp:param name="titoloPagina" value="${titoloPagina}"/>
 </jsp:include>
 
+<main class="container">
+
+</main>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
