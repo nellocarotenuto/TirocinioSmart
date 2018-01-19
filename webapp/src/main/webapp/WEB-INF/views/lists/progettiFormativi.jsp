@@ -8,13 +8,13 @@
 <spring:message code="progettoFormativo.status.label" var="statusProgettoFormativoLabel"/>
 
 
-<c:forEach items="${listaProgettiFormativi}" var="current" varStatus="loop">
+<c:forEach items="${azienda.progettiFormativi}" var="current" varStatus="loop">
 	<c:set var="idModalArchivia" value="progettoFormativo-modal-archivia-${loop.index}" />
   <c:set var="idModalProponiti" value="progettoFormativo-modal-proponiti-${loop.index}" />	
 	<ul id="idCollapsible" class="collapsible">
 		<li>
 			<div class="collapsible-header">
-					<div class="col s8 valign-wrapper">
+					<div class="col s12 valign-wrapper">
       		  <i class="material-icons">business_center</i>
        		  <c:out value="${current.nome}"/> 
         	</div>
@@ -29,28 +29,12 @@
 	              	<a class="tooltipped tooltipped-icon" 
 	              		 data-position="right"
 	              		 data-delay="50"
-	              		 data-tooltip="${nomeProgettoFormativoLabel}">
-	              		 <i class ="small material-icons">business_center</i>
-	              	</a>      
-			          </div>
-			          <div class="col s11">
-			            <c:out value="${current.nome}" />
-			          </div>
-	            </div>
-	        </div>
-	        
-	        <div class="col s12">
-	            <div class="row valign-wrapper" >
-	              <div class="col s1">
-	              	<a class="tooltipped tooltipped-icon" 
-	              		 data-position="right"
-	              		 data-delay="50"
 	              		 data-tooltip="${descrizioneProgettoFormativoLabel}">
 	              		 <i class ="small material-icons">chat</i>
 	              	</a>      
 			          </div>
 			          <div class="col s11">
-			            <c:out value="" />
+			            <c:out value="${current.descrizione}" />
 			          </div>
 	            </div>
 	        </div>
@@ -59,7 +43,8 @@
 	     </div>
 		</li>
 	</ul>
-
-
-
 </c:forEach>
+
+<!-- Script per l'inizializzazione e la validazione dei form -->
+<script type="text/javascript"
+        src="<c:url value="/resources/js/progettiFormativi.js" />" ></script>

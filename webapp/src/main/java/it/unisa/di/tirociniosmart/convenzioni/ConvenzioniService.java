@@ -184,6 +184,25 @@ public class ConvenzioniService {
   }
   
   /**
+   * Permette di ottenere un'azienda presente nel sistema a partire dalla stringa che ne rappresenta
+   * l'identificatore.
+   * 
+   * @param idAzienda Stringa che rappresenta l'identificatore dell'azienda che si vuole ottenere
+   * 
+   * @return {@link Azienda} che rappresenta l'azienda cercata
+   */
+  @Transactional(rollbackFor = Exception.class)
+  public Azienda ottieniAzienda(String idAzienda) throws IdAziendaNonValidoException {
+    Azienda azienda = aziendaRepository.findById(idAzienda);
+    
+    if (azienda == null) {
+      throw new IdAziendaNonValidoException();
+    }
+    
+    return azienda;
+  }
+  
+  /**
    * Controlla che l'identificatore di un'azienda sia specificato e che rispetti il formato
    * prestabilito. Controlla inoltre che tale identificatore non sia già presente nel sistema.
    * 
@@ -301,16 +320,6 @@ public class ConvenzioniService {
         return indirizzoAzienda;
       } 
     }
-  }
-  
-  public Azienda ottieniAzienda(String idAzienda) throws IdAziendaNonValidoException {
-    Azienda azienda = aziendaRepository.findById(idAzienda);
-    
-    if(azienda == null) {
-      throw new IdAziendaNonValidoException();
-    } 
-    
-    return azienda;
   }
   
 }

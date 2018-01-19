@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -189,6 +190,8 @@ public class ProgettoFormativo {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
   private String nome;
+  
+  @Lob
   private String descrizione;
   private int status;
   
@@ -221,8 +224,5 @@ public class ProgettoFormativo {
   
   /** Costante che definisce la minima lunghezza del campo descrizione. */
   public static final int MIN_LUNGHEZZA_DESCRIZIONE = 2;
-  
-  /** Costante che definisce la massima lunghezza del campo descrizione. */
-  public static final int MAX_LUNGHEZZA_DESCRIZIONE = 255;
   
 }

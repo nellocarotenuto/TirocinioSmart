@@ -26,5 +26,4 @@
       </a>
 	  </div>
 	</div>
-	<div class="divider"></div>
 </c:forEach>

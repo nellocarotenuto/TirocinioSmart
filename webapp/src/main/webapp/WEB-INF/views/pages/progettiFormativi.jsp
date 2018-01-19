@@ -13,7 +13,7 @@
 	 		<div class="card single-row-header">
 	 			<div class="card-content">
 	 				<span class="card-title">
-	 					<spring:message code="${listaProgettiFormativi.nome}"/>
+	 					<spring:message code="${azienda.nome}"/>
 	 				</span>
 	 			</div>
 	 		</div>

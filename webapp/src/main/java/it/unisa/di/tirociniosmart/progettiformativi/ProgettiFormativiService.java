@@ -6,7 +6,6 @@ import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.IdAziendaNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
-import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
 import java.util.List;
 
@@ -35,11 +34,11 @@ public class ProgettiFormativiService {
    * Permette di richiedere al sistema il salvataggio di un progetto formativo. La procedura 
    * registra un progetto assegnandogli una {@link Azienda}.
    * 
-   * @param progetto {@link Progetto} che si vuole aggiungere tra i progetti dell'azienda.
+   * @param progetto {@link ProgettoFormativo} che si vuole aggiungere tra i progetti dell'azienda.
    * 
    * @pre progetto != null
    */
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   public void aggiungiProgettoFormativo(ProgettoFormativo progetto) throws Exception {
     progetto.setNome(validaNome(progetto.getNome()));
     progetto.setDescrizione(validaDescrizione(progetto.getDescrizione()));
@@ -54,7 +53,6 @@ public class ProgettiFormativiService {
     }
    
     progettoFormativoRepository.save(progetto);
-    
   }
   
   /**
@@ -69,6 +67,7 @@ public class ProgettiFormativiService {
    * @throws IdAziendaNonValidoException se l'identificatore passato come parametro non si riferisce
    *         ad alcun azienda
    */
+  @Transactional(rollbackFor = Exception.class)
   public List<ProgettoFormativo> elencaProgettiFormativi(String idAzienda) 
       throws IdAziendaNonValidoException {
     if (!aziendaRepository.existsById(idAzienda)) {
@@ -91,17 +90,18 @@ public class ProgettiFormativiService {
    * @return La stringa che rappresenta il nome da controllare bonificata
    * 
    * @throws NomeProgettoNonValidoException se il nome è nullo oppure se la sua lunghezza non 
-   *         rientra nell'intervallo che va da {@link UtenteRegistrato#MIN_LUNGHEZZA_NOME} a
-   *         {@link UtenteRegistrato#MAX_LUNGHEZZA_NOME}
+   *         rientra nell'intervallo che va da {@link ProgettoFormativo#MIN_LUNGHEZZA_NOME} a
+   *         {@link ProgettoFormativo#MAX_LUNGHEZZA_NOME}
    */
+  @Transactional(rollbackFor = Exception.class)
   public String validaNome(String nome) throws NomeProgettoNonValidoException {
     if (nome == null) {
       throw new NomeProgettoNonValidoException();
     } else {
       nome = nome.trim();
       
-      if (nome.length() < UtenteRegistrato.MIN_LUNGHEZZA_NOME
-          || nome.length() > UtenteRegistrato.MAX_LUNGHEZZA_NOME) {
+      if (nome.length() < ProgettoFormativo.MIN_LUNGHEZZA_NOME
+          || nome.length() > ProgettoFormativo.MAX_LUNGHEZZA_NOME) {
         throw new NomeProgettoNonValidoException();
       } else {
         return nome;
@@ -116,9 +116,8 @@ public class ProgettiFormativiService {
    * 
    * @return La stringa che rappresenta la descrizione da controllare bonificata
    * 
-   * @throws DescrizioneNonValidaException se la descrizione è nulla oppure se la sua lunghezza non 
-   *         rientra nell'intervallo che va da {@link UtenteRegistrato#MIN_LUNGHEZZA_DESCRIZIONE} a
-   *         {@link UtenteRegistrato#MAX_LUNGHEZZA_DESCRIZIONE}
+   * @throws DescrizioneNonValidaException se la descrizione è nulla oppure se la sua lunghezza è
+   *         minore di {@link ProgettoFormativo#MAX_LUNGHEZZA_DESCRIZIONE}
    */
   public String validaDescrizione(String descrizione) 
         throws DescrizioneNonValidaException {
@@ -127,8 +126,7 @@ public class ProgettiFormativiService {
     } else {
       descrizione = descrizione.trim();
       
-      if (descrizione.length() < UtenteRegistrato.MIN_LUNGHEZZA_NOME
-          || descrizione.length() > UtenteRegistrato.MAX_LUNGHEZZA_NOME) {
+      if (descrizione.length() < ProgettoFormativo.MIN_LUNGHEZZA_DESCRIZIONE) {
         throw new DescrizioneNonValidaException();
       } else {
         return descrizione;
