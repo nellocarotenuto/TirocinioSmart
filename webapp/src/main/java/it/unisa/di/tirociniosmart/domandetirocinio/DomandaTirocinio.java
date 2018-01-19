@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 /**
@@ -317,8 +318,14 @@ public class DomandaTirocinio {
   private LocalDateTime data;
   private LocalDate inizioTirocinio;
   private LocalDate fineTirocinio;
+  
+  @Lob
   private String commentoAzienda;
+  
+  @Lob
   private String commentoStudente;
+  
+  @Lob
   private String commentoImpiegato;
   private int cfu;
   
