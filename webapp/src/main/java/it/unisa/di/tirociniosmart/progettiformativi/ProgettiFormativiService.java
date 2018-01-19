@@ -1,12 +1,15 @@
 package it.unisa.di.tirociniosmart.progettiformativi;
 
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
+import it.unisa.di.tirociniosmart.convenzioni.AziendaRepository;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
-import it.unisa.di.tirociniosmart.studenti.Studente;
-import it.unisa.di.tirociniosmart.studenti.StudenteRepository;
+import it.unisa.di.tirociniosmart.convenzioni.IdAziendaEsistenteException;
+import it.unisa.di.tirociniosmart.convenzioni.IdAziendaNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,9 @@ public class ProgettiFormativiService {
   
   @Autowired
   private ProgettoFormativoRepository progettoFormativoRepository;
+  
+  @Autowired
+  private AziendaRepository aziendaRepository;
 
   
   /**
@@ -49,6 +55,21 @@ public class ProgettiFormativiService {
     progettoFormativoRepository.save(progetto);
     
   }
+  
+  
+  public List<ProgettoFormativo> elencaProgettiFormativi(String idAzienda) 
+      throws RichiestaNonAutorizzataException, IdAziendaNonValidoException {
+    if (!aziendaRepository.existsById(idAzienda)) {
+      throw new IdAziendaNonValidoException();
+    }
+    
+    List<ProgettoFormativo> progettiFormativi = 
+                   progettoFormativoRepository.findAllByStatusAndAziendaId(ProgettoFormativo.ATTIVO,
+                                                                           idAzienda);
+    
+    return progettiFormativi;
+  }
+ 
   
   /**
    * Controlla che il nome di un progetto sia specificato e che la sua lunghezza rispetti 

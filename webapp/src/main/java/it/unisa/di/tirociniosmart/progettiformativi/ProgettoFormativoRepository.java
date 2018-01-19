@@ -29,14 +29,20 @@ public interface ProgettoFormativoRepository extends JpaRepository<ProgettoForma
   ProgettoFormativo findById(long id);
   
   /**
-   * Permette di ottenere l'elenco dei progetti formativi di una determina azienda.
+   * Permette di ottenere l'elenco dei progetti formativi di una determina azienda e determinato
+   * status.
    * 
    * @param idAzienda Stringa che rappresenta l'id dell'azienda 
+   * 
+   * @param status int che rapressenta lo statud del progetto
    *           
    * @return Lista di {@link ProgettoFormativo} che rappresenta la lista dei progetti formativi
    *                                         
    * @pre idAzienda != null
+   *
+   * @pre status == {@link ProgettoFormativo#ATTIVO} or 
+   *      status == {@link ProgettoFormativo#ARCHIVIATO}
    * 
    */
-  List<ProgettoFormativo> findAllByAziendaId(String idAzienda);
+  List<ProgettoFormativo> findAllByStatusAndAziendaId(int status, String idAzienda);
 }
