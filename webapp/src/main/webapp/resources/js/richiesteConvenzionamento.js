@@ -13,3 +13,10 @@ $(document).ready(function() {
     M.Tooltip.init(tooltips[j]);
   }
 });
+
+$(document).ready(function() {
+  var tooltips = $('.modal');
+  for(var j = 0; j < tooltips.length; j++) {
+    M.Modal.init(tooltips[j]);
+  }
+});
