@@ -76,6 +76,15 @@ a.tooltipped.tooltipped-icon {
 	font-size: 1.6rem;
 }
 
+.card.list > .card-content > .row {
+	margin-bottom: 0;
+	padding: 20px;
+}
+
+.card.list > .card-content > .row h5 {
+  margin-top: 0;
+}
+
 @media (max-width: 600px) {
   #navbar .brand-logo img {
     height: 48px;

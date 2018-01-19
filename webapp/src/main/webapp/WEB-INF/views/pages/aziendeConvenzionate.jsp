@@ -22,7 +22,7 @@
 	 </div> 
 	 <div class="row">
 	 	<div class="col s12">
-	 		<div class="card">
+	 		<div class="card list">
 	 			<div class="card-content" style="padding: 0px">
 	 				<jsp:include page="/WEB-INF/views/lists/aziendeConvenzionate.jsp"/>
 	 			</div>

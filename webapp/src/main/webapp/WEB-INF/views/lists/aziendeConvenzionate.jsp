@@ -7,19 +7,21 @@
 
 <c:forEach items="${listaAziendeConvenzionate}" var="current" varStatus="loop"> 
 	<div class="row valign-wrapper" style="margin-bottoom:0px" style="padding: 10 0px">
-		<div class="col s1 center align">
+		<div class="col s1 center-align">
 			<i class="small material-icons circle">business</i>
 		</div>
-		<div class="col s7">
-			<h5><span class="title"><c:out value="${current.nome}"/></span></h5>
-      <p> 
-			<c:out value="${current.indirizzo}"/>
-      </p>
-		</div>
-		<div class="col s4 center align">
-			<a href="/azienda/${current.id}"
-				 class="waves-effect waves-teal btn-flat">Progetti Formativi</a>
-		</div>
+		<div class="col s6">
+		  <h5>
+		    <c:out value="${current.nome}"/>
+		  </h5>
+		  <p class="grey-text"> 
+	      <c:out value="${current.indirizzo}"/>
+	    </p>
+	  </div>
+	  <div class="col s5">
+	    <a href="/azienda/${current.id}"
+         class="waves-effect btn-flat right">Progetti Formativi</a>
+	  </div>
 	</div>
 	<div class="divider"></div>
 </c:forEach>
