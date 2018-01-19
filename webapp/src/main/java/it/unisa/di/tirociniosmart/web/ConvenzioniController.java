@@ -196,4 +196,42 @@ public class ConvenzioniController {
 
     return "redirect:/dashboard/richieste/convenzionamento";
   }
+  
+  /**
+   * Elabora le richieste di convenzionamento effettuandone il rifiuto.
+   * 
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
+   *        disponibili anche dopo un redirect
+   *        
+   * @param idRichiesta Long che indica la richiesta da rifiutare
+   * 
+   * @param commentoRichiesta Stringa che indica il commento da associare alla richiesta
+   * 
+   * @return Stringa indicante la vista in caso di insuccesso nel rifiuto,
+   *         stringa indicante l'URL della pagina da mostrare (tramite redirect) in caso di successo
+   *         Stringa indicante l'URL dell'homePage nel caso l'utente che tenta di fare l'operazione
+   *                 non è un impiegato dell'Ufficio Tirocini
+   */
+  @RequestMapping(value = "/dashboard/richieste/convenzionamento/rifiuta",
+                  method = RequestMethod.POST)
+  public String elaboraRifiutoRichiesta(RedirectAttributes redirectAttributes,
+                                        @RequestParam Long idRichiesta,
+                                        @RequestParam String commentoRichiesta) {
+    // La richiesta può essere rifiutata solo dall'impiegato dell'ufficio tirocini
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+    
+    try {
+      convenzioniService.rifiutaRichiestaConvenzionamento(idRichiesta, commentoRichiesta);
+      redirectAttributes.addFlashAttribute("testoNotifica", "toast.convenzioni.richiestaRifiutata");
+    } catch (Exception e) {
+      logger.severe(e.getMessage());
+      return "redirect:/errore";
+    }
+
+    return "redirect:/dashboard/richieste/convenzionamento";
+  }
 }
