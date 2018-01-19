@@ -3,7 +3,6 @@ package it.unisa.di.tirociniosmart.progettiformativi;
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.convenzioni.AziendaRepository;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
-import it.unisa.di.tirociniosmart.convenzioni.IdAziendaEsistenteException;
 import it.unisa.di.tirociniosmart.convenzioni.IdAziendaNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
@@ -12,6 +11,7 @@ import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @see ProgettoFormativo
  * @see ProgettoFormativoRepository
  */
+@Service
 public class ProgettiFormativiService {
   
   @Autowired
@@ -56,9 +57,20 @@ public class ProgettiFormativiService {
     
   }
   
-  
+  /**
+   * Permette di ottenere la lista dei progetti formativi di un'azienda a partire
+   * dall'identificatore di quest'ultima.
+   * 
+   * @param idAzienda Stringa che rappresenta l'identificatore dell'azienda
+   * 
+   * @return Lista di oggetti {@link ProgettoFormativo} associati all'azienda che ha idAzienda come
+   *         parametro
+   *         
+   * @throws IdAziendaNonValidoException se l'identificatore passato come parametro non si riferisce
+   *         ad alcun azienda
+   */
   public List<ProgettoFormativo> elencaProgettiFormativi(String idAzienda) 
-      throws RichiestaNonAutorizzataException, IdAziendaNonValidoException {
+      throws IdAziendaNonValidoException {
     if (!aziendaRepository.existsById(idAzienda)) {
       throw new IdAziendaNonValidoException();
     }
@@ -69,7 +81,6 @@ public class ProgettiFormativiService {
     
     return progettiFormativi;
   }
- 
   
   /**
    * Controlla che il nome di un progetto sia specificato e che la sua lunghezza rispetti 
