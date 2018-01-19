@@ -6,7 +6,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <c:forEach items="${listaAziendeConvenzionate}" var="current" varStatus="loop"> 
-	<div class="row valign-wrapper" style="margin-bottoom:0px" style="padding: 10 0px">
+	<div class="row valign-wrapper">
 		<div class="col s1 center-align">
 			<i class="small material-icons circle">business</i>
 		</div>
@@ -14,13 +14,16 @@
 		  <h5>
 		    <c:out value="${current.nome}"/>
 		  </h5>
-		  <p class="grey-text"> 
+		  <p class="grey-text">
 	      <c:out value="${current.indirizzo}"/>
 	    </p>
 	  </div>
 	  <div class="col s5">
 	    <a href="/azienda/${current.id}"
-         class="waves-effect btn-flat right">Progetti Formativi</a>
+         class="btn waves-effect right">
+        <i class="material-icons right">business_center</i>
+        <spring:message code="button.progettiFormativi.label" />
+      </a>
 	  </div>
 	</div>
 	<div class="divider"></div>
