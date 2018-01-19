@@ -18,7 +18,8 @@
 
 
 <c:forEach items="${listaRichiesteConvenzionamento}" var="current" varStatus="loop">
-	<c:set var="idModal" value="convenzione-modal-${loop.index}" />
+	<c:set var="idModalRifiuto" value="convenzionamento-modal-rifiuto-${loop.index}" />
+  <c:set var="idModalApprovazione" value="convenzionamento-modal-approvazione-${loop.index}" />
 		<ul id="idCollapsible" class="collapsible">
 			<li>
 				<div class="collapsible-header">
@@ -28,142 +29,154 @@
         	</div>
         	<div class="col s4 right-align">
        	   <span class="right-align"><tags:localDateTime date="${current.dataRichiesta}"/></span>
-        </div>
-      </div>
+      	  </div>
+   	  	</div>
       
-      <div class="collapsible-body">
-        <div class="row row-group">
-        
-          <div class="col s12">
-            <div class="row valign-wrapper" >
-              <div class="col s1">
-              	<a class="tooltipped tooltipped-icon" 
-              		 data-position="right"
-              		 data-delay="50"
-              		 data-tooltip="${partitaIvaLabel}">
-              		 <i class ="small material-icons">business_center</i>
-              	</a>      
-		          </div>
-		          <div class="col s11">
-		            <c:out value="${current.azienda.partitaIva}" />
-		          </div>
-            </div>
-          </div>
-          
-          <div class="col s12">
-            <div class="row valign-wrapper">
-	            <div class="col s1">
-	            <a class="tooltipped tooltipped-icon" 
-              		 data-position="right"
-              		 data-delay="50"
-              		 data-tooltip="${indirizzoLabel}">
-              		 <i class="small material-icons">location_city</i>
-              	</a>
-		          </div>
-		          <div class="col s11">
-		            <c:out value="${current.azienda.indirizzo}"/>
-		          </div>
-            </div>
-          </div>
-          
-          <div class="col s12">
-            <div class="row valign-wrapper">
-              <div class="col s1">
-              	<a class="tooltipped tooltipped-icon" 
-              		 data-position="right"
-              		 data-delay="50"
-              		 data-tooltip="${senzaBarriereLabel}">
-              		 <i class ="small material-icons">accessible</i>
-              	</a>
-		          </div>
-		          
-		          <div class="col s11">
-		            <c:choose>
-		              <c:when test="${current.azienda.senzaBarriere == 'true'}">
-		                <c:out value="${accessibileLabel}"/>
-		              </c:when>
-		              <c:when test="${current.azienda.senzaBarriere == 'false'}">
-		               <c:out value="${inaccessibileLabel}"/>
-		              </c:when>
-		            </c:choose>
-		          </div>
-            </div>
-          </div>
-                  
-          	<div class="col s12">
-          		<div class="row valign-wrapper">
-          			<div class="col s1">
-          				<a class="tooltipped tooltipped-icon" 
-              			 data-position="right"
+	      <div class="collapsible-body">
+	        <div class="row row-group">
+	        
+	          <div class="col s12">
+	            <div class="row valign-wrapper" >
+	              <div class="col s1">
+	              	<a class="tooltipped tooltipped-icon" 
+	              		 data-position="right"
 	              		 data-delay="50"
-	              		 data-tooltip="${delegatoLabel}">
-              		  <i class ="small material-icons">face</i>
-              		</a>
-          			</div>
-          			<div class="col s11">
-          				<c:out value="${current.azienda.delegato.nome}"/>
-          				<c:out value="${current.azienda.delegato.cognome}"/>
-          			</div>	
-          		</div>
-          	</div>
-          	
-          	<div class="col s12">
-          		<div class="row valign-wrapper">
-          			<div class="col s1">
-          				<a class="tooltipped tooltipped-icon" 
-              			 data-position="right"
+	              		 data-tooltip="${partitaIvaLabel}">
+	              		 <i class ="small material-icons">business_center</i>
+	              	</a>      
+			          </div>
+			          <div class="col s11">
+			            <c:out value="${current.azienda.partitaIva}" />
+			          </div>
+	            </div>
+	          </div>
+	          
+	          <div class="col s12">
+	            <div class="row valign-wrapper">
+		            <div class="col s1">
+		            <a class="tooltipped tooltipped-icon" 
+	              		 data-position="right"
 	              		 data-delay="50"
-	              		 data-tooltip="${sessoDelegatoLabel}">
-              		  <i class ="small material-icons">wc</i>
-              		</a>
-          			</div>
-          			<div class="col s11">
-          				<c:choose>
-		             	 <c:when test="${current.azienda.delegato.sesso == 'M'}">
-		              	  <c:out value="${maschileDelegatoLabel}"/>
-		             	 </c:when>
-		            	  <c:when test="${current.azienda.delegato.sesso == 'F'}">
-		             	  <c:out value="${femminileDelegatoLabel}"/>
-		             	 </c:when>
-		            </c:choose> 
-          			</div>	
-          		</div>
-          	</div>
-          	
-          	<div class="col s12">
-          		<div class="row valign-wrapper">
-          			<div class="col s1">
-          				<a class="tooltipped tooltipped-icon" 
-              			 data-position="right"
+	              		 data-tooltip="${indirizzoLabel}">
+	              		 <i class="small material-icons">location_city</i>
+	              	</a>
+			          </div>
+			          <div class="col s11">
+			            <c:out value="${current.azienda.indirizzo}"/>
+			          </div>
+	            </div>
+	          </div>
+	          
+	          <div class="col s12">
+	            <div class="row valign-wrapper">
+	              <div class="col s1">
+	              	<a class="tooltipped tooltipped-icon" 
+	              		 data-position="right"
 	              		 data-delay="50"
-	              		 data-tooltip="${emailDelegatoLabel}">
-              		  <i class ="small material-icons">email</i>
-              		</a>
-          			</div>
-          			<div class="col s11">
-          				<c:out value="${current.azienda.delegato.email}"/> 
-          			</div>	
-          		</div>
-          	</div>
-          	
-          	<div class="col s12">
-          		<div class="row valign-wrapper">
-          			<div class="col s1">
-          				<a class="tooltipped tooltipped-icon" 
-              			 data-position="right"
-	              		 data-delay="50"
-	              		 data-tooltip="${telefonoDelegatoLabel}">
-              		  <i class ="small material-icons">phone</i>
-              		</a>
-          			</div>
-          			<div class="col s11">
-          				<c:out value="${current.azienda.delegato.telefono}"/> 
-          			</div>	
-          		</div>
-          	</div>
-                 
-         </div>
-        </div>
+	              		 data-tooltip="${senzaBarriereLabel}">
+	              		 <i class ="small material-icons">accessible</i>
+	              	</a>
+			          </div>
+			          
+			          <div class="col s11">
+			            <c:choose>
+			              <c:when test="${current.azienda.senzaBarriere == 'true'}">
+			                <c:out value="${accessibileLabel}"/>
+			              </c:when>
+			              <c:when test="${current.azienda.senzaBarriere == 'false'}">
+			               <c:out value="${inaccessibileLabel}"/>
+			              </c:when>
+			            </c:choose>
+			          </div>
+	            </div>
+	          </div>
+	                  
+	          	<div class="col s12">
+	          		<div class="row valign-wrapper">
+	          			<div class="col s1">
+	          				<a class="tooltipped tooltipped-icon" 
+	              			 data-position="right"
+		              		 data-delay="50"
+		              		 data-tooltip="${delegatoLabel}">
+	              		  <i class ="small material-icons">face</i>
+	              		</a>
+	          			</div>
+	          			<div class="col s11">
+	          				<c:out value="${current.azienda.delegato.nome}"/>
+	          				<c:out value="${current.azienda.delegato.cognome}"/>
+	          			</div>	
+	          		</div>
+	          	</div>
+	          	
+	          	<div class="col s12">
+	          		<div class="row valign-wrapper">
+	          			<div class="col s1">
+	          				<a class="tooltipped tooltipped-icon" 
+	              			 data-position="right"
+		              		 data-delay="50"
+		              		 data-tooltip="${sessoDelegatoLabel}">
+	              		  <i class ="small material-icons">wc</i>
+	              		</a>
+	          			</div>
+	          			<div class="col s11">
+	          				<c:choose>
+			             	 <c:when test="${current.azienda.delegato.sesso == 'M'}">
+			              	  <c:out value="${maschileDelegatoLabel}"/>
+			             	 </c:when>
+			            	  <c:when test="${current.azienda.delegato.sesso == 'F'}">
+			             	  <c:out value="${femminileDelegatoLabel}"/>
+			             	 </c:when>
+			            </c:choose> 
+	          			</div>	
+	          		</div>
+	          	</div>
+	          	
+	          	<div class="col s12">
+	          		<div class="row valign-wrapper">
+	          			<div class="col s1">
+	          				<a class="tooltipped tooltipped-icon" 
+	              			 data-position="right"
+		              		 data-delay="50"
+		              		 data-tooltip="${emailDelegatoLabel}">
+	              		  <i class ="small material-icons">email</i>
+	              		</a>
+	          			</div>
+	          			<div class="col s11">
+	          				<c:out value="${current.azienda.delegato.email}"/> 
+	          			</div>	
+	          		</div>
+	          	</div>
+	          	
+	          	<div class="col s12">
+	          		<div class="row valign-wrapper">
+	          			<div class="col s1">
+	          				<a class="tooltipped tooltipped-icon" 
+	              			 data-position="right"
+		              		 data-delay="50"
+		              		 data-tooltip="${telefonoDelegatoLabel}">
+	              		  <i class ="small material-icons">phone</i>
+	              		</a>
+	          			</div>
+	          			<div class="col s11">
+	          				<c:out value="${current.azienda.delegato.telefono}"/> 
+	          			</div>	
+	          		</div>
+	          	</div>
+	                 
+	         </div>
+	         <div class="row">
+	          <div class="col s12 right-align">
+	            <a class="btn red white-text waves-effect waves-light modal-trigger"
+	               href="#<c:out value="${idModalRifiuto}"/>">
+	              <spring:message code="form.rifiuta.label" />
+	            </a>
+	            <a class="btn green white-text waves-effect waves-light modal-trigger"
+	               href="#<c:out value="${idModalApprovazione}"/>">
+	              <spring:message code="form.approva.label" />
+	            </a>
+	          </div>
+	        </div>
+	      </div>
 			</li>
 		</ul>
 		
