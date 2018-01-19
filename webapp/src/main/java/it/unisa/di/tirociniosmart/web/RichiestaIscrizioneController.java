@@ -1,7 +1,10 @@
 package it.unisa.di.tirociniosmart.web;
 
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.studenti.CommentoRichiestaIscrizioneNonValidoException;
+import it.unisa.di.tirociniosmart.studenti.IdRichiestaIscrizioneNonValidoException;
 import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizione;
+import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneGestitaException;
 import it.unisa.di.tirociniosmart.studenti.Studente;
 import it.unisa.di.tirociniosmart.studenti.StudentiService;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
@@ -152,7 +155,14 @@ public class RichiestaIscrizioneController {
     
     try {
       studentiService.approvaRichiestaIscrizione(idRichiesta);
-      redirectAttributes.addFlashAttribute("testoNotifica", "toast.iscrizioni.richiestaApprovata");
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                             "toast.iscrizioni.richiestaApprovata");
+    } catch (IdRichiestaIscrizioneNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.iscrizioni.richiestaIscrizioneInesistente");
+    } catch (RichiestaIscrizioneGestitaException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+          "toast.iscrizioni.richiestaGestita");
     } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
@@ -189,7 +199,17 @@ public class RichiestaIscrizioneController {
     
     try {
       studentiService.rifiutaRichiestaIscrizione(idRichiesta, commentoRichiesta);
-      redirectAttributes.addFlashAttribute("testoNotifica", "toast.iscrizioni.richiestaRifiutata");
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                             "toast.iscrizioni.richiestaRifiutata");
+    } catch (IdRichiestaIscrizioneNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.iscrizioni.richiestaIscrizioneInesistente");
+    } catch (RichiestaIscrizioneGestitaException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.iscrizioni.richiestaGestita");
+    } catch (CommentoRichiestaIscrizioneNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.iscrizioni.commentoRichiestaNonValido");
     } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
