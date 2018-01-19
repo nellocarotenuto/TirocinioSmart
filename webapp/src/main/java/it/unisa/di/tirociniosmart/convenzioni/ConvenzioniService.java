@@ -303,4 +303,14 @@ public class ConvenzioniService {
     }
   }
   
+  public Azienda ottieniAzienda(String idAzienda) throws IdAziendaNonValidoException {
+    Azienda azienda = aziendaRepository.findById(idAzienda);
+    
+    if(azienda == null) {
+      throw new IdAziendaNonValidoException();
+    } 
+    
+    return azienda;
+  }
+  
 }
