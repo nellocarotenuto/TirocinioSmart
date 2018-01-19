@@ -4,6 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <spring:message var="titoloPagina" scope="request" code="pagina.home.titolo" />
+<spring:message var="titoloTab" scope="request" code="tab.home.titolo" />
+
 <spring:message var="testoNotifica" code="${testoNotifica}" />
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">

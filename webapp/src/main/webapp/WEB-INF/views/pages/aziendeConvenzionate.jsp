@@ -3,7 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<spring:message var="titoloPagina" scope="request" code="pagina.aziendeConvenzionate.titolo" />
+<spring:message var="titoloPagina" scope="request" code="pagina.aziende.titolo" />
+<spring:message var="titoloTab" scope="request" code="tab.aziende.titolo" />
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
@@ -13,7 +14,7 @@
 	 		<div class="card single-row-header">
 	 			<div class="card-content">
 	 				<span class="card-title">
-	 					<spring:message code="pagina.aziendeConvenzionate.titolo"/>
+	 					<spring:message code="pagina.aziende.titolo"/>
 	 				</span>
 	 			</div>
 	 		</div>

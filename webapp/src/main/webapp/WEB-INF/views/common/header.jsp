@@ -2,8 +2,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<spring:message var="titoloPaginaHome" code="pagina.home.titolo" />
-<spring:message var="titoloPaginaAziende" code="pagina.aziende.titolo" />
+<spring:message var="titoloTabHome" code="tab.home.titolo" />
+<spring:message var="titoloTabAziende" code="tab.aziende.titolo" />
+
 <spring:message var="testoNotifica" code="${testoNotifica}" />
 
 <!DOCTYPE html>
@@ -103,15 +104,15 @@
 	    <div class="nav-content">
 	      <ul class="tabs tabs-transparent">
 	        <li class="tab">
-	          <a <c:if test="${param.titoloPagina == titoloPaginaHome}">class="active"</c:if>
+	          <a <c:if test="${titoloTab == titoloTabHome}">class="active"</c:if>
 	             href="/">
-	            <spring:message code="pagina.home.titolo" />
+	            <spring:message code="tab.home.titolo" />
 	          </a>
 	        </li>
 	        <li class="tab">
-	          <a <c:if test="${param.titoloPagina == titoloPaginaAziende}">class="active"</c:if>
+	          <a <c:if test="${titoloTab == titoloTabAziende}">class="active"</c:if>
 	             href="/aziende" >
-	            <spring:message code="pagina.aziende.titolo" />
+	            <spring:message code="tab.aziende.titolo" />
 	          </a>
 	        </li>
 	      </ul>
