@@ -213,4 +213,16 @@ public class ProgettoFormativo {
    */
   public static final int ARCHIVIATO = 2;
   
+  /** Costante che definisce la minima lunghezza del campo nome. */
+  public static final int MIN_LUNGHEZZA_NOME = 2;
+  
+  /** Costante che definisce la massima lunghezza del campo nome. */
+  public static final int MAX_LUNGHEZZA_NOME = 255;
+  
+  /** Costante che definisce la minima lunghezza del campo descrizione. */
+  public static final int MIN_LUNGHEZZA_DESCRIZIONE = 2;
+  
+  /** Costante che definisce la massima lunghezza del campo descrizione. */
+  public static final int MAX_LUNGHEZZA_DESCRIZIONE = 255;
+  
 }
