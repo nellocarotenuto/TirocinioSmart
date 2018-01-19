@@ -54,7 +54,7 @@ public class ProgettiFormativiController {
     
       try {
         Azienda azienda= convenzioniService.ottieniAzienda(idAzienda);
-        model.addAttribute(azienda);
+        model.addAttribute("listaProgettiFormativi", azienda);
       } catch (IdAziendaNonValidoException e) {
         redirectAttributes.addFlashAttribute("testoNotifica",
             "toast.progettiFormativi.idNonValido");
