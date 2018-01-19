@@ -6,7 +6,7 @@
 
   <groupId>it.unisa.di.tirociniosmart</groupId>
   <artifactId>webapp</artifactId>
-  <version>0.0.5-ALPHA</version>
+  <version>0.0.6-ALPHA</version>
   <packaging>war</packaging>
 
   <name>webapp</name>
