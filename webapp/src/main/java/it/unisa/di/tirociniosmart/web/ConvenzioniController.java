@@ -3,7 +3,9 @@ package it.unisa.di.tirociniosmart.web;
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
+import it.unisa.di.tirociniosmart.convenzioni.IdRichiestaConvenzionamentoNonValidoException;
 import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoGestitaException;
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 
@@ -17,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -151,4 +154,46 @@ public class ConvenzioniController {
     return "pages/aziendeConvenzionate";
   }
   
+  /**
+   * Elabora le richieste di convenzionamento effettuandone l'approvazione.
+   * 
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
+   *        disponibili anche dopo un redirect
+   *        
+   * @param idRichiesta Long che indica la richiesta da approvare
+   * 
+   * @return Stringa indicante la vista in caso di insuccesso nell'approvazione,
+   *         stringa indicante l'URL della pagina da mostrare (tramite redirect) 
+   *                 in caso di successo,
+   *         Stringa indicante l'URL dell'homePage nel caso l'utente che tenta di fare l'operazione
+   *                 non è un impiegato dell'Ufficio Tirocini
+   */
+  @RequestMapping(value = "/dashboard/richieste/convenzionamento/approva",
+                  method = RequestMethod.POST)
+  public String elaboraApprovazioneRichiestaConvenzionamento(RedirectAttributes redirectAttributes,
+                                                             @RequestParam Long idRichiesta) {
+    // La richiesta può essere approvata solo dall'impiegato dell'ufficio tirocini
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+    
+    try {
+      convenzioniService.approvaRichiestaConvenzionamento(idRichiesta);
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.convenzioni.richiestaApprovata");
+    } catch (IdRichiestaConvenzionamentoNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                          "toast.convenzioni.richiestaConvenzionamentoInesistente");
+    } catch (RichiestaConvenzionamentoGestitaException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+          "toast.convenzioni.richiestaGestita");
+    } catch (Exception e) {
+      logger.severe(e.getMessage());
+      return "redirect:/errore";
+    }
+
+    return "redirect:/dashboard/richieste/convenzionamento";
+  }
 }
