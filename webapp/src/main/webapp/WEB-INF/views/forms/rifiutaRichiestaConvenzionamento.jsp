@@ -9,7 +9,7 @@
     <h4>
 	    <spring:message code="pagina.rifiutaRichiestaConvenzionamento.titolo" />
 	  </h4>
-	  <p><spring:message code="richiestaConvenzionamento.rifiuta.messaggio" /></p>
+	  <p><spring:message code="richiesteConvenzionamento.rifiuta.messaggio" /></p>
 	  <form action="/dashboard/richieste/convenzionamento/rifiuta"
 	        method="POST">
 	    
