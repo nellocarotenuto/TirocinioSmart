@@ -82,6 +82,25 @@ public class ProgettiFormativiService {
   }
   
   /**
+   * Permette di archiviare un progetto formativo con un determinato id.
+   * 
+   * @param idProgetto long che rappresenta l'identificatore del progetto
+   *         
+   * @throws IdProgettoFormativoInesistenteException se l'identificatore passato come parametro 
+   *         non si riferisce ad alcun progetto
+   */
+  @Transactional(rollbackFor = Exception.class)
+  public void archiviaProgettoFormativo(long idProgetto) 
+      throws IdProgettoFormativoInesistenteException {
+    if (!progettoFormativoRepository.existsById(idProgetto)) {
+      throw new IdProgettoFormativoInesistenteException();
+    }
+    
+    progettoFormativoRepository.findById(idProgetto).setStatus(ProgettoFormativo.ARCHIVIATO);
+    
+  }
+  
+  /**
    * Controlla che il nome di un progetto sia specificato e che la sua lunghezza rispetti 
    * i parametri prestabiliti.
    * 
