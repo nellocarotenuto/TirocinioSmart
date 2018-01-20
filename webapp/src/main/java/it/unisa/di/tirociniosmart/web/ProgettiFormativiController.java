@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,11 +29,13 @@ public class ProgettiFormativiController {
   private Logger logger = Logger.getLogger(this.getClass().getSimpleName());
   
   @Autowired
-  private ProgettiFormativiService progettiFormativiService;
+  private ProgettiFormativiService progettoFormativoService;
   
   @Autowired
   private ConvenzioniService convenzioniService;
   
+  @Autowired
+  private ProgettoFormativoFormValidator formValidator;
   
   /**
    * Fornise l'elenco dei progetti formativi messi a disposizione da un'azienda.
@@ -64,4 +68,61 @@ public class ProgettiFormativiController {
     return "pages/progettiFormativi";
   }
   
+  /**
+   * Elabora l'aggiunta di un progetto formativo effettuandone la validazione
+   * 
+   * @param progettoFormativoForm {@link ProgettoFormativoForm} che incapsula gli input utente.
+   *        <b>Iniettato dalla dispatcher servlet</b>.
+   * 
+   * @param result Incapsula gli errori di validazione per poi passarli alla vista delegata per la 
+   *        presentazione all'utente
+   * 
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
+   *        disponibili anche dopo un redirect
+   * 
+   * @return Stringa indicante la vista delegata alla presentazione del form in caso di insuccesso,
+   *         stringa indicante l'URL dei progetti formativi dell'azienda (tramite redirect) 
+   *         in caso di successo
+   */
+  
+  @RequestMapping(value = "/azienda/aggiungiProgettoFormativo", method = RequestMethod.POST)
+  public String aggiungiProgettoFormativo(@ModelAttribute("progettoFormativoForm")
+                                          ProgettoFormativoForm progettoFormativoForm, 
+                                          Model model,
+                                          BindingResult result,
+                                          RedirectAttributes redirectAttributes) {
+    
+    //Validator
+ // Controlla la validità del form ricevuto come parametro e salva il risultato in result
+    formValidator.validate(progettoFormativoForm, result);
+    
+    // Redirigi l'utente alla pagina del form se sono stati rilevati degli errori, altrimenti
+    // istanzia un oggetto azienda e richiedine il salvataggio
+    if (result.hasErrors()) {
+      redirectAttributes
+          .addFlashAttribute("org.springframework.validation.BindingResult.progettoFormativoForm",
+                             result);
+      redirectAttributes.addFlashAttribute("progettoFormativoForm", progettoFormativoForm);
+      redirectAttributes.addFlashAttribute("testoNotifica", "toast.convenzioni.richiestaNonValida");
+      //non sapevo cosa mettere :)))
+      return "redirect:/";
+    }
+    
+    //Instanzia un nuovo oggetto ProgettoFormativo. Redirigi verso errore nel caso
+    //qualcosa vada storto
+    ProgettoFormativo progettoFormativo = new ProgettoFormativo();
+    progettoFormativo.setNome(progettoFormativoForm.getNome());
+    progettoFormativo.setDescrizione(progettoFormativoForm.getDescrizione());
+    
+    
+    try {
+      progettoFormativoService.aggiungiProgettoFormativo(progettoFormativo);
+      redirectAttributes.addFlashAttribute("testoNotifica", "toast.progettoFormativo.aggiunto");
+    } catch (Exception e) {
+      logger.severe(e.getMessage());
+      return "redirect:/errore";
+    }
+    
+    return "redirect:/azienda/progettiFormativi";
+  }
 }
