@@ -152,7 +152,7 @@ public class ConvenzioniService {
     } else {
       commento = commento.trim();
       
-      if (commento.equals("")) {
+      if (commento.length() < RichiestaConvenzionamento.MIN_LUNGHEZZA_COMMENTO) {
         throw new CommentoRichiestaConvenzionamentoNonValidoException();
       } else {
         richiesta.setCommentoUfficioTirocini(commento);
