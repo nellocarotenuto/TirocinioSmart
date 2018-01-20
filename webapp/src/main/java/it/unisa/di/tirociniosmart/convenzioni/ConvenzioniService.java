@@ -1,5 +1,8 @@
 package it.unisa.di.tirociniosmart.convenzioni;
 
+import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
+import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
@@ -42,6 +45,11 @@ public class ConvenzioniService {
    */
   @Transactional(rollbackFor = Exception.class)
   public void registraRichiestaConvenzionamento(Azienda azienda) throws Exception {
+    // Un utente già registrato non può inviare richieste di convenzionamento
+    if (AutenticazioneHolder.getUtente() != null) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     // Valida i campi dell'azienda
     azienda.setId(validaIdAzienda(azienda.getId()));
     azienda.setPartitaIva(validaPartitaIvaAzienda(azienda.getPartitaIva()));
@@ -78,11 +86,19 @@ public class ConvenzioniService {
    * 
    * @throws RichiestaConvenzionamentoGestitaException se la richiesta identificata da idRichiesta
    *         si trova in uno stato diverso da quello in attesa
+   *         
+   * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare le richieste di
+   *         convenzionamento non è un delegato aziendale
    */
   @Transactional(rollbackFor = Exception.class)
   public void approvaRichiestaConvenzionamento(long idRichiesta)
          throws IdRichiestaConvenzionamentoNonValidoException,
-                RichiestaConvenzionamentoGestitaException {
+                RichiestaConvenzionamentoGestitaException, RichiestaNonAutorizzataException {
+    // Controlla che l'utente che ha effettuato la richiesta sia un impiegato dell'ufficio tirocini
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     // Controlla che la richiesta esista
     RichiestaConvenzionamento richiesta = richiestaConvenzionamentoRepository.findById(idRichiesta);
     if (richiesta == null) {
@@ -111,12 +127,21 @@ public class ConvenzioniService {
    *         
    * @throws CommentoRichiestaConvenzionamentoNonValidoException se il commento da associare alla
    *         richiesta è nullo o vuoto
+   *         
+   * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare le richieste di
+   *         convenzionamento non è un delegato aziendale
    */
   @Transactional(rollbackFor = Exception.class)
   public void rifiutaRichiestaConvenzionamento(long idRichiesta, String commento)
          throws IdRichiestaConvenzionamentoNonValidoException,
                 RichiestaConvenzionamentoGestitaException,
-                CommentoRichiestaConvenzionamentoNonValidoException {
+                CommentoRichiestaConvenzionamentoNonValidoException,
+                RichiestaNonAutorizzataException {
+    // Controlla che l'utente che ha effettuato la richiesta sia un impiegato dell'ufficio tirocini
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     // Controlla che la richiesta esista
     RichiestaConvenzionamento richiesta = richiestaConvenzionamentoRepository.findById(idRichiesta);
     if (richiesta == null) {
@@ -129,6 +154,7 @@ public class ConvenzioniService {
     } else {
       richiesta.setStatus(RichiestaConvenzionamento.RIFIUTATA);
     }
+    
     validaCommento(commento, richiesta);
   }
   
@@ -166,9 +192,17 @@ public class ConvenzioniService {
    * Permette di ottenere la lista delle richieste di convenzionamento non ancora gestite.
    * 
    * @return Lista di {@link RichiestaConvenzionamento} il cui status è "in attesa"
+   * 
+   * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare le richieste di
+   *         convenzionamento non è un delegato aziendale
    */
   @Transactional
-  public List<RichiestaConvenzionamento> elencaRichiesteConvenzionamentoInAttesa() {
+  public List<RichiestaConvenzionamento> elencaRichiesteConvenzionamentoInAttesa()
+         throws RichiestaNonAutorizzataException {
+    if (!(AutenticazioneHolder.getUtente() instanceof DelegatoAziendale)) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     return richiestaConvenzionamentoRepository.findAllByStatus(RichiestaConvenzionamento.IN_ATTESA);
   }
   

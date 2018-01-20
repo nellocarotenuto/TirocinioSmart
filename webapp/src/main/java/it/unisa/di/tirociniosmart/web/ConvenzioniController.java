@@ -7,8 +7,7 @@ import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.IdRichiestaConvenzionamentoNonValidoException;
 import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
 import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoGestitaException;
-import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
-import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
+import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -96,6 +95,10 @@ public class ConvenzioniController {
     try {
       convenzioniService.registraRichiestaConvenzionamento(azienda);
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.convenzioni.richiestaInviata");
+    } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
     } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
@@ -118,18 +121,21 @@ public class ConvenzioniController {
   @RequestMapping(value = "/dashboard/richieste/convenzionamento", method = RequestMethod.GET)
   public String visualizzaRichiesteConvenzionamento(RedirectAttributes redirectAttributes, 
                                                     Model model) {
-    // La lista delle richieste può essere visualizzata solo dall'impiegato dell'ufficio tirocini
-    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+    try {
+      // Ottieni la lista delle richieste di convenzionamento in attesa e presentala all'utente
+      List<RichiestaConvenzionamento> listaRichiesteConvenzionamento = 
+                                       convenzioniService.elencaRichiesteConvenzionamentoInAttesa();
+      model.addAttribute("listaRichiesteConvenzionamento", listaRichiesteConvenzionamento);
+
+      return "pages/richiesteConvenzionamento";
+    } catch (RichiestaNonAutorizzataException e) {
+      // Redirigi l'utente in home page se non ha le autorizzazioni necessarie per visualizzare
+      // la lista delle richieste
       redirectAttributes.addFlashAttribute("TestoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
       return "redirect:/";
     }
-    
-    List<RichiestaConvenzionamento> listaRichiesteConvenzionamento = 
-                                    convenzioniService.elencaRichiesteConvenzionamentoInAttesa(); 
-    model.addAttribute("listaRichiesteConvenzionamento", listaRichiesteConvenzionamento);
-    
-    return "pages/richiesteConvenzionamento";
+
   }
   
   
@@ -173,17 +179,14 @@ public class ConvenzioniController {
                   method = RequestMethod.POST)
   public String elaboraApprovazioneRichiestaConvenzionamento(RedirectAttributes redirectAttributes,
                                                              @RequestParam Long idRichiesta) {
-    // La richiesta può essere approvata solo dall'impiegato dell'ufficio tirocini
-    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
-      redirectAttributes.addFlashAttribute("testoNotifica", 
-                                           "toast.autorizzazioni.richiestaNonAutorizzata");
-      return "redirect:/";
-    }
-    
     try {
       convenzioniService.approvaRichiestaConvenzionamento(idRichiesta);
       redirectAttributes.addFlashAttribute("testoNotifica",
                                            "toast.convenzioni.richiestaApprovata");
+    } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
     } catch (IdRichiestaConvenzionamentoNonValidoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",
                                           "toast.convenzioni.richiestaConvenzionamentoInesistente");
@@ -217,18 +220,15 @@ public class ConvenzioniController {
                   method = RequestMethod.POST)
   public String elaboraRifiutoRichiesta(RedirectAttributes redirectAttributes,
                                         @RequestParam Long idRichiesta,
-                                        @RequestParam String commentoRichiesta) {
-    // La richiesta può essere rifiutata solo dall'impiegato dell'ufficio tirocini
-    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
-      redirectAttributes.addFlashAttribute("testoNotifica", 
-                                           "toast.autorizzazioni.richiestaNonAutorizzata");
-      return "redirect:/";
-    }
-    
+                                        @RequestParam String commentoRichiesta) {    
     try {
       convenzioniService.rifiutaRichiestaConvenzionamento(idRichiesta, commentoRichiesta);
       redirectAttributes.addFlashAttribute("testoNotifica",
                                            "toast.convenzioni.richiestaRifiutata");
+    } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+          "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
     } catch (IdRichiestaConvenzionamentoNonValidoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",
                                           "toast.convenzioni.richiestaConvenzionamentoInesistente");
@@ -242,7 +242,8 @@ public class ConvenzioniController {
       logger.severe(e.getMessage());
       return "redirect:/errore";
     }
-
+    
     return "redirect:/dashboard/richieste/convenzionamento";
   }
+  
 }

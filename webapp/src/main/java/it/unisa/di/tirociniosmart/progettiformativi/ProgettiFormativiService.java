@@ -6,6 +6,7 @@ import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.IdAziendaNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
 import java.util.List;
 
@@ -53,13 +54,13 @@ public class ProgettiFormativiService {
   public void aggiungiProgettoFormativo(ProgettoFormativo progetto)
          throws RichiestaNonAutorizzataException, NomeProgettoNonValidoException,
                 DescrizioneProgettoNonValidaException {
-    progetto.setNome(validaNome(progetto.getNome()));
-    progetto.setDescrizione(validaDescrizione(progetto.getDescrizione()));
-    progetto.setStatus(ProgettoFormativo.ATTIVO);
-   
     if (!(AutenticazioneHolder.getUtente() instanceof DelegatoAziendale)) {
       throw new RichiestaNonAutorizzataException();
     }
+    
+    progetto.setNome(validaNome(progetto.getNome()));
+    progetto.setDescrizione(validaDescrizione(progetto.getDescrizione()));
+    progetto.setStatus(ProgettoFormativo.ATTIVO);
     
     DelegatoAziendale delegato = (DelegatoAziendale) AutenticazioneHolder.getUtente();
     Azienda azienda = delegato.getAzienda();
@@ -103,12 +104,15 @@ public class ProgettiFormativiService {
    *         non si riferisce ad alcun progetto
    *         
    * @throws RichiestaNonAutorizzataException se l'utente che richiede l'esecuzione del metodo non
-   *         è un delegato aziendale
+   *         è un delegato aziendale oppure se il progetto identificato da idProgetto non è
+   *         associato all'azienda rappresentata dal delegato
    */
   @Transactional(rollbackFor = Exception.class)
   public void archiviaProgettoFormativo(long idProgetto) 
       throws IdProgettoFormativoInesistenteException, RichiestaNonAutorizzataException {
-    if (!(AutenticazioneHolder.getUtente() instanceof DelegatoAziendale)) {
+    UtenteRegistrato utente = AutenticazioneHolder.getUtente();
+    
+    if (!(utente instanceof DelegatoAziendale)) {
       throw new RichiestaNonAutorizzataException();
     }
     
@@ -116,7 +120,14 @@ public class ProgettiFormativiService {
       throw new IdProgettoFormativoInesistenteException();
     }
     
-    progettoFormativoRepository.findById(idProgetto).setStatus(ProgettoFormativo.ARCHIVIATO);
+    DelegatoAziendale delegato = (DelegatoAziendale) utente;
+    ProgettoFormativo progetto = progettoFormativoRepository.findById(idProgetto);
+    
+    if (!delegato.getAzienda().equals(progetto.getAzienda())) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
+    progetto.setStatus(ProgettoFormativo.ARCHIVIATO);
     
   }
   

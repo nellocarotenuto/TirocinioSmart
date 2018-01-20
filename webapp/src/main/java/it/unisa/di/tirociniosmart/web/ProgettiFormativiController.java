@@ -50,7 +50,9 @@ public class ProgettiFormativiController {
    * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli 
    *        disponibili anche dopo un redirect
    *        
-   * @return
+   * @return Stringa indicante la vista delegata alla presentazione della lista di progetti
+   *         formativi dell'azienda specificata in caso di successo, la stringa indicante la pagina
+   *         che elenca le aziende (tramite redirect) in caso di insuccesso
    */
   @RequestMapping(value = "/azienda/{idAzienda}", method = RequestMethod.GET)
   public String elencaProgettiFormativi(@PathVariable("idAzienda") String idAzienda, Model model, 
