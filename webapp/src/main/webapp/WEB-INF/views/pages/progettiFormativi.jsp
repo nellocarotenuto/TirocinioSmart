@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <spring:message var="titoloPagina" scope="request" code="pagina.progettiFormativi.titolo" />
+<spring:message code="progettoFormativo.aggiungi.label" var ="aggiungiProgettoLabel" />
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
@@ -18,8 +19,18 @@
 	 			</div>
 	 		</div>
 	 		<jsp:include page="/WEB-INF/views/lists/progettiFormativi.jsp"/>
-	 	</div>
-	 </div>
+		</div>
+	</div>
+	<c:if test="${utente['class'].simpleName == 'DelegatoAziendale'}">
+		<div class="row right-align">
+			<a class="tooltipped btn-floating btn-large waves-effect waves-light red" 
+				 data-delay="50"
+			   data-tooltip="${aggiungiProgettoLabel}"
+			   href="/WEB-INF/views/forms/aggiuntaProgettoFormativo.jsp">	
+				<i class="material-icons">add</i>		 	
+			</a>
+		</div>
+	</c:if>	
 </main>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
