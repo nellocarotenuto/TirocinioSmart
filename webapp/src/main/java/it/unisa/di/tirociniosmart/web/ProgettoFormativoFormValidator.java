@@ -1,15 +1,12 @@
 package it.unisa.di.tirociniosmart.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
-
-
 import it.unisa.di.tirociniosmart.progettiformativi.DescrizioneNonValidaException;
 import it.unisa.di.tirociniosmart.progettiformativi.NomeProgettoNonValidoException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
 
 /**
  * Classe che definisce un validatore per {@link ProgettoFormativoForm} tramite i servizi offerti da
@@ -20,9 +17,8 @@ import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
  * @see ProgettiFormativiService
  * 
  */
-
 @Component
-public class ProgettoFormativoFormValidator extends RegistrazioneFormValidator{
+public class ProgettoFormativoFormValidator extends RegistrazioneFormValidator {
   
   @Autowired
   private ProgettiFormativiService progettiFormativiService;
@@ -38,7 +34,7 @@ public class ProgettoFormativoFormValidator extends RegistrazioneFormValidator{
   
   /**
    * Effettua la validazione dell'oggetto target riportando gli errori
-   * nell'oggetto errors
+   * nell'oggetto errors.
    * 
    * @param target Oggetto da validare
    * 
@@ -53,13 +49,13 @@ public class ProgettoFormativoFormValidator extends RegistrazioneFormValidator{
     try {
       progettiFormativiService.validaNome(form.getNome());
     } catch (NomeProgettoNonValidoException e) {
-      errors.rejectValue("nomeProgettoFormativo", "toast.progettiFormativi.nomeNonValido");
+      errors.rejectValue("nome", "toast.progettiFormativi.nomeNonValido");
     } 
     
     try {
       progettiFormativiService.validaDescrizione(form.getDescrizione());
     } catch (DescrizioneNonValidaException e) {
-      errors.rejectValue("descrizioneProgettoFormativo", 
+      errors.rejectValue("descrizione", 
                          "toast.progettiFormativi.descrizioneNonValida");
     } 
     

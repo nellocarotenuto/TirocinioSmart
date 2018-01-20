@@ -1,16 +1,10 @@
 package it.unisa.di.tirociniosmart.web;
 
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
-import it.unisa.di.tirociniosmart.convenzioni.CommentoRichiestaConvenzionamentoNonValidoException;
 import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.IdAziendaNonValidoException;
-import it.unisa.di.tirociniosmart.convenzioni.IdRichiestaConvenzionamentoNonValidoException;
-import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoGestitaException;
-import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
-import it.unisa.di.tirociniosmart.progettiformativi.DescrizioneNonValidaException;
 import it.unisa.di.tirociniosmart.progettiformativi.IdProgettoFormativoInesistenteException;
-import it.unisa.di.tirociniosmart.progettiformativi.NomeProgettoNonValidoException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
@@ -147,7 +141,7 @@ public class ProgettiFormativiController {
    *         stringa indicante l'URL dei progetti formativi dell'azienda (tramite redirect) 
    *         in caso di successo
    */
-  @RequestMapping( value = "/azienda/progetti/archivia", method = RequestMethod.POST)
+  @RequestMapping(value = "/azienda/progetti/archivia", method = RequestMethod.POST)
   public String archiviaProgettoFormativo(RedirectAttributes redirectAttributes,
                                           @RequestParam Long idProgetto) {
     // Un progetto può essere archiviato solo dal delegato aziendale
@@ -164,12 +158,6 @@ public class ProgettiFormativiController {
     } catch (IdProgettoFormativoInesistenteException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",
                                           "toast.progettiFormativi.idNonValido");
-    } catch (NomeProgettoNonValidoException e) {
-      redirectAttributes.addFlashAttribute("testoNotifica",
-                                           "toast.progettiFormativi.nomeNonValido");
-    } catch (DescrizioneNonValidaException e) {
-      redirectAttributes.addFlashAttribute("testoNotifica",
-                                           "toast.progettiFormativi.descrizioneNonValida");
     } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
