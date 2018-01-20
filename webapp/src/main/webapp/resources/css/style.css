@@ -96,6 +96,47 @@ a.tooltipped.tooltipped-icon {
   margin-top: 0;
 }
 
+.vertical-nav .card-content {
+	padding: 0;
+}
+
+.vertical-nav ul {
+	padding: 0;
+	margin: 0;
+}
+
+.vertical-nav li {
+	float: none;
+  line-height: 48px;
+}
+
+.vertical-nav li.active {
+	background-color: rgba(50,50,50,0.06);
+}
+
+.vertical-nav li > a {
+	color: rgba(0,0,0,0.87);
+	display: block;
+	font-size: 14px;
+	font-weight: 500;
+	height: 48px;
+	line-height: 48px;
+	padding: 0 32px;
+}
+
+.vertical-nav li > a:hover {
+	background-color: rgba(0,0,0,0.05);
+}
+
+.vertical-nav li > a > i {
+	float: left;
+	height: 48px;
+	line-height: 48px;
+	margin: 0 32px 0 0;
+	width: 24px;
+	color: rgba(0,0,0,0.54);
+}
+
 @media (max-width: 600px) {
   #navbar .brand-logo img {
     height: 48px;

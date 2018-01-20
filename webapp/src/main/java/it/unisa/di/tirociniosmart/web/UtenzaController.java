@@ -1,9 +1,12 @@
 package it.unisa.di.tirociniosmart.web;
 
+import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoInAttesaException;
 import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamentoRifiutataException;
+import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneInAttesaException;
 import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneRifiutataException;
+import it.unisa.di.tirociniosmart.studenti.Studente;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.CredenzialiNonValideException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
@@ -20,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class AutenticazioneController {
+public class UtenzaController {
 
   @Autowired
   private UtenzaService utenzaService;
@@ -103,6 +106,36 @@ public class AutenticazioneController {
     }
     
     return "redirect:/";
+  }
+  
+  /**
+   * Consente di visualizzare la dashboard all'utente loggato.
+   * 
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
+   *        disponibili anche dopo un redirect
+   *        
+   * @return Stringa indicante la vista delegata alla presentazione del form in caso di insuccesso,
+   *         stringa indicante l'URL della home page (tramite redirect) in caso di successo
+   */
+  @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+  public String mostraDashboard(RedirectAttributes redirectAttributes) {
+    if (AutenticazioneHolder.getUtente() == null) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+          "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+    
+    UtenteRegistrato utente = AutenticazioneHolder.getUtente();
+    
+    if (utente instanceof ImpiegatoUfficioTirocini) {
+      return "pages/dashboardUfficioTirocini";
+    } else if (utente instanceof DelegatoAziendale) {
+      return "pages/dashboardAzienda";
+    } else if (utente instanceof Studente) {
+      return "pages/dashboardStudente";
+    }
+    
+    return "redirect:/errore";
   }
   
 }
