@@ -192,5 +192,8 @@ public class RichiestaIscrizione {
    * tirocini.
    */
   public static final int RIFIUTATA = 2;
+  
+  /** Costante che definisce la minima lunghezza del campo commentoUfficioTirocini. */
+  public static final int MIN_LUNGHEZZA_COMMENTO = 2;
 
 }
