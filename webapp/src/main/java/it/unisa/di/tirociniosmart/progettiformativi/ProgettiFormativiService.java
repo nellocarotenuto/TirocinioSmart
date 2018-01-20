@@ -37,20 +37,33 @@ public class ProgettiFormativiService {
    * @param progetto {@link ProgettoFormativo} che si vuole aggiungere tra i progetti dell'azienda.
    * 
    * @pre progetto != null
+   * 
+   * @throws RichiestaNonAutorizzataException se l'utente che richiede l'esecuzione del metodo non
+   *         è un delegato aziendale
+   * 
+   * @throws NomeProgettoNonValidoException se il nome del progetto formativo non rientra
+   *         nell'intervallo che va da {@link ProgettoFormativo#MIN_LUNGHEZZA_NOME} a 
+   *         {@link ProgettoFormativo#MAX_LUNGHEZZA_NOME}
+   *         
+   * @throws DescrizioneProgettoNonValidaException se la descrizione del progetto formativo non
+   *         rispetta il limite minimo di {@link ProgettoFormativo#MIN_LUNGHEZZA_DESCRIZIONE}
+   *         caratteri
    */
   @Transactional(rollbackFor = Exception.class)
-  public void aggiungiProgettoFormativo(ProgettoFormativo progetto) throws Exception {
+  public void aggiungiProgettoFormativo(ProgettoFormativo progetto)
+         throws RichiestaNonAutorizzataException, NomeProgettoNonValidoException,
+                DescrizioneProgettoNonValidaException {
     progetto.setNome(validaNome(progetto.getNome()));
     progetto.setDescrizione(validaDescrizione(progetto.getDescrizione()));
     progetto.setStatus(ProgettoFormativo.ATTIVO);
    
-    if (AutenticazioneHolder.getUtente() instanceof DelegatoAziendale) {
-      DelegatoAziendale delegato = (DelegatoAziendale) AutenticazioneHolder.getUtente();
-      Azienda azienda = delegato.getAzienda();
-      progetto.setAzienda(azienda);
-    } else {
+    if (!(AutenticazioneHolder.getUtente() instanceof DelegatoAziendale)) {
       throw new RichiestaNonAutorizzataException();
     }
+    
+    DelegatoAziendale delegato = (DelegatoAziendale) AutenticazioneHolder.getUtente();
+    Azienda azienda = delegato.getAzienda();
+    progetto.setAzienda(azienda);
    
     progettoFormativoRepository.save(progetto);
   }
@@ -88,10 +101,17 @@ public class ProgettiFormativiService {
    *         
    * @throws IdProgettoFormativoInesistenteException se l'identificatore passato come parametro 
    *         non si riferisce ad alcun progetto
+   *         
+   * @throws RichiestaNonAutorizzataException se l'utente che richiede l'esecuzione del metodo non
+   *         è un delegato aziendale
    */
   @Transactional(rollbackFor = Exception.class)
   public void archiviaProgettoFormativo(long idProgetto) 
-      throws IdProgettoFormativoInesistenteException {
+      throws IdProgettoFormativoInesistenteException, RichiestaNonAutorizzataException {
+    if (!(AutenticazioneHolder.getUtente() instanceof DelegatoAziendale)) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     if (!progettoFormativoRepository.existsById(idProgetto)) {
       throw new IdProgettoFormativoInesistenteException();
     }
@@ -135,18 +155,18 @@ public class ProgettiFormativiService {
    * 
    * @return La stringa che rappresenta la descrizione da controllare bonificata
    * 
-   * @throws DescrizioneNonValidaException se la descrizione è nulla oppure se la sua lunghezza è
-   *         minore di {@link ProgettoFormativo#MAX_LUNGHEZZA_DESCRIZIONE}
+   * @throws DescrizioneProgettoNonValidaException se la descrizione è nulla oppure se la sua
+   *         lunghezza è minore di {@link ProgettoFormativo#MAX_LUNGHEZZA_DESCRIZIONE}
    */
   public String validaDescrizione(String descrizione) 
-        throws DescrizioneNonValidaException {
+        throws DescrizioneProgettoNonValidaException {
     if (descrizione == null) {
-      throw new DescrizioneNonValidaException();
+      throw new DescrizioneProgettoNonValidaException();
     } else {
       descrizione = descrizione.trim();
       
       if (descrizione.length() < ProgettoFormativo.MIN_LUNGHEZZA_DESCRIZIONE) {
-        throw new DescrizioneNonValidaException();
+        throw new DescrizioneProgettoNonValidaException();
       } else {
         return descrizione;
       }

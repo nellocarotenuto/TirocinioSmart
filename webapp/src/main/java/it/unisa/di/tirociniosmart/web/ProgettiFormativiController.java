@@ -2,14 +2,14 @@ package it.unisa.di.tirociniosmart.web;
 
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
-import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.IdAziendaNonValidoException;
+import it.unisa.di.tirociniosmart.progettiformativi.DescrizioneProgettoNonValidaException;
 import it.unisa.di.tirociniosmart.progettiformativi.IdProgettoFormativoInesistenteException;
+import it.unisa.di.tirociniosmart.progettiformativi.NomeProgettoNonValidoException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
-import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
+import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,8 +29,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class ProgettiFormativiController {
-
-  private Logger logger = Logger.getLogger(this.getClass().getSimpleName());
   
   @Autowired
   private ProgettiFormativiService progettoFormativoService;
@@ -62,11 +60,8 @@ public class ProgettiFormativiController {
       model.addAttribute("azienda", azienda);
     } catch (IdAziendaNonValidoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",
-                                           "toast.progettiFormativi.idNonValido");
+                                           "toast.convenzioni.idAziendaNonValido");
       return "redirect:/aziende";
-    } catch (Exception e) {
-      logger.severe(e.getMessage());
-      return "redirect:/errore";
     }
       
     return "pages/progettiFormativi";
@@ -88,45 +83,54 @@ public class ProgettiFormativiController {
    *         stringa indicante l'URL dei progetti formativi dell'azienda (tramite redirect) 
    *         in caso di successo
    */
-  @RequestMapping(value = "/azienda/aggiungiProgettoFormativo", method = RequestMethod.POST)
+  @RequestMapping(value = "/dashboard/progetti/aggiungi", method = RequestMethod.POST)
   public String aggiungiProgettoFormativo(@ModelAttribute("progettoFormativoForm")
                                           ProgettoFormativoForm progettoFormativoForm, 
-                                          Model model,
                                           BindingResult result,
                                           RedirectAttributes redirectAttributes) {
     
-    //Validator
     // Controlla la validità del form ricevuto come parametro e salva il risultato in result
     formValidator.validate(progettoFormativoForm, result);
     
-    // Redirigi l'utente alla pagina del form se sono stati rilevati degli errori, altrimenti
-    // istanzia un oggetto azienda e richiedine il salvataggio
+    // Redirigi l'utente alla pagina del form se sono stati rilevati degli errori
     if (result.hasErrors()) {
       redirectAttributes
           .addFlashAttribute("org.springframework.validation.BindingResult.progettoFormativoForm",
                              result);
       redirectAttributes.addFlashAttribute("progettoFormativoForm", progettoFormativoForm);
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.convenzioni.richiestaNonValida");
-      //non sapevo cosa mettere :)))
-      return "redirect:/";
+
+      return "redirect:/dashboard/progetti";
     }
     
-    //Instanzia un nuovo oggetto ProgettoFormativo. Redirigi verso errore nel caso
-    //qualcosa vada storto
+    // Instanzia un nuovo oggetto ProgettoFormativo
     ProgettoFormativo progettoFormativo = new ProgettoFormativo();
     progettoFormativo.setNome(progettoFormativoForm.getNome());
     progettoFormativo.setDescrizione(progettoFormativoForm.getDescrizione());
     
-    
     try {
+      // Richiedi il salvataggio del progetto e redirigi alla dashboard
       progettoFormativoService.aggiungiProgettoFormativo(progettoFormativo);
-      redirectAttributes.addFlashAttribute("testoNotifica", "toast.progettoFormativo.aggiunto");
-    } catch (Exception e) {
-      logger.severe(e.getMessage());
-      return "redirect:/errore";
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.progettiFormativi.progettoAggiunto");
+      return "redirect:/dashboard/progetti";
+    } catch (RichiestaNonAutorizzataException e) {
+      // Redirigi alla home page se l'utente non dispone delle autorizzazioni necessarie
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    } catch (NomeProgettoNonValidoException e) {
+      // Redirigi alla pagina di aggiunta progetti nel caso in cui il nome non sia valido
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.progettiFormativi.nomeProgettoNonValido");
+      return "redirect:/dashboard/progetti";
+    } catch (DescrizioneProgettoNonValidaException e) {
+      // Redirigi alla pagina di aggiunta progetti nel caso in la descrizione non sia valida
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.progettiFormativi.descrizioneProgettoNonValida");
+      return "redirect:/dashboard/progetti";
     }
     
-    return "redirect:/azienda/progettiFormativi";
   }
   
   /**
@@ -141,28 +145,28 @@ public class ProgettiFormativiController {
    *         stringa indicante l'URL dei progetti formativi dell'azienda (tramite redirect) 
    *         in caso di successo
    */
-  @RequestMapping(value = "/azienda/progetti/archivia", method = RequestMethod.POST)
+  @RequestMapping(value = "/dashboard/progetti/archivia", method = RequestMethod.POST)
   public String archiviaProgettoFormativo(RedirectAttributes redirectAttributes,
                                           @RequestParam Long idProgetto) {
-    // Un progetto può essere archiviato solo dal delegato aziendale
-    if (!(AutenticazioneHolder.getUtente() instanceof DelegatoAziendale)) {
+    
+    try {
+      // Richiedi l'archiviazione del progetto e redirigi alla dashboard
+      progettoFormativoService.archiviaProgettoFormativo(idProgetto);
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.progettiFormativi.progettoArchiviato");
+      return "redirect:/dashboard/progetti";
+    } catch (RichiestaNonAutorizzataException e) {
+      // Redirigi alla home page se l'utente non dispone delle autorizzazioni necessarie
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
       return "redirect:/";
+    } catch (IdProgettoFormativoInesistenteException e) {
+      // Redirigi alla pagina che elenca i progetti dell'azienda se l'id del progetto non è valido
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.progettiFormativi.idProgettoNonValido");
+      return "redirect:/dashboard/progetti";
     }
     
-    try {
-      progettoFormativoService.archiviaProgettoFormativo(idProgetto);
-      redirectAttributes.addFlashAttribute("testoNotifica",
-                                           "toast.progettiFormativi.progettoAggiunto");
-    } catch (IdProgettoFormativoInesistenteException e) {
-      redirectAttributes.addFlashAttribute("testoNotifica",
-                                          "toast.progettiFormativi.idNonValido");
-    } catch (Exception e) {
-      logger.severe(e.getMessage());
-      return "redirect:/errore";
-    }
-
-    return "redirect:/azienda/progettiFormativi";
   }
+  
 }

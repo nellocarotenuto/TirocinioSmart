@@ -1,6 +1,6 @@
 package it.unisa.di.tirociniosmart.web;
 
-import it.unisa.di.tirociniosmart.progettiformativi.DescrizioneNonValidaException;
+import it.unisa.di.tirociniosmart.progettiformativi.DescrizioneProgettoNonValidaException;
 import it.unisa.di.tirociniosmart.progettiformativi.NomeProgettoNonValidoException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 
@@ -54,7 +54,7 @@ public class ProgettoFormativoFormValidator extends RegistrazioneFormValidator {
     
     try {
       progettiFormativiService.validaDescrizione(form.getDescrizione());
-    } catch (DescrizioneNonValidaException e) {
+    } catch (DescrizioneProgettoNonValidaException e) {
       errors.rejectValue("descrizione", 
                          "toast.progettiFormativi.descrizioneNonValida");
     } 

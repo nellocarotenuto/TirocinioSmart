@@ -4,7 +4,7 @@ package it.unisa.di.tirociniosmart.progettiformativi;
  * Eccezione lanciata quando il controllo sulla descrizione di un progetto fallisce perché questo 
  * non è valida oppure è nulla.
  */
-public class DescrizioneNonValidaException extends Exception {
+public class DescrizioneProgettoNonValidaException extends Exception {
   
   private static final long serialVersionUID = 2558277770822707384L;
   
@@ -14,7 +14,7 @@ public class DescrizioneNonValidaException extends Exception {
   /**
    * Costruisce un'eccezione che ha come messaggio {@link #messaggioDefault}.
    */
-  public DescrizioneNonValidaException() {
+  public DescrizioneProgettoNonValidaException() {
     super(messaggioDefault);
   }
   
@@ -23,7 +23,7 @@ public class DescrizioneNonValidaException extends Exception {
    * 
    * @param messaggio Stringa che rappresenta il messaggio da mostrare
    */
-  public DescrizioneNonValidaException(String messaggio) {
+  public DescrizioneProgettoNonValidaException(String messaggio) {
     super(messaggio);
   }
   

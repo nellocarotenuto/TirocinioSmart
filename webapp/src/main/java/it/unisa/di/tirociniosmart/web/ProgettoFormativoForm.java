@@ -26,8 +26,6 @@ public abstract class ProgettoFormativoForm {
     this.descrizione = descrizione;
   }
 
-
-
   private String nome;
   private String descrizione;
 
