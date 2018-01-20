@@ -24,7 +24,7 @@
 	        <div class="row row-group">
 	        
 	        <div class="col s12">
-	            <div class="row valign-wrapper" >
+	            <div class="row" >
 	              <div class="col s1">
 	              	<a class="tooltipped tooltipped-icon" 
 	              		 data-position="right"
