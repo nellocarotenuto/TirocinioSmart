@@ -1,4 +1,4 @@
-package it.unisa.di.tirociniosmart;
+package it.unisa.di.tirociniosmart.web;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -10,9 +10,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-
-import it.unisa.di.tirociniosmart.web.AutenticazioneInterceptor;
-import it.unisa.di.tirociniosmart.web.NotificheInterceptor;
 
 /**
  * Classe che definisce la configurazione della webapp in termini di Bean disponibili a livello di
