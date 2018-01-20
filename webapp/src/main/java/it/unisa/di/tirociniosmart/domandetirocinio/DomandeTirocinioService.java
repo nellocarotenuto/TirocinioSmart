@@ -194,7 +194,7 @@ public class DomandeTirocinioService {
     } else {
       commento = commento.trim();
       
-      if (commento.equals("")) {
+      if (commento.length() < DomandaTirocinio.MIN_LUNGHEZZA_COMMENTO) {
         throw new CommentoDomandaTirocinioNonValidoException();
       } else {
         return commento;
