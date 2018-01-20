@@ -4,6 +4,7 @@
 
 <spring:message var="titoloTabHome" code="tab.home.titolo" />
 <spring:message var="titoloTabAziende" code="tab.aziende.titolo" />
+<spring:message var="titoloTabDashboard" code="tab.dashboard.titolo" />
 
 <spring:message var="testoNotifica" code="${testoNotifica}" />
 
@@ -115,6 +116,14 @@
 	            <spring:message code="tab.aziende.titolo" />
 	          </a>
 	        </li>
+	        <c:if test="${not empty utente}">
+	          <li class="tab">
+	            <a <c:if test="${titoloTab == titoloTabDashboard}">class="active"</c:if>
+	               href="/dashboard" >
+	              <spring:message code="tab.dashboard.titolo" />
+	            </a>
+	          </li>
+	        </c:if>
 	      </ul>
 	    </div>
 	  </nav>
