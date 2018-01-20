@@ -143,7 +143,7 @@ public class ConvenzioniService {
    * @return La stringa che rappresenta il commento da controllare bonificata
    * 
    * @throws CommentoRichiestaConvenzionamentoNonValidoException se il commento passato come 
-   *         parametro è nullo oppure è rappresentato da stringa vuota
+   *         parametro è nullo oppure è rappresentato da una stringa di lunghezza minore di 2
    */
   public String validaCommento(String commento, RichiestaConvenzionamento richiesta) 
       throws CommentoRichiestaConvenzionamentoNonValidoException {
