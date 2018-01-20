@@ -22,14 +22,16 @@
 		</div>
 	</div>
 	<c:if test="${utente['class'].simpleName == 'DelegatoAziendale'}">
-		<div class="row right-align">
-			<a class="tooltipped btn-floating btn-large waves-effect waves-light red" 
-				 data-delay="50"
-			   data-tooltip="${aggiungiProgettoLabel}"
-			   href="/WEB-INF/views/forms/aggiuntaProgettoFormativo.jsp">	
-				<i class="material-icons">add</i>		 	
-			</a>
-		</div>
+		<c:if test="${utente.azienda.nome == azienda.nome}">
+			<div class="row right-align">
+				<a class="tooltipped btn-floating btn-large waves-effect waves-light red" 
+					 data-delay="50"
+				   data-tooltip="${aggiungiProgettoLabel}"
+				   href="/WEB-INF/views/forms/aggiuntaProgettoFormativo.jsp">	
+					<i class="material-icons">add</i>		 	
+				</a>
+			</div>
+		</c:if>
 	</c:if>	
 </main>
 
