@@ -151,7 +151,7 @@ public class StudentiService {
    * @return La stringa che rappresenta il commento da controllare bonificata
    * 
    * @throws CommentoRichiestaIscrizioneNonValidoException se il commento passato come parametro
-   *         è nullo oppure è rappresentato da stringa vuota
+   *         è nullo oppure è rappresentato da una stringa con un numero di caratteri minore di 2
    */
   public String validaCommentoRichiesta(String commento) 
         throws CommentoRichiestaIscrizioneNonValidoException {
@@ -160,7 +160,7 @@ public class StudentiService {
     } else {
       commento = commento.trim();
       
-      if (commento.equals("")) {
+      if (commento.length() < RichiestaIscrizione.MIN_LUNGHEZZA_COMMENTO) {
         throw new CommentoRichiestaIscrizioneNonValidoException();
       } else {
         return commento;
