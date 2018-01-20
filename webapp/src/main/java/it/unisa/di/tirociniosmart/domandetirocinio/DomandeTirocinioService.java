@@ -185,7 +185,7 @@ public class DomandeTirocinioService {
    * @return La stringa che rappresenta il commento da controllare bonificata
    * 
    * @throws CommentoDomandaTirocinioNonValidoException se il commento passato come parametro
-   *         è nullo oppure è rappresentato da stringa vuota
+   *         è nullo oppure è rappresentato da una stringa con lunghezza minore di 2
    */
   public String validaCommento(String commento) 
         throws CommentoDomandaTirocinioNonValidoException {
