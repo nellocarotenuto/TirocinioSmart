@@ -372,5 +372,8 @@ public class DomandaTirocinio {
    * domanda è stata respinta dall'ufficio tirocini.
    */
   public static final int RESPINTA = 4;
+  
+  /** Costante che definisce la minima lunghezza dei campi commento. */
+  public static final int MIN_LUNGHEZZA_COMMENTO = 2;
 
 }
