@@ -1,6 +1,7 @@
 package it.unisa.di.tirociniosmart.domandetirocinio;
 
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
 import it.unisa.di.tirociniosmart.studenti.Studente;
@@ -10,6 +11,7 @@ import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -200,6 +202,32 @@ public class DomandeTirocinioService {
   }
   
   /**
+   * Permette di ottenere la lista delle domande di tirocinio.
+   * 
+   * @return Lista di {@link DomandaTirocinio} il cui status è "in attesa" o "accettata"
+   * 
+   * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare l'elenco delle 
+   *         domande di tirocinio non è autorizzato a svolgere l'operazione
+   */
+  public List<DomandaTirocinio> elencaDomandeTirocinio() throws RichiestaNonAutorizzataException {
+    
+    //Un impiegato dell'ufficio tirocini può vedere solo le domande accettate 
+    if (AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini) {
+      return domandaRepository.findAllByStatus(DomandaTirocinio.ACCETTATA);
+      
+    //Un delegato aziendale può vedere solo le domande in attesa 
+    } else if (AutenticazioneHolder.getUtente() instanceof DelegatoAziendale) {
+      return domandaRepository.findAllByStatus(DomandaTirocinio.IN_ATTESA);
+      
+      //Uno studente può vedere le domande di tirocinio in attesa
+    } else if (AutenticazioneHolder.getUtente() instanceof Studente) {
+      return domandaRepository.findAllByStatus(DomandaTirocinio.IN_ATTESA);
+    } else {
+      throw new RichiestaNonAutorizzataException();
+    }  
+  }
+  
+  /**
    * Permette ad un impiegato dell'ufficio tirocinio di respingere una domanda di tirocinio già 
    * presente nel sistema.
    * 
@@ -359,7 +387,7 @@ public class DomandeTirocinioService {
    */
   public ProgettoFormativo verificaStatoProgettoFormativo(ProgettoFormativo progetto) 
       throws ProgettoFormativoArchiviatoException {
-    if (progetto.getStatus() == 2) {
+    if (progetto.getStatus() == ProgettoFormativo.ARCHIVIATO) {
       throw new ProgettoFormativoArchiviatoException();
     } else {
       return progetto;
