@@ -5,7 +5,7 @@ package it.unisa.di.tirociniosmart.web;
  * HTML. Questo oggetto viene passato come parametro ai controller dalla dispatcher servlet quando 
  * un delegato aziendale sottomette il modulo per aggiungere un nuovo progetto.
  */
-public abstract class ProgettoFormativoForm {
+public class ProgettoFormativoForm {
 
   ProgettoFormativoForm() {
   }

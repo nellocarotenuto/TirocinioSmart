@@ -7,6 +7,7 @@ import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 /**
  * Classe che definisce un validatore per {@link ProgettoFormativoForm} tramite i servizi offerti da
@@ -18,7 +19,7 @@ import org.springframework.validation.Errors;
  * 
  */
 @Component
-public class ProgettoFormativoFormValidator extends RegistrazioneFormValidator {
+public class ProgettoFormativoFormValidator implements Validator {
   
   @Autowired
   private ProgettiFormativiService progettiFormativiService;
@@ -43,8 +44,6 @@ public class ProgettoFormativoFormValidator extends RegistrazioneFormValidator {
   @Override
   public void validate(Object target, Errors errors) {
     ProgettoFormativoForm form = (ProgettoFormativoForm) target;
-    
-    super.validate(target, errors);
     
     try {
       progettiFormativiService.validaNome(form.getNome());

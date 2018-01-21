@@ -24,7 +24,7 @@
 	 				</span>
 	 				<c:if test="${utente.getClass().getSimpleName() == 'DelegatoAziendale'}">
 				    <c:if test="${utente.azienda.nome == azienda.nome}">
-				      <a class="halfway-fab btn-floating btn-large waves-effect waves-light red tooltipped"
+				      <a class="modal-trigger halfway-fab btn-floating btn-large waves-effect waves-light red tooltipped"
 				         data-delay="50"
 				         data-position="left"
 				         href="#aggiungi"
