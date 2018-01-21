@@ -27,6 +27,7 @@
 				      <a class="halfway-fab btn-floating btn-large waves-effect waves-light red tooltipped"
 				         data-delay="50"
 				         data-position="left"
+				         href="#aggiungi"
 				         data-tooltip="${aggiungiProgettoLabel}">
 				        <i class="large material-icons">add</i>
 				      </a>
@@ -77,6 +78,14 @@
 	 		</div>
 	 		<jsp:include page="/WEB-INF/views/lists/progettiFormativi.jsp"/>
 		</div>
+	</div>
+	<div id="aggiungi" class="modal">
+		<div class="modal-content">
+	  	<h4>
+     		<spring:message code="progettoFormativo.aggiungi.label" />
+      </h4>
+	    <jsp:include page="/WEB-INF/views/forms/aggiuntaProgettoFormativo.jsp"/>
+	  </div>
 	</div>
 </main>
 

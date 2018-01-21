@@ -19,3 +19,6 @@ $(document).ready(function() {
     M.Modal.init(tooltips[j]);
   }
 });
+
+var aggiungiModal = document.querySelector("#aggiungi");
+var aggiungiModalInstance = M.Modal.init(aggiungiModal);

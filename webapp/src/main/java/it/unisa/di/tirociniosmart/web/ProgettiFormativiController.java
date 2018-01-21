@@ -2,13 +2,16 @@ package it.unisa.di.tirociniosmart.web;
 
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
+import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.IdAziendaNonValidoException;
 import it.unisa.di.tirociniosmart.progettiformativi.DescrizioneProgettoNonValidaException;
 import it.unisa.di.tirociniosmart.progettiformativi.IdProgettoFormativoInesistenteException;
 import it.unisa.di.tirociniosmart.progettiformativi.NomeProgettoNonValidoException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
+import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.web.ProgettoFormativoForm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,15 +60,18 @@ public class ProgettiFormativiController {
   @RequestMapping(value = "/azienda/{idAzienda}", method = RequestMethod.GET)
   public String elencaProgettiFormativi(@PathVariable("idAzienda") String idAzienda, Model model, 
                                         RedirectAttributes redirectAttributes) {
-    try {
-      Azienda azienda = convenzioniService.ottieniAzienda(idAzienda);
-      model.addAttribute("azienda", azienda);
-    } catch (IdAziendaNonValidoException e) {
-      redirectAttributes.addFlashAttribute("testoNotifica",
-                                           "toast.convenzioni.idAziendaNonValido");
-      return "redirect:/aziende";
-    }
-      
+   
+      try {
+        Azienda azienda = convenzioniService.ottieniAzienda(idAzienda);
+        model.addAttribute("azienda", azienda);
+        
+      } catch (IdAziendaNonValidoException e) {
+        redirectAttributes.addFlashAttribute("testoNotifica",
+                                             "toast.convenzioni.idAziendaNonValido");
+        return "redirect:/aziende";
+      }
+    
+   // model.addAttribute("progettoFormativoForm", new ProgettoFormativoForm());
     return "pages/progettiFormativi";
   }
   
