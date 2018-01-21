@@ -21,25 +21,37 @@
        </div>
        
        <div class="collapsible-body">
-	        <div class="row row-group">
-	        
-	        <div class="col s12">
-	            <div class="row" >
-	              <div class="col s1">
-	              	<a class="tooltipped tooltipped-icon" 
-	              		 data-position="right"
-	              		 data-delay="50"
-	              		 data-tooltip="${descrizioneProgettoFormativoLabel}">
-	              		 <i class ="small material-icons">chat</i>
-	              	</a>      
-			          </div>
-			          <div class="col s11">
-			            <c:out value="${current.descrizione}" />
-			          </div>
-	            </div>
-	        </div>
-	        
-	        </div>
+	       <div class="row row-group" style="margin-bottom: 0px">
+		       <div class="col s12">
+						 <div class="row" >
+		           <div class="col s1">
+		             <a class="tooltipped tooltipped-icon" 
+		              	data-position="right"
+		                data-delay="50"
+		              	data-tooltip="${descrizioneProgettoFormativoLabel}">
+		             	 <i class ="small material-icons">chat</i>
+		             </a>      
+				       </div>
+				       <div class="col s11">
+				     	  <c:out value="${current.descrizione}" />
+				       </div>
+		         </div>
+		       </div>
+	       </div>
+	       <c:if test="${utente.getClass().getSimpleName() == 'DelegatoAziendale'}">
+	         <c:if test="${utente.azienda.nome == azienda.nome}" >
+			       <div class="row">
+						 	 <div class="col s12">
+			   				 <a href="/dashboard/progetti/archivia"
+			   				 		data-position="right"
+		     				    class="btn waves-effect right">
+		     				   <i class="material-icons right">archive</i>
+		      			   <spring:message code="button.progettoFormativo.archivia.label" />
+		    			   </a>
+			  			 </div>
+			       </div>
+	       	 </c:if>
+	       </c:if>
 	     </div>
 		</li>
 	</ul>
