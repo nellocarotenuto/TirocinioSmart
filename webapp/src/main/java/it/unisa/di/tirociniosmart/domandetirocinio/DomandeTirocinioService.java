@@ -217,11 +217,15 @@ public class DomandeTirocinioService {
       
     //Un delegato aziendale può vedere solo le domande in attesa 
     } else if (AutenticazioneHolder.getUtente() instanceof DelegatoAziendale) {
-      return domandaRepository.findAllByStatus(DomandaTirocinio.IN_ATTESA);
+      DelegatoAziendale delegato = (DelegatoAziendale) AutenticazioneHolder.getUtente();
+      return domandaRepository.findAllByIdAziendaAndStatus(DomandaTirocinio.IN_ATTESA,
+                                                           delegato.getAzienda().getId());
       
       //Uno studente può vedere le domande di tirocinio in attesa
     } else if (AutenticazioneHolder.getUtente() instanceof Studente) {
-      return domandaRepository.findAllByStatus(DomandaTirocinio.IN_ATTESA);
+      Studente studente = (Studente) AutenticazioneHolder.getUtente();
+      return domandaRepository.findAllByIdStudenteAndStatus(studente.getUsername(),
+                                                            DomandaTirocinio.IN_ATTESA);
     } else {
       throw new RichiestaNonAutorizzataException();
     }  

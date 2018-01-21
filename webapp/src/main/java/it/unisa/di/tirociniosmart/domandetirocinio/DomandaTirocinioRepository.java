@@ -51,16 +51,36 @@ public interface DomandaTirocinioRepository
    * Permette di ottenere l'elenco delle domande di tirocinio inviate da un 
    * determinato studente.
    * 
-   * @param studente Oggetto {@link Studente} che rappresenta lo studente assegnato alla domanda di 
+   * @param username Stringa che rappresenta l'username dello studente assegnato alla domanda di 
    *                 tirocinio
+   *                 
+   * @param status intero che rappresenta lo stato assegnato alla domanda di tirocinio
    *           
    * @return Lista di {@link DomandaTirocinio} che rappresenta la lista delle domande 
    *         di tirocinio
    *                                         
    * @pre studente != null
+   *      status > 0
    * 
    */
-  List<DomandaTirocinio> findAllByStudente(Studente studente);
+  List<DomandaTirocinio> findAllByIdStudenteAndStatus(String username, int status);
+  
+  /**
+   * Permette di ottenere l'elenco delle domande di tirocinio inviate con un determinato stato
+   * giunte ad una determinata azienda.
+   * 
+   * @param status int che rappresenta lo stato assegnato alla domanda di  tirocinio
+   *     
+   * @param idAzienda Striga che rappresenta l'id dell'azienda
+   *           
+   * @return Lista di {@link DomandaTirocinio} che rappresenta la lista delle domande 
+   *         di tirocinio
+   *                                         
+   * @pre int > 0
+   * @pre idAzienda != null
+   * 
+   */
+  List<DomandaTirocinio> findAllByIdAziendaAndStatus(int status, String idAzienda);
   
   /**
    * Permette di ottenere l'elenco delle domande di tirocinio a partire dal progetto formativo 
