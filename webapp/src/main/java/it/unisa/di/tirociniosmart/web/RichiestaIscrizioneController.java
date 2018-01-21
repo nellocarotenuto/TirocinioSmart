@@ -128,9 +128,17 @@ public class RichiestaIscrizioneController {
       return "redirect:/";
     }
     
-    List<RichiestaIscrizione> richieste = studentiService.elencaListaRichiesteIscrizione();
-    model.addAttribute("listaRischiesteIscrizione", richieste);
-
+    try {
+      List<RichiestaIscrizione> richieste = studentiService.elencaListaRichiesteIscrizione();
+      model.addAttribute("listaRischiesteIscrizione", richieste);
+    } catch (RichiestaNonAutorizzataException e) {
+      // Redirigi l'utente in home page se non ha le autorizzazioni necessarie per visualizzare
+      // la lista delle richieste
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+   
     return "pages/richiesteIscrizione";
   }
 
