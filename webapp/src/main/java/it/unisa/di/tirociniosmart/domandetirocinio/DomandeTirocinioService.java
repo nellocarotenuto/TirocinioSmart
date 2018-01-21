@@ -359,7 +359,7 @@ public class DomandeTirocinioService {
    */
   public ProgettoFormativo verificaStatoProgettoFormativo(ProgettoFormativo progetto) 
       throws ProgettoFormativoArchiviatoException {
-    if (progetto.getStatus() == 2) {
+    if (progetto.getStatus() == ProgettoFormativo.ARCHIVIATO) {
       throw new ProgettoFormativoArchiviatoException();
     } else {
       return progetto;
