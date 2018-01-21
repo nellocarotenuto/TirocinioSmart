@@ -7,9 +7,9 @@
 <div class="row">
   <div class="col s12">
     <h4>
-      <spring:message code="pagina.approvaRichiestaConvenzionamento.titolo" />
+      <spring:message code="pagina.archiviaProgetto.titolo" />
     </h4>
-    <p><spring:message code="richiesteConvenzionamento.approva.messaggio" /></p>
+    <p><spring:message code="progettiFormativi.archivia.messaggio" /></p>
     <form action="/dashboard/progetti/archivia"
           method="POST">
           
@@ -18,9 +18,9 @@
           <a class="btn-flat waves-effect modal-close">
             <spring:message code="button.annulla.label" />
           </a>
-          <input type="hidden" name="idArchiviazione" value="${param.idArchiviazione}">
-          <button class="btn waves-effect waves-light green" type="submit" name="action">
-            <spring:message code="form.approva.label" />
+          <input type="hidden" name="idProgetto" value="${param.idProgetto}">
+          <button class="btn waves-effect waves-light" type="submit" name="action">
+            <spring:message code="form.archivia.label" />
           </button>
         </div>
       </div>

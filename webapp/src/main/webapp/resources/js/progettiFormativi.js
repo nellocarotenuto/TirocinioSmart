@@ -8,15 +8,15 @@ $(document).ready(function() {
 
 $(document).ready(function() {
   var tooltips = $('.tooltipped');
-  for(var j = 0; j < tooltips.length; j++) {
-    M.Tooltip.init(tooltips[j]);
+  for(var i = 0; i < tooltips.length; i++) {
+    M.Tooltip.init(tooltips[i]);
   }
 });
 
 $(document).ready(function() {
-  var tooltips = $('.modal');
-  for(var j = 0; j < tooltips.length; j++) {
-    M.Modal.init(tooltips[j]);
+  var modals = $('.modal');
+  for(var i = 0; i < modals.length; i++) {
+    M.Modal.init(modals[i]);
   }
 });
 
