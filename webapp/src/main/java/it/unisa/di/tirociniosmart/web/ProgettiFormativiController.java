@@ -9,13 +9,10 @@ import it.unisa.di.tirociniosmart.progettiformativi.IdProgettoFormativoInesisten
 import it.unisa.di.tirociniosmart.progettiformativi.NomeProgettoNonValidoException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
-import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 import it.unisa.di.tirociniosmart.web.ProgettoFormativoForm;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
