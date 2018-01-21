@@ -4,9 +4,9 @@ import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.convenzioni.AziendaRepository;
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.IdAziendaNonValidoException;
-import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
+import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.util.List;
 
@@ -29,6 +29,9 @@ public class ProgettiFormativiService {
   
   @Autowired
   private AziendaRepository aziendaRepository;
+  
+  @Autowired
+  private UtenzaService utenzaService;
 
   
   /**
@@ -36,6 +39,8 @@ public class ProgettiFormativiService {
    * registra un progetto assegnandogli una {@link Azienda}.
    * 
    * @param progetto {@link ProgettoFormativo} che si vuole aggiungere tra i progetti dell'azienda.
+   *        Non è necessario impostare l'azienda che eroga il progetto dato che questa viene
+   *        inserita in base al delegato autenticato nel sistema.
    * 
    * @pre progetto != null
    * 
@@ -54,7 +59,7 @@ public class ProgettiFormativiService {
   public void aggiungiProgettoFormativo(ProgettoFormativo progetto)
          throws RichiestaNonAutorizzataException, NomeProgettoNonValidoException,
                 DescrizioneProgettoNonValidaException {
-    if (!(AutenticazioneHolder.getUtente() instanceof DelegatoAziendale)) {
+    if (!(utenzaService.getUtenteAutenticato() instanceof DelegatoAziendale)) {
       throw new RichiestaNonAutorizzataException();
     }
     
@@ -62,7 +67,7 @@ public class ProgettiFormativiService {
     progetto.setDescrizione(validaDescrizione(progetto.getDescrizione()));
     progetto.setStatus(ProgettoFormativo.ATTIVO);
     
-    DelegatoAziendale delegato = (DelegatoAziendale) AutenticazioneHolder.getUtente();
+    DelegatoAziendale delegato = (DelegatoAziendale) utenzaService.getUtenteAutenticato();
     Azienda azienda = delegato.getAzienda();
     progetto.setAzienda(azienda);
    
@@ -110,12 +115,14 @@ public class ProgettiFormativiService {
   @Transactional(rollbackFor = Exception.class)
   public void archiviaProgettoFormativo(long idProgetto) 
       throws IdProgettoFormativoInesistenteException, RichiestaNonAutorizzataException {
-    UtenteRegistrato utente = AutenticazioneHolder.getUtente();
+    UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
     
+    // Solo un delegato aziendale può archiviare un progetto formativo..
     if (!(utente instanceof DelegatoAziendale)) {
       throw new RichiestaNonAutorizzataException();
     }
     
+    // ..se esiste..
     if (!progettoFormativoRepository.existsById(idProgetto)) {
       throw new IdProgettoFormativoInesistenteException();
     }
@@ -123,12 +130,12 @@ public class ProgettiFormativiService {
     DelegatoAziendale delegato = (DelegatoAziendale) utente;
     ProgettoFormativo progetto = progettoFormativoRepository.findById(idProgetto);
     
+    // ..e se esso è erogato dall'azienda che egli rappresenta
     if (!delegato.getAzienda().equals(progetto.getAzienda())) {
       throw new RichiestaNonAutorizzataException();
     }
     
     progetto.setStatus(ProgettoFormativo.ARCHIVIATO);
-    
   }
   
   /**

@@ -7,8 +7,8 @@ import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizione;
 import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneGestitaException;
 import it.unisa.di.tirociniosmart.studenti.Studente;
 import it.unisa.di.tirociniosmart.studenti.StudentiService;
-import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,6 +39,9 @@ public class RichiestaIscrizioneController {
   
   @Autowired
   private RichiestaIscrizioneFormValidator formValidator;
+  
+  @Autowired
+  private UtenzaService utenzaService;
   
   /**
    * Elabora le richieste di iscrizione effettuandone la validazione e richiedendone
@@ -122,7 +125,7 @@ public class RichiestaIscrizioneController {
   @RequestMapping(value = "/dashboard/richieste/iscrizione", method = RequestMethod.GET)
   public String visualizzaRichiesteIscrizione(Model model, RedirectAttributes redirectAttributes) {
     // La lista delle richieste può essere visualizzata solo dall'impiegato dell'ufficio tirocini
-    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+    if (!(utenzaService.getUtenteAutenticato() instanceof ImpiegatoUfficioTirocini)) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
       return "redirect:/";
@@ -160,7 +163,7 @@ public class RichiestaIscrizioneController {
   public String elaboraApprovazioneRichiesta(RedirectAttributes redirectAttributes,
                                              @RequestParam Long idRichiesta) {
     // La richiesta può essere approvata solo dall'impiegato dell'ufficio tirocini
-    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+    if (!(utenzaService.getUtenteAutenticato() instanceof ImpiegatoUfficioTirocini)) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
       return "redirect:/";
@@ -204,7 +207,7 @@ public class RichiestaIscrizioneController {
                                         @RequestParam Long idRichiesta,
                                         @RequestParam String commentoRichiesta) {
     // La richiesta può essere rifiutata solo dall'impiegato dell'ufficio tirocini
-    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+    if (!(utenzaService.getUtenteAutenticato() instanceof ImpiegatoUfficioTirocini)) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
       return "redirect:/";

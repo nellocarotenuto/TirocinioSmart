@@ -227,16 +227,65 @@ public class UtenzaService {
    * @return L'utente autenticato nel sistema, <b>null</b> se non vi è alcun utente autenticato
    */
   public UtenteRegistrato getUtenteAutenticato() {
-    return AutenticazioneHolder.getUtente();
+    // Ottieni l'username dell'utente autenticato e restituisci null se non è presente alcun utente
+    // in sessione
+    String username = (AutenticazioneHolder.getUtente());
+    if (username == null) {
+      return null;
+    }
+    
+    UtenteRegistrato utente;
+    
+    // Controlla se l'username è associato ad un impiegato dell'ufficio tirocini
+    utente = impiegatoRepository.findByUsername(username);
+    if (utente != null) {
+      return utente;
+    }
+    
+    // Controlla se l'username è associato ad un delegato aziendale
+    utente = delegatoRepository.findByUsername(username);
+    if (utente != null) {
+      return utente;
+    }
+    
+    // Controlla se l'username è associato ad uno studente
+    utente = studenteRepository.findByUsername(username);
+    if (utente != null) {
+      return utente;
+    }
+    
+    // Dead code
+    return null;
+  }
+  
+  /**
+   * Permette di specificare l'utente autenticato nel sistema, tramite username, in una variabile
+   * visibile a livello di thread così da condividere l'informazione con tutti gli altri livelli.
+   * Questo metodo può essere utilizzato per iniettare automaticamente l'utente nel thread associato
+   * alla richiesta a partire dall'attributo di sessione del server.
+   * 
+   * @param username Username dell'utente che si vuole autenticare nel sistema
+   */
+  public void setUtenteAutenticato(String username) {
+    // Se username è null, rimuovi la variabile di thread per prevenire memory leak
+    if (username == null) {
+      AutenticazioneHolder.setUtente(null);
+      return;
+    }
+    
+    if (!utenteRepository.existsByUsername(username)) {
+      throw new RuntimeException("Username inesistente");
+    }
+    
+    AutenticazioneHolder.setUtente(username);
   }
   
   /**
    * Permette l'autenticazione di un utente nel sistema.
    * 
    * @param username Stringa che rappresenta l'username dell'utente
-   * @param password Stringa che rappresenta la password dell'utente
    * 
-   * @return L'oggetto che rappresenta l'utente autenticato nel sistema
+   * @param password Stringa che rappresenta la password dell'utente
    * 
    * @throws CredenzialiNonValideException se la coppia (username, password) non è presente nel
    *         sistema
@@ -255,7 +304,7 @@ public class UtenzaService {
    * @throws RichiestaIscrizioneRifiutataException se l'utente che tenta di accedere è uno studente
    *         la cui richiesta d'iscrizione è stata rifiutata
    */
-  public UtenteRegistrato login(String username, String password)
+  public void login(String username, String password)
          throws CredenzialiNonValideException, RichiestaConvenzionamentoInAttesaException,
                 RichiestaConvenzionamentoRifiutataException, RichiestaIscrizioneInAttesaException,
                 RichiestaIscrizioneRifiutataException {
@@ -263,8 +312,8 @@ public class UtenzaService {
     
     utente = impiegatoRepository.findByUsernameAndPassword(username, password);
     if (utente != null) {
-      AutenticazioneHolder.setUtente(utente);
-      return utente;
+      AutenticazioneHolder.setUtente(username);
+      return;
     }
     
     // Controlla se le credenziali corrispondono a quelle di un delegato aziendale e, nel caso,
@@ -279,8 +328,8 @@ public class UtenzaService {
       } else if (richiesta.getStatus() == RichiestaConvenzionamento.RIFIUTATA) {
         throw new RichiestaConvenzionamentoRifiutataException();
       } else {
-        AutenticazioneHolder.setUtente(utente);
-        return utente;
+        AutenticazioneHolder.setUtente(username);
+        return;
       }
     }
     
@@ -296,8 +345,8 @@ public class UtenzaService {
       } else if (richiesta.getStatus() == RichiestaIscrizione.RIFIUTATA) {
         throw new RichiestaIscrizioneRifiutataException();
       } else {
-        AutenticazioneHolder.setUtente(utente);
-        return utente;
+        AutenticazioneHolder.setUtente(username);
+        return;
       }
     }
     

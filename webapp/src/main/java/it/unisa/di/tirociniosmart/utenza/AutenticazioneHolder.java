@@ -1,37 +1,38 @@
 package it.unisa.di.tirociniosmart.utenza;
 
 /**
- * Classe utilizzata a livello di business per tenere traccia dell'utente autenticato all'interno
- * del sistema. L'iniezione avviene tramite {@link AutenticazioneInterceptor}.
+ * Classe utilizzata per tenere traccia dell'utente autenticato all'interno del sistema. L'iniezione
+ * avviene tramite {@link AutenticazioneInterceptor}.
  * 
  * @see UtenteRegistrato
  * @see AutenticazioneInterceptor
  */
 public class AutenticazioneHolder {
   
-  private static ThreadLocal<UtenteRegistrato> utenteThreadLocal = new ThreadLocal<>();
+  private static ThreadLocal<String> utenteThreadLocal = new ThreadLocal<String>();
   
   /**
-   * Permette di aggiungere un utente alla sessione.
+   * Permette di aggiungere l'username dell'utente autenticato in sessione al fine di renderlo
+   * visibile a tutti i livelli.
    * 
-   * @param utente Oggetto {@link UtenteRegistrato} da aggiungere alla sessione
+   * @param username Stringa che rappresenta l'username dell'utente autenticato nel sistema
    */
-  public static void setUtente(UtenteRegistrato utente) {
-    if (utente != null) {
-      utenteThreadLocal.set(utente);
+  static void setUtente(String username) {
+    if (username != null) {
+      utenteThreadLocal.set(username);
     } else {
       utenteThreadLocal.remove();
     }
   }
   
   /**
-   * Permette di ottenere l'utente autenticato.
+   * Permette di ottenere l'username dell'utente autenticato nel sistema.
    * 
-   * @return L'{@link UtenteRegistrato} che rappresenta l'utente autenticato nel sistema,
+   * @return La stringa che rappresenta l'username dell'utente autenticato nel sistema,
    *         <b>null</b> se non vi è alcun utente in sessione
    */
-  public static UtenteRegistrato getUtente() {
-    return (UtenteRegistrato) utenteThreadLocal.get();
+  static String getUtente() {
+    return utenteThreadLocal.get();
   }
   
 }

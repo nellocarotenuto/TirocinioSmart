@@ -1,7 +1,6 @@
 package it.unisa.di.tirociniosmart.convenzioni;
 
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
-import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
@@ -45,8 +44,8 @@ public class ConvenzioniService {
    */
   @Transactional(rollbackFor = Exception.class)
   public void registraRichiestaConvenzionamento(Azienda azienda) throws Exception {
-    // Un utente già registrato non può inviare richieste di convenzionamento
-    if (AutenticazioneHolder.getUtente() != null) {
+    // Un utente già autenticato nel sistema non può inviare un nuova richiesta di convenzionamento
+    if (utenzaService.getUtenteAutenticato() != null) {
       throw new RichiestaNonAutorizzataException();
     }
     
@@ -87,15 +86,16 @@ public class ConvenzioniService {
    * @throws RichiestaConvenzionamentoGestitaException se la richiesta identificata da idRichiesta
    *         si trova in uno stato diverso da quello in attesa
    *         
-   * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare le richieste di
-   *         convenzionamento non è un delegato aziendale
+   * @throws RichiestaNonAutorizzataException se l'utente che richiede l'approvazione non è un
+   *         impiegato dell'ufficio tirocini
    */
   @Transactional(rollbackFor = Exception.class)
   public void approvaRichiestaConvenzionamento(long idRichiesta)
          throws IdRichiestaConvenzionamentoNonValidoException,
                 RichiestaConvenzionamentoGestitaException, RichiestaNonAutorizzataException {
-    // Controlla che l'utente che ha effettuato la richiesta sia un impiegato dell'ufficio tirocini
-    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+    // Le richieste di convenzionamento possono essere approvate solo dagli impiegati dell'ufficio
+    // tirocini
+    if (!(utenzaService.getUtenteAutenticato() instanceof ImpiegatoUfficioTirocini)) {
       throw new RichiestaNonAutorizzataException();
     }
     
@@ -128,8 +128,8 @@ public class ConvenzioniService {
    * @throws CommentoRichiestaConvenzionamentoNonValidoException se il commento da associare alla
    *         richiesta è nullo o vuoto
    *         
-   * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare le richieste di
-   *         convenzionamento non è un delegato aziendale
+   * @throws RichiestaNonAutorizzataException se l'utente che richiede l'approvazione non è un
+   *         impiegato dell'ufficio tirocini 
    */
   @Transactional(rollbackFor = Exception.class)
   public void rifiutaRichiestaConvenzionamento(long idRichiesta, String commento)
@@ -137,8 +137,9 @@ public class ConvenzioniService {
                 RichiestaConvenzionamentoGestitaException,
                 CommentoRichiestaConvenzionamentoNonValidoException,
                 RichiestaNonAutorizzataException {
-    // Controlla che l'utente che ha effettuato la richiesta sia un impiegato dell'ufficio tirocini
-    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+    // Le richieste di convenzionamento possono essere rifiutate solo dagli impiegati dell'ufficio
+    // tirocini
+    if (!(utenzaService.getUtenteAutenticato() instanceof ImpiegatoUfficioTirocini)) {
       throw new RichiestaNonAutorizzataException();
     }
     
@@ -193,13 +194,15 @@ public class ConvenzioniService {
    * 
    * @return Lista di {@link RichiestaConvenzionamento} il cui status è "in attesa"
    * 
-   * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare le richieste di
-   *         convenzionamento non è un delegato aziendale
+   * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare le richieste
+   *         di convenzionamento in attesa non è un impiegato dell'ufficio tirocini
    */
   @Transactional
   public List<RichiestaConvenzionamento> elencaRichiesteConvenzionamentoInAttesa()
          throws RichiestaNonAutorizzataException {
-    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+    // Le richieste di convenzionamento possono essere visualizzate solo dagli impiegati
+    // dell'ufficio tirocini
+    if (!(utenzaService.getUtenteAutenticato() instanceof ImpiegatoUfficioTirocini)) {
       throw new RichiestaNonAutorizzataException();
     }
     

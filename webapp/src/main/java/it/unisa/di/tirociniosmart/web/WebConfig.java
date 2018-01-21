@@ -50,6 +50,18 @@ public class WebConfig extends WebMvcConfigurerAdapter {
   }
   
   /**
+   * Interceptor che si occupa di trasferire le informazioni relative all'utente autenticato dalla
+   * sessio del server ai livelli inferiori tramite l'utilizzo di {@link UtenzaService} e
+   * {@link AutenticazioneHolder}.
+   * 
+   * @return Un oggetto interceptor
+   */
+  @Bean
+  public AutenticazioneInterceptor autenticazioneInterceptor() {
+    return new AutenticazioneInterceptor();
+  }
+  
+  /**
    * Mappa le richieste per le risorse statiche alla locazione appropriata.
    */
   @Override
@@ -61,7 +73,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
   
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(new AutenticazioneInterceptor());
+    registry.addInterceptor(autenticazioneInterceptor());
     registry.addInterceptor(new NotificheInterceptor());
   }
   

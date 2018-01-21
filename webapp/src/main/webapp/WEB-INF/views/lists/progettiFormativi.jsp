@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"
+         import="it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -7,9 +8,10 @@
 <spring:message code="progettoFormativo.descrizione.label" var="descrizioneProgettoFormativoLabel"/>
 <spring:message code="progettoFormativo.status.label" var="statusProgettoFormativoLabel"/>
 
+<c:set var="statusProgettoAttivo" scope="page" value="<%= ProgettoFormativo.ATTIVO %>" />
 
 <c:forEach items="${azienda.progettiFormativi}" var="current" varStatus="loop">
-	<c:if test="${current.status == 1}">
+	<c:if test="${current.status == statusProgettoAttivo}">
 	  <c:set var="idModalArchivia" value="progettoFormativo-modal-archivia-${loop.index}" />
 	  <c:set var="idModalProponiti" value="progettoFormativo-modal-proponiti-${loop.index}" />  
 	  <ul id="idCollapsible" class="collapsible">

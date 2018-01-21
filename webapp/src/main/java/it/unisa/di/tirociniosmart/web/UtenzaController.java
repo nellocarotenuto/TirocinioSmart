@@ -7,7 +7,6 @@ import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneInAttesaException;
 import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneRifiutataException;
 import it.unisa.di.tirociniosmart.studenti.Studente;
-import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.CredenzialiNonValideException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
@@ -51,7 +50,7 @@ public class UtenzaController {
                       RedirectAttributes redirectAttributes) {
     // Controlla che non ci sia un utente già registrato, altrimenti riportalo in home page
     // mostrandogli una notifica dell'errore
-    if (AutenticazioneHolder.getUtente() != null) {
+    if (utenzaService.getUtenteAutenticato() != null) {
       redirectAttributes.addFlashAttribute("testoNotifica",
           "toast.login.utenteLoggato");
       return "redirect:/";
@@ -63,8 +62,8 @@ public class UtenzaController {
     String password = loginForm.getPassword();
     
     try {
-      UtenteRegistrato utente = utenzaService.login(username, password);
-      session.setAttribute("utente", utente);
+      utenzaService.login(username, password);
+      session.setAttribute("username", username);
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.login.loginEffettuato");
     } catch (RichiestaConvenzionamentoRifiutataException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",
@@ -99,8 +98,8 @@ public class UtenzaController {
    */
   @RequestMapping(value = "/logout", method = RequestMethod.GET)
   public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
-    if (AutenticazioneHolder.getUtente() != null) {
-      session.setAttribute("utente", null);
+    if (utenzaService.getUtenteAutenticato() != null) {
+      session.setAttribute("username", null);
       utenzaService.logout();
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.logout.logoutEffettuato");
     }
@@ -119,13 +118,13 @@ public class UtenzaController {
    */
   @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
   public String mostraDashboard(RedirectAttributes redirectAttributes) {
-    if (AutenticazioneHolder.getUtente() == null) {
+    UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
+    
+    if (utente == null) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
           "toast.autorizzazioni.richiestaNonAutorizzata");
       return "redirect:/";
     }
-    
-    UtenteRegistrato utente = AutenticazioneHolder.getUtente();
     
     if (utente instanceof ImpiegatoUfficioTirocini) {
       return "redirect:/dashboard/domande";

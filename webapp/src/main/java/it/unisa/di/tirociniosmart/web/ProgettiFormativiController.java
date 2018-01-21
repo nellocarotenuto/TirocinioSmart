@@ -12,7 +12,10 @@ import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
+import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 import it.unisa.di.tirociniosmart.web.ProgettoFormativoForm;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,6 +46,9 @@ public class ProgettiFormativiController {
   @Autowired
   private ProgettoFormativoFormValidator formValidator;
   
+  @Autowired
+  private UtenzaService utenzaService;
+  
   /**
    * Fornisce l'elenco dei progetti formativi messi a disposizione da un'azienda.
    * 
@@ -62,7 +68,6 @@ public class ProgettiFormativiController {
   public String elencaProgettiFormativi(@PathVariable("idAzienda") String idAzienda,
                                         Model model, 
                                         RedirectAttributes redirectAttributes) {
-   
     try {
       Azienda azienda = convenzioniService.ottieniAzienda(idAzienda);
       model.addAttribute("azienda", azienda);
@@ -96,7 +101,7 @@ public class ProgettiFormativiController {
   @RequestMapping(value = "/dashboard/progetti", method = RequestMethod.GET)
   public String elencaProgettiFormativiDashboard(Model model,
                                                  RedirectAttributes redirectAttributes) {
-    UtenteRegistrato utente = AutenticazioneHolder.getUtente();
+    UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
     
     if (!(utente instanceof DelegatoAziendale)) {
       // Redirigi alla home page se l'utente non dispone delle autorizzazioni necessarie
@@ -106,17 +111,7 @@ public class ProgettiFormativiController {
     }
     
     DelegatoAziendale delegato = (DelegatoAziendale) utente;
-    String idAzienda = delegato.getAzienda().getId();
-    
-    try {
-      Azienda azienda = convenzioniService.ottieniAzienda(idAzienda);
-      model.addAttribute("azienda", azienda);
-      
-    } catch (IdAziendaNonValidoException e) {
-      redirectAttributes.addFlashAttribute("testoNotifica",
-                                           "toast.convenzioni.idAziendaNonValido");
-      return "redirect:/aziende";
-    }
+    model.addAttribute("azienda", delegato.getAzienda());
     
     if (!model.containsAttribute("progettoFormativoForm")) {
       model.addAttribute("progettoFormativoForm", new ProgettoFormativoForm());
