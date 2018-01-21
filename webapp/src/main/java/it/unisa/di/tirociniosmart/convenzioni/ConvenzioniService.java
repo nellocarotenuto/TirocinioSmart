@@ -199,7 +199,7 @@ public class ConvenzioniService {
   @Transactional
   public List<RichiestaConvenzionamento> elencaRichiesteConvenzionamentoInAttesa()
          throws RichiestaNonAutorizzataException {
-    if (!(AutenticazioneHolder.getUtente() instanceof DelegatoAziendale)) {
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
       throw new RichiestaNonAutorizzataException();
     }
     

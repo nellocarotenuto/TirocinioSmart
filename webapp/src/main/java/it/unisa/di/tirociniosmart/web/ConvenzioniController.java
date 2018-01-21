@@ -131,7 +131,7 @@ public class ConvenzioniController {
     } catch (RichiestaNonAutorizzataException e) {
       // Redirigi l'utente in home page se non ha le autorizzazioni necessarie per visualizzare
       // la lista delle richieste
-      redirectAttributes.addFlashAttribute("TestoNotifica", 
+      redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
       return "redirect:/";
     }
