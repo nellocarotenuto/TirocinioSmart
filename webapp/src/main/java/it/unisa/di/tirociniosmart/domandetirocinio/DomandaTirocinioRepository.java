@@ -1,14 +1,15 @@
 package it.unisa.di.tirociniosmart.domandetirocinio;
 
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
-import it.unisa.di.tirociniosmart.studenti.Studente;
+
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Classe che definisce le operazioni per la modellazione e l'accesso 
- * alle informazioni persistenti relative alle domande di tirocinio.
+ * Classe che definisce le operazioni per la modellazione e l'accesso alle informazioni persistenti
+ * relative alle domande di tirocinio.
  * 
  * @see DomandaTirocinio
  */
@@ -63,7 +64,7 @@ public interface DomandaTirocinioRepository
    *      status > 0
    * 
    */
-  List<DomandaTirocinio> findAllByIdStudenteAndStatus(String username, int status);
+  List<DomandaTirocinio> findAllByStatusAndStudenteUsername(int status, String username);
   
   /**
    * Permette di ottenere l'elenco delle domande di tirocinio inviate con un determinato stato
@@ -80,7 +81,7 @@ public interface DomandaTirocinioRepository
    * @pre idAzienda != null
    * 
    */
-  List<DomandaTirocinio> findAllByIdAziendaAndStatus(int status, String idAzienda);
+  List<DomandaTirocinio> findAllByStatusAndProgettoFormativoAziendaId(int status, String idAzienda);
   
   /**
    * Permette di ottenere l'elenco delle domande di tirocinio a partire dal progetto formativo 

@@ -1,7 +1,6 @@
 package it.unisa.di.tirociniosmart.domandetirocinio;
 
 import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
-import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
 import it.unisa.di.tirociniosmart.studenti.Studente;
@@ -14,9 +13,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+/**
+ * Classe che definisce la logica di business per le operazioni possibili nell'ambito delle
+ * domande di tirocinio.
+ * 
+ * @see DomandaTirocinio
+ * @see DomandaTirocinioRepository
+ */
+@Service
 public class DomandeTirocinioService {
   
   @Autowired
@@ -218,14 +225,14 @@ public class DomandeTirocinioService {
     //Un delegato aziendale può vedere solo le domande in attesa 
     } else if (AutenticazioneHolder.getUtente() instanceof DelegatoAziendale) {
       DelegatoAziendale delegato = (DelegatoAziendale) AutenticazioneHolder.getUtente();
-      return domandaRepository.findAllByIdAziendaAndStatus(DomandaTirocinio.IN_ATTESA,
+      return domandaRepository.findAllByStatusAndProgettoFormativoAziendaId(DomandaTirocinio.IN_ATTESA,
                                                            delegato.getAzienda().getId());
       
       //Uno studente può vedere le domande di tirocinio in attesa
     } else if (AutenticazioneHolder.getUtente() instanceof Studente) {
       Studente studente = (Studente) AutenticazioneHolder.getUtente();
-      return domandaRepository.findAllByIdStudenteAndStatus(studente.getUsername(),
-                                                            DomandaTirocinio.IN_ATTESA);
+      return domandaRepository.findAllByStatusAndStudenteUsername(DomandaTirocinio.IN_ATTESA,
+                                                                  studente.getUsername());
     } else {
       throw new RichiestaNonAutorizzataException();
     }  
