@@ -115,9 +115,17 @@ public class StudentiService {
    * 
    * @return Lista di {@link RichiestaIscrizione} contenente tutte le richieste d'iscrizione non
    *         ancora gestite
+   *         
+   * @throws RichiestaNonAutorizzataException se l'operazione non viene invocata da un impiegato
+   *         dell'ufficio tirocini
    */
   @Transactional
-  public List<RichiestaIscrizione> elencaListaRichiesteIscrizione() {
+  public List<RichiestaIscrizione> elencaListaRichiesteIscrizione()
+         throws RichiestaNonAutorizzataException {
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     List<RichiestaIscrizione> richiesteIscrizione = richiestaIscrizioneRepository.findAllByStatus(
                                                                      RichiestaIscrizione.IN_ATTESA);
     return richiesteIscrizione;
