@@ -225,8 +225,9 @@ public class DomandeTirocinioService {
     //Un delegato aziendale può vedere solo le domande in attesa 
     } else if (AutenticazioneHolder.getUtente() instanceof DelegatoAziendale) {
       DelegatoAziendale delegato = (DelegatoAziendale) AutenticazioneHolder.getUtente();
-      return domandaRepository.findAllByStatusAndProgettoFormativoAziendaId(DomandaTirocinio.IN_ATTESA,
-                                                           delegato.getAzienda().getId());
+      return domandaRepository.findAllByStatusAndProgettoFormativoAziendaId(
+                                                                     DomandaTirocinio.IN_ATTESA,
+                                                                     delegato.getAzienda().getId());
       
       //Uno studente può vedere le domande di tirocinio in attesa
     } else if (AutenticazioneHolder.getUtente() instanceof Studente) {
@@ -325,14 +326,14 @@ public class DomandeTirocinioService {
    *         parametri stabiliti
    */
   public LocalDate validaDataDiInizioTirocinio(LocalDate dataInizio, LocalDate dataFine) 
-      throws DataDiFineTirocinioNonValidaException {
+      throws DataDiInizioTirocinioNonValidaException {
     if (dataInizio == null) {
-      throw new DataDiFineTirocinioNonValidaException();
+      throw new DataDiInizioTirocinioNonValidaException();
     } else {
       LocalDate oggi = LocalDate.now();
         
       if (dataInizio.isBefore(oggi) || dataInizio.equals(oggi) || dataInizio.isAfter(dataFine)) {
-        throw new DataDiFineTirocinioNonValidaException();
+        throw new DataDiInizioTirocinioNonValidaException();
       } else {
         return dataInizio;
       } 

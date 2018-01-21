@@ -64,11 +64,20 @@ public class DomandaTirocinioForm {
     this.progetto = progetto;
   }
 
+  public String getCommentoStudente() {
+    return commentoStudente;
+  }
+
+  public void setCommentoStudente(String commentoStudente) {
+    this.commentoStudente = commentoStudente;
+  }
+
   private int cfu;
   private int status;
   private LocalDateTime data;
   private LocalDate inizioTirocinio;
   private LocalDate fineTirocinio;
   private ProgettoFormativo progetto;
+  private String commentoStudente;
 
 }
