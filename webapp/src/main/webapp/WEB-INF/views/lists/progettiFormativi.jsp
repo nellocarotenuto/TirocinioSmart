@@ -42,9 +42,9 @@
 	         <c:if test="${utente.azienda.nome == azienda.nome}" >
 			       <div class="row">
 						 	 <div class="col s12">
-			   				 <a href="/dashboard/progetti/archivia"
+			   				 <a href="#<c:out value="${idModalArchivia}"/> "
 			   				 		data-position="right"
-		     				    class="btn waves-effect right">
+		     				    class="modal-trigger btn waves-effect right">
 		     				   <i class="material-icons right">archive</i>
 		      			   <spring:message code="button.progettoFormativo.archivia.label" />
 		    			   </a>
@@ -55,6 +55,13 @@
 	     </div>
 		</li>
 	</ul>
+	<div id="${idModalArchivia}" class="modal">
+    <div class="modal-content">
+      <jsp:include page="/WEB-INF/views/forms/archiviaProgettoFormativo.jsp">
+        <jsp:param value="${current.id}" name="idArchiviazione" />
+      </jsp:include>
+    </div>
+  </div>
 </c:forEach>
 
 <!-- Script per l'inizializzazione e la validazione dei form -->

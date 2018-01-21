@@ -20,5 +20,4 @@ $(document).ready(function() {
   }
 });
 
-var aggiungiModal = document.querySelector("#aggiungi");
-var aggiungiModalInstance = M.Modal.init(aggiungiModal);
+
