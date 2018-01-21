@@ -128,11 +128,11 @@ public class UtenzaController {
     UtenteRegistrato utente = AutenticazioneHolder.getUtente();
     
     if (utente instanceof ImpiegatoUfficioTirocini) {
-      return "pages/dashboardUfficioTirocini";
+      return "redirect:/dashboard/domande";
     } else if (utente instanceof DelegatoAziendale) {
-      return "pages/dashboardAzienda";
+      return "redirect:/dashboard/tirocini";
     } else if (utente instanceof Studente) {
-      return "pages/dashboardStudente";
+      return "pages/dashboard/tirocini";
     }
     
     return "redirect:/errore";

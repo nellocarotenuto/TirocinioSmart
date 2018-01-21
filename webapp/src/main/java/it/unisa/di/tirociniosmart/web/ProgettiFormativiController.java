@@ -2,13 +2,16 @@ package it.unisa.di.tirociniosmart.web;
 
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
+import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.convenzioni.IdAziendaNonValidoException;
 import it.unisa.di.tirociniosmart.progettiformativi.DescrizioneProgettoNonValidaException;
 import it.unisa.di.tirociniosmart.progettiformativi.IdProgettoFormativoInesistenteException;
 import it.unisa.di.tirociniosmart.progettiformativi.NomeProgettoNonValidoException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
+import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.web.ProgettoFormativoForm;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +44,7 @@ public class ProgettiFormativiController {
   private ProgettoFormativoFormValidator formValidator;
   
   /**
-   * Fornise l'elenco dei progetti formativi messi a disposizione da un'azienda.
+   * Fornisce l'elenco dei progetti formativi messi a disposizione da un'azienda.
    * 
    * @param idAzienda stringa che indica l'id dell'azienda della quale visualizzare i progetti 
    *        formativi
@@ -78,6 +81,41 @@ public class ProgettiFormativiController {
   }
   
   /**
+   * Fornisce l'elenco dei progetti formativi offerti dall'azienda rappresentata dall'utente
+   * autenticato.
+   * 
+   * @param model Incapsula gli attributi da passare alla pagina delegata alla presentazione
+   * 
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli 
+   *        disponibili anche dopo un redirect
+   *        
+   * @return Stringa indicante la vista delegata alla presentazione della lista di progetti
+   *         formativi dell'azienda nel caso in cui l'utente autenticato sia un delegato aziendale,
+   *         la stringa indicante la home page (tramite redirect) altrimenti
+   */
+  @RequestMapping(value = "/dashboard/progetti", method = RequestMethod.GET)
+  public String elencaProgettiFormativiDashboard(Model model,
+                                                 RedirectAttributes redirectAttributes) {
+    UtenteRegistrato utente = AutenticazioneHolder.getUtente();
+    
+    if (!(utente instanceof DelegatoAziendale)) {
+      // Redirigi alla home page se l'utente non dispone delle autorizzazioni necessarie
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+    
+    DelegatoAziendale delegato = (DelegatoAziendale) utente;
+    model.addAttribute("azienda", delegato.getAzienda());
+    
+    if (!model.containsAttribute("progettoFormativoForm")) {
+      model.addAttribute("progettoFormativoForm", new ProgettoFormativoForm());
+    }
+    
+    return "pages/progettiFormativiAzienda";
+  }
+  
+  /**
    * Elabora l'aggiunta di un progetto formativo effettuandone la validazione.
    * 
    * @param progettoFormativoForm {@link ProgettoFormativoForm} che incapsula gli input utente.
@@ -110,7 +148,7 @@ public class ProgettiFormativiController {
       redirectAttributes.addFlashAttribute("progettoFormativoForm", progettoFormativoForm);
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.convenzioni.richiestaNonValida");
 
-      return "redirect:/azienda/azienda1";
+      return "redirect:/dashboard/progetti";
     }
     
     // Instanzia un nuovo oggetto ProgettoFormativo

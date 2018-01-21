@@ -13,7 +13,19 @@
     <div class="col l4 xl3">
       <jsp:include page="/WEB-INF/views/menu/ufficioTirociniNav.jsp" />
     </div>
+    <div class="col s12 m12 l8 xl9">
+      <div class="card single-row-header">
+        <div class="card-content">
+          <span class="card-title">
+            <spring:message code="pagina.richiesteConvenzionamento.titolo" />
+          </span>
+        </div>
+      </div>
+      <jsp:include page="/WEB-INF/views/lists/domandeUfficioTirocini.jsp" />
+    </div>
   </div>
 </main>
-
+    
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
