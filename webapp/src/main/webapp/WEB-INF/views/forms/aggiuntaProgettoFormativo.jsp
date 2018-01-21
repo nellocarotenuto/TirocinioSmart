@@ -24,12 +24,13 @@
       <div class="row">
         <div class="input-field col s12">
           <i class="material-icons prefix"></i>
-          <textarea id="aggiungiProgettoFormativo-commento"
-                    name="commento" 
-                    class="materialize-textarea"></textarea>
+          <form:textarea path="descrizione"
+                         id="aggiungiProgettoFormativo-descrizione"
+                         class="materialize-textarea" />
           <label for="aggiungiProgettoFormativo-commento">
             <spring:message code="progettoFormativo.descrizione.label" />
           </label>
+          <form:errors path="descrizione" cssClass="helper-text" />
         </div>
       </div>
     </div>

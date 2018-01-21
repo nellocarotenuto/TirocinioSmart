@@ -19,7 +19,7 @@
 	    </p>
 	  </div>
 	  <div class="col s5">
-	    <a href="/azienda/${current.id}"
+	    <a href="/aziende/${current.id}"
          class="btn waves-effect right">
         <i class="material-icons right">business_center</i>
         <spring:message code="button.progettiFormativi.label" />

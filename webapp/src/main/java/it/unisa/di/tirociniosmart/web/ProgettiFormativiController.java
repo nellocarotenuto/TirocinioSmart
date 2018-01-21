@@ -55,8 +55,9 @@ public class ProgettiFormativiController {
    *         formativi dell'azienda specificata in caso di successo, la stringa indicante la pagina
    *         che elenca le aziende (tramite redirect) in caso di insuccesso
    */
-  @RequestMapping(value = "/azienda/{idAzienda}", method = RequestMethod.GET)
-  public String elencaProgettiFormativi(@PathVariable("idAzienda") String idAzienda, Model model, 
+  @RequestMapping(value = "/aziende/{idAzienda}", method = RequestMethod.GET)
+  public String elencaProgettiFormativi(@PathVariable("idAzienda") String idAzienda,
+                                        Model model, 
                                         RedirectAttributes redirectAttributes) {
    
     try {
@@ -69,7 +70,10 @@ public class ProgettiFormativiController {
       return "redirect:/aziende";
     }
     
-    model.addAttribute("progettoFormativoForm", new ProgettoFormativoForm());
+    if (!model.containsAttribute("progettoFormativoForm")) {
+      model.addAttribute("progettoFormativoForm", new ProgettoFormativoForm());
+    }
+    
     return "pages/progettiFormativi";
   }
   
@@ -106,7 +110,7 @@ public class ProgettiFormativiController {
       redirectAttributes.addFlashAttribute("progettoFormativoForm", progettoFormativoForm);
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.convenzioni.richiestaNonValida");
 
-      return "redirect:/dashboard/progetti";
+      return "redirect:/azienda/azienda1";
     }
     
     // Instanzia un nuovo oggetto ProgettoFormativo
