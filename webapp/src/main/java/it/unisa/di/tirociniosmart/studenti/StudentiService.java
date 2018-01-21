@@ -1,5 +1,8 @@
 package it.unisa.di.tirociniosmart.studenti;
 
+import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
+import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.time.LocalDate;
@@ -42,6 +45,11 @@ public class StudentiService {
    */
   @Transactional(rollbackFor = Exception.class)
   public void registraRichiestaIscrizione(Studente studente) throws Exception {
+    // Un utente già registrato non può inviare richieste d'iscrizione
+    if (AutenticazioneHolder.getUtente() != null) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     //valida i campi dello studente
     studente.setUsername(utenzaService.validaUsername(studente.getUsername()));
     studente.setPassword(utenzaService.validaPassword(studente.getPassword()));
@@ -75,11 +83,19 @@ public class StudentiService {
    * 
    * @throws RichiestaIscrizioneGestitaException se la richiesta identificata da idRichiesta
    *         si trova in uno stato diverso da quello in attesa
+   *         
+   * @throws RichiestaNonAutorizzataException se l'utente che tenta di approvare una richiesta non
+   *         è un impiegato dell'ufficio tirocini
    */
   @Transactional(rollbackFor = Exception.class)
   public void approvaRichiestaIscrizione(long idRichiesta)
          throws IdRichiestaIscrizioneNonValidoException,
-                RichiestaIscrizioneGestitaException {
+                RichiestaIscrizioneGestitaException, RichiestaNonAutorizzataException {
+    // Controlla che la richiesta di approvazione venga da un impiegato dell'ufficio tirocini
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     // Controlla che la richiesta esista
     RichiestaIscrizione richiesta = richiestaIscrizioneRepository.findById(idRichiesta);
     if (richiesta == null) {
@@ -121,12 +137,20 @@ public class StudentiService {
    *         
    * @throws CommentoRichiestaIscrizioneNonValidoException se il commento da associare alla
    *         richiesta è nullo o vuoto
+   *         
+   * @throws RichiestaNonAutorizzataException se l'utente che tenta di approvare una richiesta non
+   *         è un impiegato dell'ufficio tirocini
    */
   @Transactional(rollbackFor = Exception.class)
   public void rifiutaRichiestaIscrizione(long idRichiesta, String commento)
          throws IdRichiestaIscrizioneNonValidoException,
                 RichiestaIscrizioneGestitaException,
-                CommentoRichiestaIscrizioneNonValidoException {
+                CommentoRichiestaIscrizioneNonValidoException, RichiestaNonAutorizzataException {
+    // Controlla che la richiesta di rifiuto venga da un impiegato dell'ufficio tirocini
+    if (!(AutenticazioneHolder.getUtente() instanceof ImpiegatoUfficioTirocini)) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     // Controlla che la richiesta esista
     RichiestaIscrizione richiesta = richiestaIscrizioneRepository.findById(idRichiesta);
     if (richiesta == null) {

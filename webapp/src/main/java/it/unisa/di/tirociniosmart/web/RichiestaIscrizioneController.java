@@ -8,6 +8,7 @@ import it.unisa.di.tirociniosmart.studenti.RichiestaIscrizioneGestitaException;
 import it.unisa.di.tirociniosmart.studenti.Studente;
 import it.unisa.di.tirociniosmart.studenti.StudentiService;
 import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
+import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -96,6 +97,10 @@ public class RichiestaIscrizioneController {
     try {
       studentiService.registraRichiestaIscrizione(studente);
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.iscrizioni.richiestaInviata");
+    } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
     } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
