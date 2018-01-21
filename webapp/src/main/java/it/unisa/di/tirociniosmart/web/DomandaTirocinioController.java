@@ -1,6 +1,5 @@
 package it.unisa.di.tirociniosmart.web;
 
-import it.unisa.di.tirociniosmart.convenzioni.ConvenzioniService;
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinio;
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandeTirocinioService;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
