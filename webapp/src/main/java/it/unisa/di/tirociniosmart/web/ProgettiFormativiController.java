@@ -106,7 +106,17 @@ public class ProgettiFormativiController {
     }
     
     DelegatoAziendale delegato = (DelegatoAziendale) utente;
-    model.addAttribute("azienda", delegato.getAzienda());
+    String idAzienda = delegato.getAzienda().getId();
+    
+    try {
+      Azienda azienda = convenzioniService.ottieniAzienda(idAzienda);
+      model.addAttribute("azienda", azienda);
+      
+    } catch (IdAziendaNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.convenzioni.idAziendaNonValido");
+      return "redirect:/aziende";
+    }
     
     if (!model.containsAttribute("progettoFormativoForm")) {
       model.addAttribute("progettoFormativoForm", new ProgettoFormativoForm());
