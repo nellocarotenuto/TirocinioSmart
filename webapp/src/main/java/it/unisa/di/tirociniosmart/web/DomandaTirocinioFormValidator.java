@@ -88,7 +88,7 @@ public class DomandaTirocinioFormValidator {
     try {
       domandeService.validaCommento(form.getCommentoStudente());
     } catch (CommentoDomandaTirocinioNonValidoException e) {
-      errors.rejectValue("commento", "domandaTirocinioForm.commento.nonValido");
+      errors.rejectValue("commentoStudente", "domandaTirocinioForm.commento.nonValido");
     }
     
     try {
