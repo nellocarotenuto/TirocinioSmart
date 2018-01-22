@@ -48,7 +48,7 @@ public class DomandeTirocinioService {
       throw new RichiestaNonAutorizzataException();
     }
     
-    // Valida i campi dello studente
+    // Valida i campi della domanda
     domanda.setInizioTirocinio(validaDataDiInizioTirocinio(domanda.getInizioTirocinio(),
                                                            domanda.getFineTirocinio()));
     domanda.setFineTirocinio(validaDataDiFineTirocinio(domanda.getInizioTirocinio(),
@@ -383,7 +383,7 @@ public class DomandeTirocinioService {
    *         parametri stabiliti
    */
   public int validaCfu(int cfu) throws NumeroCfuNonValidoException {
-    if (cfu < 1 || cfu > 18) {
+    if (cfu < DomandaTirocinio.MIN_CFU || cfu > DomandaTirocinio.MAX_CFU) {
       throw new NumeroCfuNonValidoException();
     } else {
       return cfu;

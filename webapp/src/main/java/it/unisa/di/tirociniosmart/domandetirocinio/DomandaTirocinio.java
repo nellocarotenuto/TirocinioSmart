@@ -376,4 +376,10 @@ public class DomandaTirocinio {
   /** Costante che definisce la minima lunghezza dei campi commento. */
   public static final int MIN_LUNGHEZZA_COMMENTO = 2;
 
+  /** Costante che definisce il numero minimo di CFU da poter associare ad una domanda. */
+  public static final int MIN_CFU = 1;
+  
+  /** Costante che definisce il numero massimo di CFU da poter associare ad una domanda. */
+  public static final int MAX_CFU = 18;
+  
 }
