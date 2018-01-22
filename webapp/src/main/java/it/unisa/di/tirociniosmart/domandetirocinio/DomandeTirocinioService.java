@@ -366,8 +366,6 @@ public class DomandeTirocinioService {
     if (dataFine == null) {
       throw new DataDiFineTirocinioNonValidaException();
     } else {
-      LocalDate oggi = LocalDate.now();
-        
       if (dataFine.isBefore(dataInizio)) {
         throw new DataDiFineTirocinioNonValidaException();
       } else {
