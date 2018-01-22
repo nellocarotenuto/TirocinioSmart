@@ -39,7 +39,7 @@ public class AutenticazioneInterceptor implements HandlerInterceptor {
     
     // Ottieni l'username dell'utente autenticato e propaga l'informazione anche a livello più basso
     String username = (String) session.getAttribute("username");
-   
+    
     if (username != null) {
       utenzaService.setUtenteAutenticato(username);
     }

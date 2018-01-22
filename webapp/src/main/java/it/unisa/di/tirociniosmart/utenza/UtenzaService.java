@@ -273,11 +273,10 @@ public class UtenzaService {
       return;
     }
     
-    if (!utenteRepository.existsByUsername(username)) {
-      throw new RuntimeException("Username inesistente");
+    if (utenteRepository.existsByUsername(username)) {
+      AutenticazioneHolder.setUtente(username);
     }
     
-    AutenticazioneHolder.setUtente(username);
   }
   
   /**
