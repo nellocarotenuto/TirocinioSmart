@@ -7,6 +7,8 @@ import it.unisa.di.tirociniosmart.domandetirocinio.DomandeTirocinioService;
 import it.unisa.di.tirociniosmart.domandetirocinio.NumeroCfuNonValidoException;
 import it.unisa.di.tirociniosmart.domandetirocinio.ProgettoFormativoArchiviatoException;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -51,14 +53,30 @@ public class DomandaTirocinioFormValidator {
     }
    
     try {
-      domandeService.validaDataDiInizioTirocinio(form.getInizioTirocinio(),
-                                                 form.getFineTirocinio());
+      if(form.getGiornoInizio() == null || 
+         form.getMeseInizio() == null ||
+         form.getAnnoInizio() == null) {
+          throw new DataDiInizioTirocinioNonValidaException();
+      }
+      
+      if(form.getGiornoFine() == null || 
+          form.getMeseFine() == null ||
+          form.getAnnoFine() == null) {
+           throw new DataDiFineTirocinioNonValidaException();
+       }
+      
+      LocalDate dateStart = LocalDate.of(form.getGiornoInizio(),
+                                    form.getMeseInizio(), 
+                                    form.getAnnoInizio());
+      
+      LocalDate dateFinish = LocalDate.of(form.getGiornoFine(), 
+                                           form.getMeseInizio(),
+                                           form.getAnnoFine());
+      
+      domandeService.validaDataDiInizioTirocinio(dateStart,dateFinish);
+      domandeService.validaDataDiFineTirocinio(dateStart, dateFinish);
     } catch (DataDiInizioTirocinioNonValidaException e) {
       errors.rejectValue("dataInizio", "domandaTirocinioForm.dataInizio.nonValida");
-    }
-  
-    try {
-      domandeService.validaDataDiFineTirocinio(form.getInizioTirocinio(), form.getFineTirocinio());
     } catch (DataDiFineTirocinioNonValidaException e) {
       errors.rejectValue("dataFine", "domandaTirocinioForm.dataFine.nonValida");
     }
