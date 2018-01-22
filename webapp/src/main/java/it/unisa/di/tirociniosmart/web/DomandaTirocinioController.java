@@ -7,10 +7,11 @@ import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinioGestitaExcept
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandeTirocinioService;
 import it.unisa.di.tirociniosmart.domandetirocinio.IdDomandaTirocinioNonValidoException;
 import it.unisa.di.tirociniosmart.domandetirocinio.StatoDomandaNonIdoneoException;
-
+import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.progettiformativi.IdProgettoFormativoInesistenteException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -43,10 +44,15 @@ public class DomandaTirocinioController {
     
   @Autowired
   private DomandaTirocinioFormValidator formValidator;
+  
+  @Autowired
+  private UtenzaService utenzaService;
  
   /**
-   * Fornisce l'elenco delle domande di tirocinio in ATTESA per uno studente, o non ancora gestite 
-   * dall'ufficio tirocini, o non ancora gestite da un delegato aziendale.
+   * A seconda dell'utente autenticato nel sistema, restituisce la lista delle domande associategli:
+   * per gli studenti, la lista contiene le domande non ancora approvate, per le aziende la lista
+   * delle domande pervenute all'azienda e per gli impiegati la lista delle domande accettate dalle
+   * aziende.
    *
    * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
    *        disponibili anche dopo un redirect
@@ -63,10 +69,13 @@ public class DomandaTirocinioController {
   public String visualizzaElencoDomande(RedirectAttributes redirectAttributes, Model model) 
       throws RichiestaNonAutorizzataException {
     
-    List<DomandaTirocinio> domande = domandeService.elencaDomandeTirocinio();
-    model.addAttribute("elencoDomandeTirocinio", domande);
+    if (utenzaService.getUtenteAutenticato() instanceof ImpiegatoUfficioTirocini) {
+      List<DomandaTirocinio> domande = domandeService.elencaDomandeTirocinio();
+      model.addAttribute("elencoDomandeTirocinio", domande);
+      return "pages/domandeUfficioTirocini";
+    }
     
-    return "pages/domandeTirocinio";
+    return "redirect:/errore";
   }
   
   /**
