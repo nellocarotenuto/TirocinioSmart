@@ -76,9 +76,13 @@ public class DomandaTirocinioFormValidator {
       domandeService.validaDataDiInizioTirocinio(dateStart,dateFinish);
       domandeService.validaDataDiFineTirocinio(dateStart, dateFinish);
     } catch (DataDiInizioTirocinioNonValidaException e) {
-      errors.rejectValue("dataInizio", "domandaTirocinioForm.dataInizio.nonValida");
+      errors.rejectValue("giornoInizio", "domandaTirocinioForm.dataInizio.nonValida");
+      errors.rejectValue("meseInizio", "domandaTirocinioForm.dataInizio.nonValida");
+      errors.rejectValue("annoInizio", "domandaTirocinioForm.dataInizio.nonValida");
     } catch (DataDiFineTirocinioNonValidaException e) {
-      errors.rejectValue("dataFine", "domandaTirocinioForm.dataFine.nonValida");
+      errors.rejectValue("giornoFine", "domandaTirocinioForm.dataFine.nonValida");
+      errors.rejectValue("meseFine", "domandaTirocinioForm.dataFine.nonValida");
+      errors.rejectValue("annoFine", "domandaTirocinioForm.dataFine.nonValida");
     }
     
     try {
