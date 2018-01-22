@@ -2,7 +2,6 @@ package it.unisa.di.tirociniosmart.web;
 
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
