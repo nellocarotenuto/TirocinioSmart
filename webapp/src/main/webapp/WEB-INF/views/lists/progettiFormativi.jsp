@@ -53,6 +53,13 @@
 	                 </a>
 	               </div>
 	             </div>
+	             <div id="${idModalArchivia}" class="modal">
+					      <div class="modal-content">
+					        <jsp:include page="/WEB-INF/views/forms/archiviaProgettoFormativo.jsp">
+					          <jsp:param value="${current.id}" name="idProgetto" />
+					        </jsp:include>
+					      </div>
+					    </div>
 	           </c:if>
 	         </c:if>
 	         <c:choose>
@@ -63,19 +70,28 @@
 	                    data-position="right"
 	                    class="modal-trigger btn waves-effect right">
 	                   <i class="material-icons right">send</i>
-	                   <spring:message code="button.progettoFormativo.proponiti.label" />
+	                   <spring:message code="progettoFormativo.proponiti.label" />
 	                 </a>
 	               </div>
 	             </div>
+	             <div id="${idModalProponiti}" class="modal">
+					      <div class="modal-content">
+					        <jsp:include page="/WEB-INF/views/forms/inviaDomandaTirocinio.jsp">
+					          <jsp:param value="domandaTirocinioForm-${loop.index}" name="domandaTirocinioForm" />
+					          <jsp:param value="${current.id}" name="idProgetto" />
+					          <jsp:param value="${loop.index}" name="numeroModal" />
+					          <jsp:param value="${current.azienda.nome}" name="nomeAzienda" />
+					          <jsp:param value="${current.nome}" name="nomeProgetto" />
+					        </jsp:include>
+					      </div>
+					    </div>
 		         </c:when>
 		         <c:when test="${empty utente}">
 		         	 <div class="row">
 	               <div class="col s12">
-	                 <a href="#<c:out value="${idModalProponiti}"/>"
-	                    data-position="right"
-	                    class="modal-trigger btn waves-effect right disabled">
+	                 <a class="btn waves-effect right disabled">
 	                   <i class="material-icons right">send</i>
-	                   <spring:message code="button.progettoFormativo.proponiti.label" />
+	                   <spring:message code="progettoFormativo.proponiti.label" />
 	                 </a>
 	               </div>
 	             </div>
@@ -84,13 +100,6 @@
 	       </div>
 	    </li>
 	  </ul>
-	  <div id="${idModalArchivia}" class="modal">
-	    <div class="modal-content">
-	      <jsp:include page="/WEB-INF/views/forms/archiviaProgettoFormativo.jsp">
-	        <jsp:param value="${current.id}" name="idProgetto" />
-	      </jsp:include>
-	    </div>
-	  </div>
 	</c:if>
 </c:forEach>
 

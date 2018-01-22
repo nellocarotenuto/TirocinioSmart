@@ -69,6 +69,12 @@ public class ProgettiFormativiController {
       Azienda azienda = convenzioniService.ottieniAzienda(idAzienda);
       model.addAttribute("azienda", azienda);
       
+      for (int i = 0; i < azienda.getProgettiFormativi().size(); i++) {
+        if (!model.containsAttribute("domandaTirocinioForm-" + i)) {
+          model.addAttribute("domandaTirocinioForm-" + i, new DomandaTirocinioForm());
+        }
+      }
+      
     } catch (IdAziendaNonValidoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",
                                            "toast.convenzioni.idAziendaNonValido");

@@ -43,8 +43,10 @@ public class DomandeTirocinioService {
    */
   @Transactional(rollbackFor = Exception.class)
   public void registraDomandaTirocinio(DomandaTirocinio domanda) throws Exception {
+    UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
+    
     // Solo uno studente può registrare una nuova domanda di tirocinio
-    if (!(utenzaService.getUtenteAutenticato() instanceof Studente)) {
+    if (!(utente instanceof Studente)) {
       throw new RichiestaNonAutorizzataException();
     }
     
@@ -56,6 +58,9 @@ public class DomandeTirocinioService {
     domanda.setCfu(validaCfu(domanda.getCfu()));
     domanda.setCommentoStudente(validaCommento(domanda.getCommentoStudente()));
     domanda.setProgettoFormativo(verificaStatoProgettoFormativo(domanda.getProgettoFormativo()));
+    
+    Studente studente = (Studente) utente;
+    domanda.setStudente(studente);
     
     // Imposta stato e data della domanda
     domanda.setStatus(DomandaTirocinio.IN_ATTESA);

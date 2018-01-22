@@ -5,13 +5,13 @@ import it.unisa.di.tirociniosmart.domandetirocinio.DataDiFineTirocinioNonValidaE
 import it.unisa.di.tirociniosmart.domandetirocinio.DataDiInizioTirocinioNonValidaException;
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandeTirocinioService;
 import it.unisa.di.tirociniosmart.domandetirocinio.NumeroCfuNonValidoException;
-import it.unisa.di.tirociniosmart.domandetirocinio.ProgettoFormativoArchiviatoException;
 
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 
 /**
@@ -24,7 +24,7 @@ import org.springframework.validation.Errors;
  * @see UtenzaService
  */
 @Component
-public class DomandaTirocinioFormValidator {
+public class DomandaTirocinioFormValidator implements Validator {
 
   @Autowired
   private DomandeTirocinioService domandeService;
@@ -32,6 +32,7 @@ public class DomandaTirocinioFormValidator {
   /**
    * Permette di definire le classi cui il validatore è applicabile.
    */
+  @Override
   public boolean supports(Class<?> clazz) {
     return DomandaTirocinioForm.class.isAssignableFrom(clazz);
   }
@@ -43,6 +44,7 @@ public class DomandaTirocinioFormValidator {
    * 
    * @param errors Oggetto in cui salvare l'esito della validazione
    */
+  @Override
   public void validate(Object target, Errors errors) {
     DomandaTirocinioForm form = (DomandaTirocinioForm) target;
     

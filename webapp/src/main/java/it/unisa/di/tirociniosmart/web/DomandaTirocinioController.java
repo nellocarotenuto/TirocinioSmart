@@ -13,16 +13,13 @@ import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 
 import java.time.LocalDate;
-
 import java.util.List;
-
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -91,21 +88,20 @@ public class DomandaTirocinioController {
    */
   
    
-  @RequestMapping(value = "/dasboard/domande/invia", method = RequestMethod.POST)
-  public String inviaDomandaTirocinio(@ModelAttribute("domandaTirocinioForm")
-                                      DomandaTirocinioForm domandaTirocinioForm,
+  @RequestMapping(value = "/dashboard/domande/invia", method = RequestMethod.POST)
+  public String inviaDomandaTirocinio(DomandaTirocinioForm domandaTirocinioForm,
                                       BindingResult result,
-                                      RedirectAttributes redirectAttributes) {
-    
+                                      RedirectAttributes redirectAttributes) {    
     // Controlla la validità del form ricevuto come parametro e salva il risultato in result
     formValidator.validate(domandaTirocinioForm, result);
     
     // Redirigi l'utente alla pagina del form se sono stati rilevati degli errori
     if (result.hasErrors()) {
       redirectAttributes
-          .addFlashAttribute("org.springframework.validation.BindingResult.domandaTirocinioForm",
-                             result);
-      redirectAttributes.addFlashAttribute("domandaTirocinioForm", domandaTirocinioForm);
+          .addFlashAttribute("org.springframework.validation.BindingResult.domandaTirocinioForm-"
+                                                     + domandaTirocinioForm.getPosizione(), result);
+      redirectAttributes.addFlashAttribute("domandaTirocinioForm-"
+                                       + domandaTirocinioForm.getPosizione(), domandaTirocinioForm);
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.domandaTirocinio.domandaNonValida");
 
@@ -125,9 +121,9 @@ public class DomandaTirocinioController {
     DomandaTirocinio domandaTirocinio = new DomandaTirocinio();
     domandaTirocinio.setInizioTirocinio(dataInizio);
     domandaTirocinio.setFineTirocinio(dataFine);
-    domandaTirocinio.setCommentoStudente(domandaTirocinio.getCommentoStudente());
-    domandaTirocinio.setCfu(domandaTirocinio.getCfu());
-   
+    domandaTirocinio.setCommentoStudente(domandaTirocinioForm.getCommentoStudente());
+    domandaTirocinio.setCfu(domandaTirocinioForm.getCfu());
+    
     try {
       domandaTirocinio.setProgettoFormativo(progettoFormativoService.ottieniProgettoFormativo(
                                             domandaTirocinioForm.getIdProgettoFormativo()));
@@ -142,17 +138,15 @@ public class DomandaTirocinioController {
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.domandaTirocinio.inviata");
     } catch (RichiestaNonAutorizzataException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
-          "toast.autorizzazioni.richiestaNonAutorizzata");
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
       return "redirect:/";
     } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
     }
     
-    
-    return "redirect:/";
+    return "redirect:/dashboard/domande";
   }
-  
   
   /**
    * Elabora le domande di tirocinio effettuandone l'accettazione.

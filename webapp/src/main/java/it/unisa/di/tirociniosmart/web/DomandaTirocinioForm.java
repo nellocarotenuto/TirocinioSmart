@@ -1,10 +1,5 @@
 package it.unisa.di.tirociniosmart.web;
 
-import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
-
-import java.time.LocalDateTime;
-
-
 /**
  * Oggetto utilizzato per la mappatura dei campi del form di invio di una domanda di tirocinio  
  * HTML. Questo oggetto viene passato come parametro ai controller dalla dispatcher servlet quando 
@@ -15,30 +10,14 @@ public class DomandaTirocinioForm {
   DomandaTirocinioForm() {
   }
   
-  public int getCfu() {
+  public Integer getCfu() {
     return cfu;
   }
   
-  public void setCfu(int cfu) {
+  public void setCfu(Integer cfu) {
     this.cfu = cfu;
   }
-  
-  public int getStatus() {
-    return status;
-  }
-  
-  public void setStatus(int status) {
-    this.status = status;
-  }
-  
-  public LocalDateTime getData() {
-    return data;
-  }
-  
-  public void setData(LocalDateTime data) {
-    this.data = data;
-  }
-    
+
   public String getCommentoStudente() {
     return commentoStudente;
   }
@@ -102,13 +81,16 @@ public class DomandaTirocinioForm {
   public void setIdProgettoFormativo(Long idProgettoFormativo) {
     this.idProgettoFormativo = idProgettoFormativo;
   }
+  
+  public Integer getPosizione() {
+    return posizione;
+  }
+  
+  public void setPosizione(Integer posizione) {
+    this.posizione = posizione;
+  }
 
-
-
-
-  private int cfu;
-  private int status;
-  private LocalDateTime data; 
+  private Integer cfu;
   private String commentoStudente;
   private Integer giornoInizio;
   private Integer meseInizio;
@@ -117,4 +99,7 @@ public class DomandaTirocinioForm {
   private Integer meseFine;
   private Integer annoFine;
   private Long idProgettoFormativo;
+  
+  private Integer posizione;
+  
 }
