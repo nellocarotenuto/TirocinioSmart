@@ -1,20 +1,21 @@
 package it.unisa.di.tirociniosmart.web;
 
-import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.domandetirocinio.CommentoDomandaTirocinioNonValidoException;
+
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinio;
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinioGestitaException;
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandeTirocinioService;
 import it.unisa.di.tirociniosmart.domandetirocinio.IdDomandaTirocinioNonValidoException;
-import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.domandetirocinio.StatoDomandaNonIdoneoException;
+
 import it.unisa.di.tirociniosmart.progettiformativi.IdProgettoFormativoInesistenteException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
-import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.util.List;
+
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,7 @@ public class DomandaTirocinioController {
   
   @Autowired
   private ProgettiFormativiService progettoFormativoService;
-  
-  @Autowired
-  private UtenzaService utenzaService;
-  
+    
   @Autowired
   private DomandaTirocinioFormValidator formValidator;
  
@@ -169,7 +167,7 @@ public class DomandaTirocinioController {
    *         Stringa indicante l'URL della pagina da mostrare (tramite redirect)
    *                 in caso di insuccesso
    */
-  
+  @RequestMapping(value = "/dashboard/domande/accetta", method = RequestMethod.POST)
   public String accettaDomandaTirocinio(@RequestParam Long idDomanda,
                                         RedirectAttributes redirectAttributes) {
     
@@ -184,6 +182,9 @@ public class DomandaTirocinioController {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                          "toast.domandaTirocinio.domandaTirocinioGestitaException");
     } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+    } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
     }
@@ -206,7 +207,7 @@ public class DomandaTirocinioController {
    *         Stringa indicante l'URL della pagina da mostrare (tramite redirect)
    *                 in caso di insuccesso
    */
-  
+  @RequestMapping(value = "/dashboard/domande/rifiuta", method = RequestMethod.POST)
   public String rifiutaDomandaTirocinio(@RequestParam Long idDomanda,
                                         @RequestParam String commento,
                                         RedirectAttributes redirectAttributes) {
@@ -225,6 +226,47 @@ public class DomandaTirocinioController {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.domandaTirocinio.commentoNonValidoException");
     } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+    } catch (Exception e) {
+      logger.severe(e.getMessage());
+      return "redirect:/errore";
+    }
+    
+    return "redirect:/dashboard/domande";
+  }
+  
+  /**
+   * Elabora le domande di tirocinio effettuandone l'approvazione.
+   * 
+   * @param idDomanda long che indica la domanda da approvare
+   * 
+   * @param redirectAttributes incapsula gli attributi da salvare in sessione in modo
+   *                           da renderli disponibili anche dopo il redirect
+   * @return Stringa indicante l'URL della pagina da mostrare (tramite redirect) 
+   *                 in caso di successo,
+   *         Stringa indicante l'URL della pagina da mostrare (tramite redirect)
+   *                 in caso di insuccesso
+   */
+  
+  @RequestMapping(value = "/dashboard/domande/approva", method = RequestMethod.POST)
+  public String approvaDomandaTirocinio(@RequestParam Long idDomanda,
+                                        RedirectAttributes redirectAttributes) {
+    
+    try {
+      domandeService.approvaDomandaTirocinio(idDomanda);
+      redirectAttributes.addFlashAttribute("testoNotifica",   
+                                           "toast.domandaTirocinio.domandaApprovata");
+    } catch (IdDomandaTirocinioNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.domandaTirocinio.idNonValidoException");
+    } catch (StatoDomandaNonIdoneoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",  
+                                           "toast.domandaTirocinio.StatoDomandaNonIdoneoException");
+    } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+    } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
     }
