@@ -39,14 +39,6 @@ public class DomandaTirocinioForm {
     this.data = data;
   }
     
-  public ProgettoFormativo getProgetto() {
-    return progetto;
-  }
-
-  public void setProgetto(ProgettoFormativo progetto) {
-    this.progetto = progetto;
-  }
-
   public String getCommentoStudente() {
     return commentoStudente;
   }
@@ -116,8 +108,7 @@ public class DomandaTirocinioForm {
 
   private int cfu;
   private int status;
-  private LocalDateTime data;
-  private ProgettoFormativo progetto;
+  private LocalDateTime data; 
   private String commentoStudente;
   private Integer giornoInizio;
   private Integer meseInizio;

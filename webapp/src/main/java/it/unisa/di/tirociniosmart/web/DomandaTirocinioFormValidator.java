@@ -90,12 +90,6 @@ public class DomandaTirocinioFormValidator {
     } catch (CommentoDomandaTirocinioNonValidoException e) {
       errors.rejectValue("commentoStudente", "domandaTirocinioForm.commento.nonValido");
     }
-    
-    try {
-      domandeService.verificaStatoProgettoFormativo(form.getProgetto());
-    } catch (ProgettoFormativoArchiviatoException e) {
-      errors.rejectValue("progetto", "domandaTirocinioForm.progettoFormattivo.archiviato");
-    }
 
   }
 
