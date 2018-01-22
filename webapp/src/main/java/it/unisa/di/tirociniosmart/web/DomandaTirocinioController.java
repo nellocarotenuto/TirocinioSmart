@@ -1,10 +1,16 @@
 package it.unisa.di.tirociniosmart.web;
 
+import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
+import it.unisa.di.tirociniosmart.domandetirocinio.CommentoDomandaTirocinioNonValidoException;
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinio;
+import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinioGestitaException;
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandeTirocinioService;
+import it.unisa.di.tirociniosmart.domandetirocinio.IdDomandaTirocinioNonValidoException;
+import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.progettiformativi.IdProgettoFormativoInesistenteException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -35,6 +42,9 @@ public class DomandaTirocinioController {
   
   @Autowired
   private ProgettiFormativiService progettoFormativoService;
+  
+  @Autowired
+  private UtenzaService utenzaService;
   
   @Autowired
   private DomandaTirocinioFormValidator formValidator;
@@ -143,6 +153,83 @@ public class DomandaTirocinioController {
     
     
     return "redirect:/";
+  }
+  
+  
+  /**
+   * Elabora le domande di tirocinio effettuandone l'accettazione.
+   * 
+   * @param idDomanda Long che indica la domanda da accettare
+   *  
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
+   *        disponibili anche dopo un redirect
+   * 
+   * @return Stringa indicante l'URL della pagina da mostrare (tramite redirect) 
+   *                 in caso di successo,
+   *         Stringa indicante l'URL della pagina da mostrare (tramite redirect)
+   *                 in caso di insuccesso
+   */
+  
+  public String accettaDomandaTirocinio(@RequestParam Long idDomanda,
+                                        RedirectAttributes redirectAttributes) {
+    
+    try {
+      domandeService.accettaDomandaTirocinio(idDomanda);
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.domandaTirocinio.domandaAccettata");
+    } catch (IdDomandaTirocinioNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.domandaTirocinio.idNonValidoException");
+    } catch (DomandaTirocinioGestitaException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                         "toast.domandaTirocinio.domandaTirocinioGestitaException");
+    } catch (RichiestaNonAutorizzataException e) {
+      logger.severe(e.getMessage());
+      return "redirect:/errore";
+    }
+    
+    return "redirect:/dashboard/domande";
+  }
+  
+  /**
+   * Elabora le domande di tirocinio effettuandone il rifiuto.
+   * 
+   * @param idDomanda long che indica la domanda da rifiutare
+   * 
+   * @param commento Stringa che indica il commento da inserire per il rifiuto.
+   * 
+   * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
+   *                           disponibili anche dopo un redirect
+   * 
+   * @return Stringa indicante l'URL della pagina da mostrare (tramite redirect) 
+   *                 in caso di successo,
+   *         Stringa indicante l'URL della pagina da mostrare (tramite redirect)
+   *                 in caso di insuccesso
+   */
+  
+  public String rifiutaDomandaTirocinio(@RequestParam Long idDomanda,
+                                        @RequestParam String commento,
+                                        RedirectAttributes redirectAttributes) {
+    
+    try {
+      domandeService.rifiutaDomandaTirocinio(idDomanda, commento);
+      redirectAttributes.addFlashAttribute("testoNotifica",
+                                           "toast.domandaTirocinio.domandaRifiutata");
+    } catch (IdDomandaTirocinioNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.domandaTirocinio.idNonValidoException");
+    } catch (DomandaTirocinioGestitaException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                        "toast.domandaTirocinio.domandaTirocinioGestitaException");
+    } catch (CommentoDomandaTirocinioNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.domandaTirocinio.commentoNonValidoException");
+    } catch (RichiestaNonAutorizzataException e) {
+      logger.severe(e.getMessage());
+      return "redirect:/errore";
+    }
+    
+    return "redirect:/dashboard/domande";
   }
   
 }
