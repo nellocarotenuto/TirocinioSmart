@@ -139,6 +139,35 @@ public class ProgettiFormativiService {
   }
   
   /**
+   * Permette di ottenere un progetto formativo tramite id.
+   * 
+   * @param id long che rappresenta l'identificatore del progetto
+   * 
+   * @return l'oggetto ProgettoFormativo
+   * 
+   * @throws IdProgettoFormativoInesistenteException se l'identificatore passato come parametro
+   *         non si riferisce ad alcun progetto
+   */
+  
+  public ProgettoFormativo ottieniProgettoFormativo(Long id) 
+         throws IdProgettoFormativoInesistenteException {
+    
+    // ..se esiste..
+    if (!progettoFormativoRepository.existsById(id)) {
+      throw new IdProgettoFormativoInesistenteException();
+    }
+    
+    ProgettoFormativo progettoFormativo = progettoFormativoRepository.findById(id);
+    
+    return progettoFormativo;
+  }
+  
+  
+  
+  
+  
+  
+  /**
    * Controlla che il nome di un progetto sia specificato e che la sua lunghezza rispetti 
    * i parametri prestabiliti.
    * 

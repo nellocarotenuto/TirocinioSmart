@@ -53,25 +53,25 @@ public class DomandaTirocinioFormValidator {
     }
    
     try {
-      if(form.getGiornoInizio() == null || 
-         form.getMeseInizio() == null ||
-         form.getAnnoInizio() == null) {
-          throw new DataDiInizioTirocinioNonValidaException();
+      if (form.getGiornoInizio() == null
+          || form.getMeseInizio() == null
+          || form.getAnnoInizio() == null) {
+        throw new DataDiInizioTirocinioNonValidaException();
       }
       
-      if(form.getGiornoFine() == null || 
-          form.getMeseFine() == null ||
-          form.getAnnoFine() == null) {
-           throw new DataDiFineTirocinioNonValidaException();
-       }
+      if (form.getGiornoFine() == null 
+          || form.getMeseFine() == null 
+          || form.getAnnoFine() == null) {
+        throw new DataDiFineTirocinioNonValidaException();
+      }
       
-      LocalDate dateStart = LocalDate.of(form.getGiornoInizio(),
+      LocalDate dateStart = LocalDate.of(form.getAnnoInizio(),
                                     form.getMeseInizio(), 
-                                    form.getAnnoInizio());
+                                    form.getGiornoInizio());
       
-      LocalDate dateFinish = LocalDate.of(form.getGiornoFine(), 
+      LocalDate dateFinish = LocalDate.of(form.getAnnoFine(), 
                                            form.getMeseInizio(),
-                                           form.getAnnoFine());
+                                           form.getGiornoFine());
       
       domandeService.validaDataDiInizioTirocinio(dateStart,dateFinish);
       domandeService.validaDataDiFineTirocinio(dateStart, dateFinish);
