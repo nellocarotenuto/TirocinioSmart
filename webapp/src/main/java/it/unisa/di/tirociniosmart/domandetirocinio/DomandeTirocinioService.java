@@ -339,7 +339,7 @@ public class DomandeTirocinioService {
     } else {
       LocalDate oggi = LocalDate.now();
         
-      if (dataInizio.isBefore(oggi) || dataInizio.equals(oggi) || dataInizio.isAfter(dataFine)) {
+      if (dataInizio.isBefore(oggi) || dataInizio.equals(oggi)) {
         throw new DataDiInizioTirocinioNonValidaException();
       } else {
         return dataInizio;
@@ -368,7 +368,7 @@ public class DomandeTirocinioService {
     } else {
       LocalDate oggi = LocalDate.now();
         
-      if (dataFine.isBefore(oggi) || dataFine.equals(oggi) || dataFine.isBefore(dataInizio)) {
+      if (dataFine.isBefore(dataInizio)) {
         throw new DataDiFineTirocinioNonValidaException();
       } else {
         return dataFine;
