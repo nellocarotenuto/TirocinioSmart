@@ -55,6 +55,32 @@
 	             </div>
 	           </c:if>
 	         </c:if>
+	         <c:choose>
+		         <c:when test="${utente.getClass().getSimpleName() == 'Studente'}">
+	             <div class="row">
+	               <div class="col s12">
+	                 <a href="#<c:out value="${idModalProponiti}"/>"
+	                    data-position="right"
+	                    class="modal-trigger btn waves-effect right">
+	                   <i class="material-icons right">send</i>
+	                   <spring:message code="button.progettoFormativo.proponiti.label" />
+	                 </a>
+	               </div>
+	             </div>
+		         </c:when>
+		         <c:when test="${empty utente}">
+		         	 <div class="row">
+	               <div class="col s12">
+	                 <a href="#<c:out value="${idModalProponiti}"/>"
+	                    data-position="right"
+	                    class="modal-trigger btn waves-effect right disabled">
+	                   <i class="material-icons right">send</i>
+	                   <spring:message code="button.progettoFormativo.proponiti.label" />
+	                 </a>
+	               </div>
+	             </div>
+		         </c:when>
+	   		 	</c:choose>
 	       </div>
 	    </li>
 	  </ul>
