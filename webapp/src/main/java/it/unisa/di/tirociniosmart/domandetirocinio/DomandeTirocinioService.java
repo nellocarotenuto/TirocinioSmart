@@ -10,6 +10,8 @@ import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +91,7 @@ public class DomandeTirocinioService {
    *         rappresentata dal delegato
    */
   @Transactional(rollbackFor = Exception.class)
-  public void accettaDomandaTirocinio(long idDomanda)
+  public void accettaDomandaTirocinio(long idDomanda, String commentoAzienda)
          throws IdDomandaTirocinioNonValidoException,
                 DomandaTirocinioGestitaException, RichiestaNonAutorizzataException {
     UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
@@ -117,6 +119,7 @@ public class DomandeTirocinioService {
       throw new DomandaTirocinioGestitaException();
     } else {
       domanda.setStatus(DomandaTirocinio.ACCETTATA);
+      domanda.setCommentoAzienda(commentoAzienda);
     }
   }
   
@@ -224,7 +227,8 @@ public class DomandeTirocinioService {
    * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare l'elenco delle 
    *         domande di tirocinio non è autorizzato a svolgere l'operazione
    */
-  public List<DomandaTirocinio> elencaDomandeTirocinio() throws RichiestaNonAutorizzataException {
+  public List<DomandaTirocinio> elencaDomandeRicevute()
+         throws RichiestaNonAutorizzataException {
     // Ottieni l'utente autenticato nel sistema
     UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
     
@@ -245,6 +249,59 @@ public class DomandeTirocinioService {
     } else {
       throw new RichiestaNonAutorizzataException();
     }
+  }
+  
+  /**
+   * Permette di ottenere la lista delle domande inviate, se l'utente autenticato è uno studente;
+   * la lista delle domande gestite dall'azienda se l'utente autenticato è un delegato aziendale.
+   * 
+   * @return La lista delle domande inviate da uno studente oppure la lista delle domande gestite da
+   *         un'azienda
+   * 
+   * @throws RichiestaNonAutorizzataException se l'utente non dispone dei permessi necessari per
+   *         l'elaborazione della richiesta
+   */
+  public List<DomandaTirocinio> elencaDomandeInviate()
+         throws RichiestaNonAutorizzataException {
+    // Ottieni l'utente autenticato nel sistema
+    UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
+    
+    if (utente instanceof DelegatoAziendale) {
+      // Un delegato aziendale può vedere solo le domande in attesa
+      DelegatoAziendale delegato = (DelegatoAziendale) utente;
+      List<DomandaTirocinio> domandeAccettate = domandaRepository
+                                                      .findAllByStatusAndProgettoFormativoAziendaId(
+                                                                     DomandaTirocinio.ACCETTATA,
+                                                                     delegato.getAzienda().getId());
+      
+      List<DomandaTirocinio> domandeApprovate = domandaRepository
+                                                      .findAllByStatusAndProgettoFormativoAziendaId(
+                                                                     DomandaTirocinio.APPROVATA,
+                                                                     delegato.getAzienda().getId());
+      
+      List<DomandaTirocinio> domandeRespinte = domandaRepository
+                                                      .findAllByStatusAndProgettoFormativoAziendaId(
+                                                                     DomandaTirocinio.RESPINTA,
+                                                                     delegato.getAzienda().getId());
+      
+      List<DomandaTirocinio> domandeAzienda = new ArrayList<DomandaTirocinio>();
+      domandeAzienda.addAll(domandeAccettate);
+      domandeAzienda.addAll(domandeApprovate);
+      domandeAzienda.addAll(domandeRespinte);
+      
+      Collections.sort(domandeAzienda);
+      return domandeAzienda;
+    } else if (utente instanceof Studente) {
+      // Uno studente può vedere le domande di tirocinio in attesa
+      Studente studente = (Studente) utente;
+      List<DomandaTirocinio> domandeInviate = domandaRepository.findAllByStudenteUsername(
+                                                                            studente.getUsername());
+      Collections.sort(domandeInviate);
+      return domandeInviate;
+    } else {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
   }
   
   /**
@@ -385,7 +442,11 @@ public class DomandeTirocinioService {
    * @throws NumeroCfuNonValidoException se il numero di cfu non rispetta i 
    *         parametri stabiliti
    */
-  public int validaCfu(int cfu) throws NumeroCfuNonValidoException {
+  public int validaCfu(Integer cfu) throws NumeroCfuNonValidoException {
+    if (cfu == null) {
+      throw new NumeroCfuNonValidoException();
+    }
+    
     if (cfu < DomandaTirocinio.MIN_CFU || cfu > DomandaTirocinio.MAX_CFU) {
       throw new NumeroCfuNonValidoException();
     } else {
@@ -411,4 +472,47 @@ public class DomandeTirocinioService {
     }
   }
   
+  /**
+   * Permette di ottenere la lsita dei tirocini in corso in base al periodo di tirocinio specificato
+   * nelle varie domande.
+   * 
+   * @return Lista delle domande di tirocinio il cui periodo inizia prima della data odierna e
+   *         termina dopo di essa
+   *         
+   * @throws RichiestaNonAutorizzataException se l'utente che richiede di visualizzare l'elenco dei
+   *         tirocini in corso non è dotato dei permessi necessari per l'operazione
+   */
+  public List<DomandaTirocinio> elencaTirociniInCorso() throws RichiestaNonAutorizzataException {
+    UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
+    
+    List<DomandaTirocinio> domandeApprovate;
+    
+    if (utente instanceof DelegatoAziendale) {
+      DelegatoAziendale delegato = (DelegatoAziendale) utente;
+      domandeApprovate = domandaRepository
+                       .findAllByStatusAndProgettoFormativoAziendaId(DomandaTirocinio.APPROVATA,
+                                                                     delegato.getAzienda().getId());
+    } else if (utente instanceof Studente) {
+      Studente studente = (Studente) utente;
+      domandeApprovate = domandaRepository
+                                     .findAllByStatusAndStudenteUsername(
+                                                                         DomandaTirocinio.APPROVATA,
+                                                                         studente.getUsername());
+    } else if (utente instanceof ImpiegatoUfficioTirocini) {
+      domandeApprovate = domandaRepository.findAllByStatus(DomandaTirocinio.APPROVATA);
+    } else {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
+    LocalDate oggi = LocalDate.now();
+    List<DomandaTirocinio> tirociniInCorso = new ArrayList<DomandaTirocinio>();
+    for (DomandaTirocinio domanda : domandeApprovate) {
+      if (domanda.getInizioTirocinio().isBefore(oggi)
+          && domanda.getFineTirocinio().isAfter(oggi)) {
+        tirociniInCorso.add(domanda);
+      }
+    }
+    
+    return tirociniInCorso;
+  }
 }

@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<spring:message var="titoloPagina" scope="request" code="pagina.domandeTirocinio.titolo" />
+<spring:message var="titoloPagina" scope="request" code="pagina.tirociniInCorso.titolo" />
 <spring:message var="titoloTab" scope="request" code="tab.dashboard.titolo" />
 <spring:message var="voceMenu" scope="request" code="vmenu.domandeTirocinio.titolo" />
 
@@ -12,17 +12,17 @@
 <main>
   <div class="row">
     <div class="col l4 xl3">
-      <jsp:include page="/WEB-INF/views/menu/ufficioTirociniNav.jsp" />
+      <jsp:include page="/WEB-INF/views/menu/azienda-dashboard.jsp" />
     </div>
     <div class="col s12 m12 l8 xl9">
       <div class="card single-row-header">
         <div class="card-content">
           <span class="card-title">
-            <spring:message code="pagina.domandeTirocinio.titolo" />
+            <spring:message code="pagina.tirociniInCorso.titolo" />
           </span>
         </div>
       </div>
-      <jsp:include page="/WEB-INF/views/lists/domandeUfficioTirocini.jsp" />
+      <jsp:include page="/WEB-INF/views/lists/tirocini-in-corso-azienda.jsp" />
     </div>
   </div>
 </main>

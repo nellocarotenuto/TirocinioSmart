@@ -3,19 +3,30 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
+<%-- Definizione variabili utilizzate per titolo e menù --%>
 <spring:message var="titoloPagina" scope="request" code="pagina.aziende.titolo" />
-<spring:message var="titoloTab" scope="request" code="tab.aziende.titolo" />
+<spring:message var="titoloTab" scope="request" code="tab.navbar.aziende" />
 
-<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
+<%-- Inclusione header --%>
+<jsp:include page="/WEB-INF/views/common/header.jsp" >
+  <jsp:param name="titoloPagina" value="${titoloPagina}"/>
+</jsp:include>
+
+
+<%-- Corpo della pagina --%>
 <main class="container"> 
 	<div class="row">
 	 	<div class="col s12">
 	 		<div class="card single-row-header">
 	 			<div class="card-content">
+	 			
+	 			  <%-- Titolo della pagina --%>
 	 				<span class="card-title">
-	 					<spring:message code="pagina.aziende.titolo"/>
+	 					<c:out value="${titoloPagina}" />
 	 				</span>
+	 				
 	 			</div>
 	 		</div>
 	 	</div>
@@ -24,11 +35,16 @@
 	 	<div class="col s12">
 	 		<div class="card list">
 	 			<div class="card-content" style="padding: 0px">
-	 				<jsp:include page="/WEB-INF/views/lists/aziendeConvenzionate.jsp"/>
+	 			
+	 			  <%-- Inclusione lista aziende convenzionate --%>
+	 				<jsp:include page="/WEB-INF/views/lists/aziende-convenzionate.jsp"/>
+	 				
 	 			</div>
 			</div>
 	 	</div>
 	 </div>	
 </main>
 
+
+<%-- Inclusione del footer --%>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

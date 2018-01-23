@@ -21,7 +21,7 @@ public class HomeController {
    */
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String mostraHomePage(Model model) {
-    return "pages/home";
+    return "home";
   }
   
 }

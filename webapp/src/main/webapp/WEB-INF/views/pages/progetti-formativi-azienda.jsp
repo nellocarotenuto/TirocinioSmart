@@ -18,7 +18,7 @@
 <main> 
   <div class="row">
     <div class="col l4 xl3">
-      <jsp:include page="/WEB-INF/views/menu/aziendaNav.jsp" />
+      <jsp:include page="/WEB-INF/views/menu/azienda-dashboard.jsp" />
     </div>
     <div class="col s12 m12 l8 xl9">
       <div class="card single-row-header">
@@ -81,17 +81,14 @@
           </div>
         </div>
       </div>
-      <jsp:include page="/WEB-INF/views/lists/progettiFormativi.jsp"/>
+      <jsp:include page="/WEB-INF/views/lists/progetti-formativi.jsp"/>
     </div>
   </div>
-  <div id="aggiungi" class="modal">
-    <div class="modal-content">
-      <h4>
-        <spring:message code="progettoFormativo.aggiungi.label" />
-      </h4>
-      <jsp:include page="/WEB-INF/views/forms/aggiuntaProgettoFormativo.jsp"/>
-    </div>
-  </div>
+
+  <jsp:include page="/WEB-INF/views/forms/aggiunta-progetto-formativo.jsp" >
+    <jsp:param value="aggiungi" name="idModal" />
+  </jsp:include>
+
 </main>
     
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

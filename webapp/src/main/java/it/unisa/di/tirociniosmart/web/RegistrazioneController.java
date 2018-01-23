@@ -28,6 +28,6 @@ public class RegistrazioneController {
       model.addAttribute(new RichiestaIscrizioneForm());
     }
     
-    return "pages/registrazione";
+    return "registrazione";
   }
 }

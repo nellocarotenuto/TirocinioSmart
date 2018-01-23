@@ -142,7 +142,7 @@ public class RichiestaIscrizioneController {
       return "redirect:/";
     }
    
-    return "pages/richiesteIscrizione";
+    return "richieste-iscrizione";
   }
 
   /**

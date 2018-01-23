@@ -1,5 +1,6 @@
 package it.unisa.di.tirociniosmart.web;
 
+import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
 import it.unisa.di.tirociniosmart.domandetirocinio.CommentoDomandaTirocinioNonValidoException;
 
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinio;
@@ -10,7 +11,10 @@ import it.unisa.di.tirociniosmart.domandetirocinio.StatoDomandaNonIdoneoExceptio
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
 import it.unisa.di.tirociniosmart.progettiformativi.IdProgettoFormativoInesistenteException;
 import it.unisa.di.tirociniosmart.progettiformativi.ProgettiFormativiService;
+import it.unisa.di.tirociniosmart.progettiformativi.ProgettoFormativo;
+import it.unisa.di.tirociniosmart.studenti.Studente;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.time.LocalDate;
@@ -65,14 +69,18 @@ public class DomandaTirocinioController {
    * @throws RichiestaNonAutorizzataException se l'utente che tenta di visualizzare l'elenco delle 
    *         domande di tirocinio non è autorizzato a svolgere l'operazione
    */
-  @RequestMapping(value = "/dashboard/domande", method = RequestMethod.GET)
+  @RequestMapping(value = "/dashboard/domande/ricevute", method = RequestMethod.GET)
   public String visualizzaElencoDomande(RedirectAttributes redirectAttributes, Model model) 
       throws RichiestaNonAutorizzataException {
+    UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
     
-    if (utenzaService.getUtenteAutenticato() instanceof ImpiegatoUfficioTirocini) {
-      List<DomandaTirocinio> domande = domandeService.elencaDomandeTirocinio();
-      model.addAttribute("elencoDomandeTirocinio", domande);
-      return "pages/domandeUfficioTirocini";
+    List<DomandaTirocinio> domande = domandeService.elencaDomandeRicevute();
+    model.addAttribute("elencoDomandeTirocinio", domande);
+    
+    if (utente instanceof ImpiegatoUfficioTirocini) {
+      return "domande-ricevute-ufficio";
+    } else if (utente instanceof DelegatoAziendale) {
+      return "domande-ricevute-azienda";
     }
     
     return "redirect:/errore";
@@ -95,8 +103,6 @@ public class DomandaTirocinioController {
    * @return Stringa indicante la vista delegata alla presentazione del form in caso di insuccesso,
    *         stringa indicante l'URL della home page (tramite redirect) in caso di successo
    */
-  
-   
   @RequestMapping(value = "/dashboard/domande/invia", method = RequestMethod.POST)
   public String inviaDomandaTirocinio(DomandaTirocinioForm domandaTirocinioForm,
                                       BindingResult result,
@@ -114,7 +120,17 @@ public class DomandaTirocinioController {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.domandaTirocinio.domandaNonValida");
 
-      return "redirect:/dashboard/domande";
+      long idProgetto = domandaTirocinioForm.getIdProgettoFormativo();
+      
+      try {
+        ProgettoFormativo progettoFormativo =
+                                      progettoFormativoService.ottieniProgettoFormativo(idProgetto);
+        
+        return "redirect:/aziende/" + progettoFormativo.getAzienda().getId();
+      } catch (IdProgettoFormativoInesistenteException e) {
+        return "redirect:/aziende/";
+      }
+    
     }
     
     LocalDate dataInizio = LocalDate.of(domandaTirocinioForm.getAnnoInizio(),
@@ -145,6 +161,7 @@ public class DomandaTirocinioController {
     try {
       domandeService.registraDomandaTirocinio(domandaTirocinio);
       redirectAttributes.addFlashAttribute("testoNotifica", "toast.domandaTirocinio.inviata");
+      return "redirect:/dashboard/domande/inviate"; 
     } catch (RichiestaNonAutorizzataException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
@@ -154,7 +171,6 @@ public class DomandaTirocinioController {
       return "redirect:/errore";
     }
     
-    return "redirect:/dashboard/domande";
   }
   
   /**
@@ -172,10 +188,11 @@ public class DomandaTirocinioController {
    */
   @RequestMapping(value = "/dashboard/domande/accetta", method = RequestMethod.POST)
   public String accettaDomandaTirocinio(@RequestParam Long idDomanda,
+                                        @RequestParam String commentoAzienda,
                                         RedirectAttributes redirectAttributes) {
     
     try {
-      domandeService.accettaDomandaTirocinio(idDomanda);
+      domandeService.accettaDomandaTirocinio(idDomanda, commentoAzienda);
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.domandaTirocinio.domandaAccettata");
     } catch (IdDomandaTirocinioNonValidoException e) {
@@ -192,7 +209,7 @@ public class DomandaTirocinioController {
       return "redirect:/errore";
     }
     
-    return "redirect:/dashboard/domande";
+    return "redirect:/dashboard/domande/ricevute";
   }
   
   /**
@@ -200,7 +217,7 @@ public class DomandaTirocinioController {
    * 
    * @param idDomanda long che indica la domanda da rifiutare
    * 
-   * @param commento Stringa che indica il commento da inserire per il rifiuto.
+   * @param commentoAzienda Stringa che indica il commento da inserire per il rifiuto.
    * 
    * @param redirectAttributes Incapsula gli attributi da salvare in sessione per renderli
    *                           disponibili anche dopo un redirect
@@ -212,11 +229,11 @@ public class DomandaTirocinioController {
    */
   @RequestMapping(value = "/dashboard/domande/rifiuta", method = RequestMethod.POST)
   public String rifiutaDomandaTirocinio(@RequestParam Long idDomanda,
-                                        @RequestParam String commento,
+                                        @RequestParam String commentoAzienda,
                                         RedirectAttributes redirectAttributes) {
     
     try {
-      domandeService.rifiutaDomandaTirocinio(idDomanda, commento);
+      domandeService.rifiutaDomandaTirocinio(idDomanda, commentoAzienda);
       redirectAttributes.addFlashAttribute("testoNotifica",
                                            "toast.domandaTirocinio.domandaRifiutata");
     } catch (IdDomandaTirocinioNonValidoException e) {
@@ -236,7 +253,7 @@ public class DomandaTirocinioController {
       return "redirect:/errore";
     }
     
-    return "redirect:/dashboard/domande";
+    return "redirect:/dashboard/domande/ricevute";
   }
   
   /**
@@ -246,12 +263,12 @@ public class DomandaTirocinioController {
    * 
    * @param redirectAttributes incapsula gli attributi da salvare in sessione in modo
    *                           da renderli disponibili anche dopo il redirect
+   *                           
    * @return Stringa indicante l'URL della pagina da mostrare (tramite redirect) 
    *                 in caso di successo,
    *         Stringa indicante l'URL della pagina da mostrare (tramite redirect)
    *                 in caso di insuccesso
    */
-  
   @RequestMapping(value = "/dashboard/domande/approva", method = RequestMethod.POST)
   public String approvaDomandaTirocinio(@RequestParam Long idDomanda,
                                         RedirectAttributes redirectAttributes) {
@@ -274,7 +291,82 @@ public class DomandaTirocinioController {
       return "redirect:/errore";
     }
     
-    return "redirect:/dashboard/domande";
+    return "redirect:/dashboard/domande/ricevute";
+  }
+  
+  /**
+   * Permette di visualizzare l'elenco delle domande inviate dall'utente autenticato.
+   * 
+   * @param model Incapsula gli attributi di richiesta. <b>Iniettato dalla dispatcher servlet</b>
+   * 
+   * @param redirectAttributes incapsula gli attributi da salvare in sessione in modo
+   *        da renderli disponibili anche dopo il redirect 
+   *        
+   * @return Stringa indicante l'URL della pagina da mostrare (tramite redirect) in caso di
+   *         successo, Stringa indicante l'URL della pagina da mostrare (tramite redirect)
+   *         in caso di insuccesso
+   */
+  @RequestMapping(value = "/dashboard/domande/inviate", method = RequestMethod.GET)
+  public String visualizzaElencoDomandeInviate(Model model, RedirectAttributes redirectAttributes) {
+    try {
+      List<DomandaTirocinio> domandeInviate = domandeService.elencaDomandeInviate();
+      model.addAttribute("elencoDomandeInviate", domandeInviate);
+    } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+    
+    if (utenzaService.getUtenteAutenticato() instanceof DelegatoAziendale) {
+      return "domande-inviate-azienda";
+    } else if (utenzaService.getUtenteAutenticato() instanceof Studente) {
+      return "domande-inviate-studente";
+    } else {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+  }
+  
+  /**
+   * Permette di visualizzare l'elenco dei tirocini in corso a seconda dell'utente autenticato.
+   * 
+   * @param model Incapsula gli attributi di richiesta. <b>Iniettato dalla dispatcher servlet</b>
+   * 
+   * @param redirectAttributes incapsula gli attributi da salvare in sessione in modo
+   *        da renderli disponibili anche dopo il redirect 
+   *        
+   * @return Stringa indicante l'URL della pagina da mostrare (tramite redirect) in caso di
+   *         successo, Stringa indicante l'URL della pagina da mostrare (tramite redirect)
+   *         in caso di insuccesso
+   */
+  @RequestMapping(value = "/dashboard/tirocini", method = RequestMethod.GET)
+  public String visualizzaElencoTirociniInCorso(Model model,
+                                                RedirectAttributes redirectAttributes) {
+    UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
+    List<DomandaTirocinio> tirociniInCorso;
+    
+    try {
+      tirociniInCorso = domandeService.elencaTirociniInCorso();
+      model.addAttribute("tirociniInCorso", tirociniInCorso);
+    } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+    
+    if (utente instanceof ImpiegatoUfficioTirocini) {
+      return "tirocini-in-corso-ufficio";
+    } else if (utente instanceof DelegatoAziendale) {
+      return "tirocini-in-corso-azienda";
+    } else if (utente instanceof Studente) {
+      return "tirocini-in-corso-studente";
+    } else {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
+    
   }
   
 }

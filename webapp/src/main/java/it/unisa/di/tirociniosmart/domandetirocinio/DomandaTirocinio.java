@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
  * Classe che modella una domanda di tirocinio.
  */
 @Entity
-public class DomandaTirocinio {
+public class DomandaTirocinio implements Comparable<DomandaTirocinio> {
 
   /**
    * Costruisce un oggetto DomandaTirocinio vuoto che deve essere popolata con i metodi setters.
@@ -58,6 +58,21 @@ public class DomandaTirocinio {
         + progettoFormativo.getId() + "]";
   }
 
+  /**
+   * Definisce l'ordine di comparazione tra le domande di tirocinio in base al campo data.
+   */
+  @Override
+  public int compareTo(DomandaTirocinio domanda) {
+    
+    if (getData().isBefore(domanda.getData())) {
+      return -1;
+    } else if (getData().isAfter(domanda.getData())) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+  
   /**
    * Permette di ottenere l'identificatore della domanda di tirocinio.
    * 

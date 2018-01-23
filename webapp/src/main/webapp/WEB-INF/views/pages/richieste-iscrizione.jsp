@@ -12,7 +12,7 @@
 <main>
   <div class="row">
     <div class="col l4 xl3">
-      <jsp:include page="/WEB-INF/views/menu/ufficioTirociniNav.jsp" />
+      <jsp:include page="/WEB-INF/views/menu/ufficio-dashboard.jsp" />
     </div>
     <div class="col s12 m12 l8 xl9">
       <div class="card single-row-header">
@@ -22,7 +22,7 @@
           </span>
         </div>
       </div>
-      <jsp:include page="/WEB-INF/views/lists/richiesteIscrizione.jsp" />
+      <jsp:include page="/WEB-INF/views/lists/richieste-iscrizione.jsp" />
     </div>
   </div>
 </main>

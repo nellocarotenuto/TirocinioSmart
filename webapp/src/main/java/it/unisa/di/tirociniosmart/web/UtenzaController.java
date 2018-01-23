@@ -52,7 +52,7 @@ public class UtenzaController {
     // mostrandogli una notifica dell'errore
     if (utenzaService.getUtenteAutenticato() != null) {
       redirectAttributes.addFlashAttribute("testoNotifica",
-          "toast.login.utenteLoggato");
+                                           "toast.login.utenteLoggato");
       return "redirect:/";
     }
     
@@ -131,7 +131,7 @@ public class UtenzaController {
     } else if (utente instanceof DelegatoAziendale) {
       return "redirect:/dashboard/tirocini";
     } else if (utente instanceof Studente) {
-      return "pages/dashboard/tirocini";
+      return "redirect:/dashboard/tirocini";
     }
     
     return "redirect:/errore";

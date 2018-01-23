@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 
+  
 <div class="row">
   <div class="col s12">
     <spring:message code="richiestaIscrizioneForm.introduzione.label" />
@@ -224,3 +225,4 @@
     </div>
 	</form:form>
 </div>
+		

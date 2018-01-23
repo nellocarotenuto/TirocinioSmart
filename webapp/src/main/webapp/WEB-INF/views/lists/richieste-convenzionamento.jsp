@@ -180,20 +180,17 @@
 			</li>
 		</ul>
 		
-  <div id="${idModalRifiuto}" class="modal">
-    <div class="modal-content">
-      <jsp:include page="/WEB-INF/views/forms/rifiutaRichiestaConvenzionamento.jsp">
-        <jsp:param value="${current.id}" name="idRichiesta" />
-      </jsp:include>
-    </div>
-  </div>
-  <div id="${idModalApprovazione}" class="modal">
-    <div class="modal-content">
-      <jsp:include page="/WEB-INF/views/forms/approvaRichiestaConvenzionamento.jsp">
-        <jsp:param value="${current.id}" name="idRichiesta" />
-      </jsp:include>
-    </div>
-  </div>
+
+    <jsp:include page="/WEB-INF/views/forms/rifiuto-richiesta-convenzionamento.jsp">
+      <jsp:param value="${current.id}" name="idRichiesta" />
+      <jsp:param value="${idModalRifiuto}" name="idModal" />
+    </jsp:include>
+
+
+    <jsp:include page="/WEB-INF/views/forms/approva-richiesta-convenzionamento.jsp">
+      <jsp:param value="${current.id}" name="idRichiesta" />
+      <jsp:param value="${idModalApprovazione}" name="idModal" />
+    </jsp:include>
 
 </c:forEach>
 

@@ -97,4 +97,14 @@ public interface DomandaTirocinioRepository
    * 
    */
   List<DomandaTirocinio> findAllByProgettoFormativo(ProgettoFormativo progettoFormativo);
+  
+  /**
+   * Permette di ottenere la lista di domande di tirocinio inviate da uno studente,
+   * indipendentemente dallo stato in cui esse si trovano.
+   * 
+   * @param username String che rappresenta l'username dell'utente per cui si cercano domande
+   * 
+   * @return Lista delle domande di tirocinio inviate da uno studente
+   */
+  List<DomandaTirocinio> findAllByStudenteUsername(String username);
 }

@@ -137,6 +137,10 @@ a.tooltipped.tooltipped-icon {
 	color: rgba(0,0,0,0.54);
 }
 
+.collapsible span.badge {
+	margin-left: 14px;
+}
+
 @media (max-width: 600px) {
   #navbar .brand-logo img {
     height: 48px;

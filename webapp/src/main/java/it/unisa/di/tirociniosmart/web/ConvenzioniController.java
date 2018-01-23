@@ -127,7 +127,7 @@ public class ConvenzioniController {
                                        convenzioniService.elencaRichiesteConvenzionamentoInAttesa();
       model.addAttribute("listaRichiesteConvenzionamento", listaRichiesteConvenzionamento);
 
-      return "pages/richiesteConvenzionamento";
+      return "richieste-convenzionamento";
     } catch (RichiestaNonAutorizzataException e) {
       // Redirigi l'utente in home page se non ha le autorizzazioni necessarie per visualizzare
       // la lista delle richieste
@@ -158,7 +158,7 @@ public class ConvenzioniController {
     List<Azienda> listaAziendeConvenzionate = convenzioniService.elencaAziendeConvenzionate();
     model.addAttribute("listaAziendeConvenzionate", listaAziendeConvenzionate);
     
-    return "pages/aziendeConvenzionate";
+    return "aziende-convenzionate";
   }
   
   /**
@@ -192,7 +192,7 @@ public class ConvenzioniController {
                                           "toast.convenzioni.richiestaConvenzionamentoInesistente");
     } catch (RichiestaConvenzionamentoGestitaException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",
-          "toast.convenzioni.richiestaGestita");
+                                           "toast.convenzioni.richiestaGestita");
     } catch (Exception e) {
       logger.severe(e.getMessage());
       return "redirect:/errore";
@@ -227,7 +227,7 @@ public class ConvenzioniController {
                                            "toast.convenzioni.richiestaRifiutata");
     } catch (RichiestaNonAutorizzataException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
-          "toast.autorizzazioni.richiestaNonAutorizzata");
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
       return "redirect:/";
     } catch (IdRichiestaConvenzionamentoNonValidoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",

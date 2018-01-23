@@ -85,7 +85,7 @@ public class ProgettiFormativiController {
       model.addAttribute("progettoFormativoForm", new ProgettoFormativoForm());
     }
     
-    return "pages/progettiFormativi";
+    return "profilo-azienda";
   }
   
   /**
@@ -120,7 +120,7 @@ public class ProgettiFormativiController {
       model.addAttribute("progettoFormativoForm", new ProgettoFormativoForm());
     }
     
-    return "pages/progettiFormativiAzienda";
+    return "progetti-formativi-azienda";
   }
   
   /**

@@ -2,16 +2,28 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<spring:message var="studenteLabel" code="domandeTirocinio.studente.label" />
-<spring:message var="progettoFormativoLabel" code="domandeTirocinio.progettoFormativo.label" />
-<spring:message var="cfuLabel" code="domandeTirocinio.cfu.label" />
-<spring:message var="periodoTirocinioLabel" code="domandeTirocinio.periodoTirocinio.label" />
-<spring:message var="commentoStudenteLabel" code="domandeTirocinio.commentoStudente.label" />
-<spring:message var="commentoAziendaLabel" code="domandeTirocinio.commentoAzienda.label" />
 
+<%-- Definizione etichette tooltips --%>
+<spring:message var="tooltipProgettoFormativoNome" code="tooltip.progettoFormativo.nome"/>
+<spring:message var="tooltipCommonNominativo" code="tooltip.common.nominativo" />
+<spring:message var="tooltipDomandaTirocinioCfu" code="tooltip.domandaTirocinio.cfu" />
+<spring:message var="tooltipCommonSesso" code="tooltip.common.sesso" />
+<spring:message var="tooltipDomandaTirocinioCommentoStudente"
+                code="tooltip.domandaTirocinio.commentoStudente" />
+<spring:message var="tooltipDomandaTirocinioCommentoAzienda"
+                code="tooltip.domandaTirocinio.commentoAzienda" />
+<spring:message var="tooltipDomandaTirocinioPeriodoTirocinio"
+                code="tooltip.domandaTirocinio.periodoTirocinio" />
+
+
+<%-- Definizione etichette sesso --%>
+<spring:message var="labelSessoMaschile" code="label.sesso.maschile" />
+<spring:message var="labelSessoFemminile" code="label.sesso.femminile" />
+
+
+<%-- Definizione elenco --%>
 <c:forEach items="${elencoDomandeTirocinio}" var="current" varStatus="loop">
   <c:set var="idModalRespinta" value="domanda-tirocinio-modal-respinta-${loop.index}" />
   <c:set var="idModalApprovazione" value="domanda-tirocinio-modal-approvazione-${loop.index}" />
@@ -122,22 +134,23 @@
             </div>
             
             
-            <div class="col s12">
-              <div class="row valign-wrapper" >
-                <div class="col s1">
-                  <a class="tooltipped tooltipped-icon" 
-                     data-position="right"
-                     data-delay="50"
-                     data-tooltip="${commentoAziendaLabel}">
-                    <i class ="small material-icons">feedback</i>
-                  </a>      
-                </div>
-                <div class="col s11">
-                  <c:out value="${current.commentoAzienda}"/>
-                </div>
-              </div>
-            </div>
-            
+            <c:if test="${not empty current.commentoAzienda}">
+	            <div class="col s12">
+	              <div class="row valign-wrapper" >
+	                <div class="col s1">
+	                  <a class="tooltipped tooltipped-icon" 
+	                     data-position="right"
+	                     data-delay="50"
+	                     data-tooltip="${commentoAziendaLabel}">
+	                    <i class ="small material-icons">feedback</i>
+	                  </a>      
+	                </div>
+	                <div class="col s11">
+	                  <c:out value="${current.commentoAzienda}"/>
+	                </div>
+	              </div>
+	            </div>
+            </c:if>
           
           </div>
         </div>
