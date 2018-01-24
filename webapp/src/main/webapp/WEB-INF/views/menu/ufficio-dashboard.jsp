@@ -8,12 +8,23 @@
 <spring:message var="voceMenuDomande" code="vmenu.dashboard.domandeTirocinioRicevute" />
 <spring:message var="voceMenuIscrizioni" code="vmenu.dashboard.richiesteIscrizione" />
 <spring:message var="voceMenuConvenzioni" code="vmenu.dashboard.richiesteConvenzionamento" />
+<spring:message var="voceMenuTirocini" code="vmenu.dashboard.tirociniInCorso" />
 
 
 <%-- Menù laterale --%>
 <div class="card vertical-nav hide-on-med-and-down">
   <div class="card-content">
     <ul>
+    
+    
+      <%-- Voce menù tirocini --%>
+      <li <c:if test="${voceMenu == voceMenuTirocini}">class="active"</c:if> >
+        <a href="/dashboard/tirocini"
+           class="waves-effect">
+          <i class="material-icons">content_paste</i>
+          <c:out value="${voceMenuTirocini}" />
+        </a>
+      </li>
     
     
       <%-- Voce menù tirocini --%>
