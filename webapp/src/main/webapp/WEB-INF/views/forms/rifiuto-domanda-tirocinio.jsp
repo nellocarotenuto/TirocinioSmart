@@ -69,6 +69,7 @@
 			        <input type="hidden" name="idDomanda" value="${param.idDomanda}">
 				      <button class="btn waves-effect waves-light red" type="submit" name="action">
 				        <c:out value="${buttonCommonRifiuta}" />
+				        <i class="material-icons right">clear</i>
 				      </button>
 			      </div>
 			    </div>

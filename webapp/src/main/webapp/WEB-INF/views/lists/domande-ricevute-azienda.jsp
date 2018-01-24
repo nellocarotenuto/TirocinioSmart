@@ -230,10 +230,12 @@
 	            <a class="btn red white-text waves-effect waves-light modal-trigger"
 	               href="#<c:out value="${idModalRifiuta}"/>">
 	              <c:out value="${buttonCommonRifiuta}" />
+	              <i class="material-icons right">clear</i>
 	            </a>
 	            <a class="btn green white-text waves-effect waves-light modal-trigger"
 	               href="#<c:out value="${idModalAccetta}"/>">
 	              <c:out value="${buttonCommonAccetta}" />
+	              <i class="material-icons right">check</i>
 	            </a>
             </div>
           </div>

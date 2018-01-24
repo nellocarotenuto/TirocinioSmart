@@ -45,7 +45,7 @@
 	    <%-- Testata del collassabile --%>
 	    <div class="collapsible-header">
 	      <div class="col s8 valign-wrapper">
-	        <i class="material-icons">business</i>
+	        <i class="material-icons">work</i>
 	        <c:out value="${current.studente.nome}"/> <c:out value="${current.studente.cognome}"/> - 
 	        <c:out value="${current.progettoFormativo.nome}" />
 	        (<c:out value="${current.progettoFormativo.azienda.nome}" />)
@@ -185,10 +185,12 @@
 	            <a class="btn red white-text waves-effect waves-light modal-trigger"
 	               href="#<c:out value="${idModalRespinta}"/>">
 	              <c:out value="${buttonCommonRespingi}" />
+	              <i class="material-icons right">clear</i>
 	            </a>
 	            <a class="btn green white-text waves-effect waves-light modal-trigger"
 	               href="#<c:out value="${idModalApprovazione}"/>">
 	              <c:out value="${buttonCommonApprova}" />
+	              <i class="material-icons right">check</i>
 	            </a>
 	          </div>
 	        </div>

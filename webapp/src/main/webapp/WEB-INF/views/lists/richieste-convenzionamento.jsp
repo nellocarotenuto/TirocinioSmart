@@ -184,10 +184,12 @@
             <a class="btn red white-text waves-effect waves-light modal-trigger"
                href="#<c:out value="${idModalRifiuto}"/>">
               <c:out value="${buttonCommonRifiuta}" />
+              <i class="material-icons right">clear</i>
             </a>
             <a class="btn green white-text waves-effect waves-light modal-trigger"
                href="#<c:out value="${idModalApprovazione}"/>">
               <c:out value="${buttonCommonApprova}" />
+              <i class="material-icons right">check</i>
             </a>
           </div>
         </div>

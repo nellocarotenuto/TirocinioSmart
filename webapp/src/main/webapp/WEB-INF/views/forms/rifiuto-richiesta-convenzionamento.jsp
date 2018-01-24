@@ -49,7 +49,7 @@
 			    
 			    <div class="row">
 		        <div class="input-field col s12">
-		          <i class="material-icons prefix">create</i>
+		          <i class="material-icons prefix">feedback</i>
 		          <textarea id="commento-${param.idRichiesta}"
 		                    name="commentoRichiesta" 
 		                    class="materialize-textarea"></textarea>
@@ -67,6 +67,7 @@
 			        <input type="hidden" name="idRichiesta" value="${param.idRichiesta}">
 				      <button class="btn waves-effect waves-light red" type="submit" name="action">
 				        <c:out value="${buttonCommonRifiuta}" />
+				        <i class="material-icons right">clear</i>
 				      </button>
 			      </div>
 			    </div>

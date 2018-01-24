@@ -50,6 +50,7 @@
 		          <input type="hidden" name="idProgetto" value="${param.idProgetto}">
 		          <button class="btn waves-effect waves-light" type="submit" name="action">
 		            <c:out value="${buttonProgettoFormativoArchivia}" />
+		            <i class="material-icons right">archive</i>
 		          </button>
 		        </div>
 		      </div>

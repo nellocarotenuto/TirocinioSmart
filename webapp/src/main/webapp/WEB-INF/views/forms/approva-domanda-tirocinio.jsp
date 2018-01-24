@@ -53,6 +53,7 @@
 		          <input type="hidden" name="idDomanda" value="${param.idDomanda}">
 		          <button class="btn waves-effect waves-light green" type="submit" name="action">
 		            <c:out value="${buttonCommonApprova}" />
+		            <i class="material-icons right">check</i>
 		          </button>
 		        </div>
 		      </div>
