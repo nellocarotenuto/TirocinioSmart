@@ -39,7 +39,7 @@
   <c:set var="idModalAccetta" value="domandaa-tirocinio-modal-accetta-${loop.index}" />
 		
 		
-		<ul id="idCollapsible" class="collapsible">
+		<ul class="collapsible">
 			<li>
 			
 			  <%-- Testata del collassabile --%>
@@ -64,7 +64,7 @@
       
       
         <%-- Corpo del collassabile --%>
-	      <div class="collapsible-body">
+	      <div class="collapsible-body grey lighten-4">
 	        <div class="row row-group">
 	        
 	        

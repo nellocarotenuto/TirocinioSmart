@@ -20,9 +20,14 @@
 	  <div class="col s12">
 	    <div class="card">
 	      <div class="card-content">
+	        
+	        
+	        <%-- Titolo pagina --%>
 	        <span class="card-title">
-	          <spring:message code="pagina.registrazione.titolo" />
+	          <c:out value="${titoloPagina}" />
 	        </span>
+	        
+	        
 	      </div>
 	      <div class="card-tabs">
 	        <ul id="selettore-form-iscrizione" class="tabs tabs-fixed-width">
@@ -39,12 +44,23 @@
 	        </ul>
 	      </div>
 	      <div class="card-content grey lighten-5">
+	        
+	        
+	        <%-- Inclusione form iscrizione --%>
 	        <div id="studente">
 	          <jsp:include page ="/WEB-INF/views/forms/richiesta-iscrizione.jsp" />
 	        </div>
+	        
+	        
+	        <%-- Iscrizione form convenzionamento --%>
 	        <div id="azienda">
 	          <jsp:include page="/WEB-INF/views/forms/richiesta-convenzionamento.jsp" />
 	        </div>
+	        
+	        
+	        <%-- Inclusione script inizializzazione tabs --%>
+	        <script type="text/javascript"
+	                src="<c:url value="/resources/js/registrazione.js" />" ></script>
 	      </div>
 	    </div>
 	  </div>

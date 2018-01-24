@@ -38,7 +38,7 @@
   
   
   <%-- Collassabile --%>
-  <ul id="idCollapsible" class="collapsible">
+  <ul class="collapsible">
 	  <li>
 	  
 	  
@@ -57,7 +57,7 @@
 	    
 	    
 	    <%-- Corpo del collassabile --%>
-	    <div class="collapsible-body">
+	    <div class="collapsible-body grey lighten-4">
 	      <div class="row row-group">
 	      
 	      
@@ -176,27 +176,24 @@
 	        
 	      </div>
 	      
-	      <div class="row">
 	      
-	      
-	      <%-- Pulsanti per approvazione e respinta --%>
-	        <div class="row">
-	          <div class="col s12 right-align">
-	            <a class="btn red white-text waves-effect waves-light modal-trigger"
-	               href="#<c:out value="${idModalRespinta}"/>">
-	              <c:out value="${buttonCommonRespingi}" />
-	              <i class="material-icons right">clear</i>
-	            </a>
-	            <a class="btn green white-text waves-effect waves-light modal-trigger"
-	               href="#<c:out value="${idModalApprovazione}"/>">
-	              <c:out value="${buttonCommonApprova}" />
-	              <i class="material-icons right">check</i>
-	            </a>
-	          </div>
-	        </div>
+        <%-- Pulsanti per approvazione e respinta --%>
+        <div class="row">
+          <div class="col s12 right-align">
+            <a class="btn red white-text waves-effect waves-light modal-trigger"
+               href="#<c:out value="${idModalRespinta}"/>">
+              <c:out value="${buttonCommonRespingi}" />
+              <i class="material-icons right">clear</i>
+            </a>
+            <a class="btn green white-text waves-effect waves-light modal-trigger"
+               href="#<c:out value="${idModalApprovazione}"/>">
+              <c:out value="${buttonCommonApprova}" />
+              <i class="material-icons right">check</i>
+            </a>
+          </div>
+        </div>
+        
 	        
-	        
-	      </div>
 	    </div>
 	    
 	    

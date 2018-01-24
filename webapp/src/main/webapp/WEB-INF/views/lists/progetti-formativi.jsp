@@ -32,7 +32,7 @@
 	  <c:set var="idModalProponiti" value="progetto-formativo-modal-proponiti-${loop.index}" />  
 	  
 	  
-	  <ul id="idCollapsible" class="collapsible">
+	  <ul class="collapsible">
 	    <li>
 	    
 	    
@@ -46,11 +46,11 @@
 	       
 	       
 	       <%-- Corpo del collassabile --%>
-	       <div class="collapsible-body">
+	       <div class="collapsible-body grey lighten-4">
 	         
 	         
 	         <%-- Descrizione del progetto formativo --%>
-	         <div class="row row-group" style="margin-bottom: 0px">
+	         <div class="row">
 	           <div class="col s12">
 	             <div class="row" >
 	               <div class="col s1">
@@ -76,7 +76,7 @@
 		         <%-- Definizione tasto di archiviazione progetto --%>
 		         <c:when test="${utente.getClass().getSimpleName() == 'DelegatoAziendale'}">
 	             <c:if test="${utente.azienda.nome == azienda.nome}" >
-	               <div class="row">
+	               <div class="row no-margin">
 	                 <div class="col s12">
 	                   <a href="#<c:out value="${idModalArchivia}"/>"
 	                      data-position="right"
@@ -98,7 +98,7 @@
 		         
 		         <%-- Definizione tasto invio domanda tirocinio --%>
 		         <c:when test="${utente.getClass().getSimpleName() == 'Studente'}">
-	             <div class="row">
+	             <div class="row no-margin">
 	               <div class="col s12">
 	                 <a href="#<c:out value="${idModalProponiti}" />"
 	                    data-position="right"
@@ -124,7 +124,7 @@
 		         
 		         <%-- Aggiunta tasto proponiti disabilitato per utenti non autenticati --%>
 		         <c:when test="${empty utente}">
-		         	 <div class="row">
+		         	 <div class="row no-margin">
 	               <div class="col s12">
 	                 <a class="btn waves-effect right disabled">
 	                   <i class="material-icons right">send</i>

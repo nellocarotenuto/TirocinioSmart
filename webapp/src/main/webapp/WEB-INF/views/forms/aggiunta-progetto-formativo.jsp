@@ -77,6 +77,9 @@
 			        </div>
 			      </div>
 			    </div>
+			    
+			    
+			    <%-- Pulsanti di aggiunta e uscita dal modal --%>
 			    <div class="row">
 			      <div class="col s12 right-align">
 			        <a class="btn-flat waves-effect modal-close">

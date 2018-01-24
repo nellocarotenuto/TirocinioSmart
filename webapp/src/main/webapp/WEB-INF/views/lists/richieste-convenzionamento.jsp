@@ -54,7 +54,7 @@
      
      
       <%-- Corpo del collassabile --%>
-      <div class="collapsible-body">
+      <div class="collapsible-body grey lighten-4">
         <div class="row row-group">
         
         

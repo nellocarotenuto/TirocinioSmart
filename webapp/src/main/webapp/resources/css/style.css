@@ -2,14 +2,22 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  background-image: url(/resources/images/backgrounds/background.png);
+  background-position: 50% 50%;
+  background-size: cover;
 }
 
 main {
   flex: 1 0 auto;
 }
 
+.no-margin {
+	margin: 0;
+}
+
 #navbar {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
+	z-index: 10;
 }
 
 #navbar > div.row {
@@ -73,13 +81,13 @@ form .row.date-input .input-field {
 	margin-bottom: 0;
 }
 
-.collapsible-body .row.row-group {
-	margin-bottom: 40px;
-}
-
 a.tooltipped.tooltipped-icon {
 	display: flex;
 	color: rgba(0,0,0,0.87);
+}
+
+.collapsible-body > .row > .col:last-child > .row {
+	margin-bottom: 0;
 }
 
 .collapsible-body i.small {

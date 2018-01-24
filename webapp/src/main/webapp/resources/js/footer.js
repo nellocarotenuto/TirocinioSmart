@@ -19,6 +19,7 @@ $(document).ready(function() {
 // Inizializza tutte le tooltip presenti nella pagina
 $(document).ready(function() {
   var tooltips = $('.tooltipped');
+  
   for(var i = 0; i < tooltips.length; i++) {
     M.Tooltip.init(tooltips[i]);
   }
@@ -27,6 +28,7 @@ $(document).ready(function() {
 // Inizializza tutti i modal presenti nella pagina
 $(document).ready(function() {
   var modals = $('.modal');
+  
   for(var i = 0; i < modals.length; i++) {
     M.Modal.init(modals[i]);
   }

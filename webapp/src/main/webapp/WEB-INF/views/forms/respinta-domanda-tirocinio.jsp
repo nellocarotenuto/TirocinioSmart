@@ -51,7 +51,7 @@
 			    <%-- Campo motivazione --%>
 			    <div class="row">
 		        <div class="input-field col s12">
-		          <i class="material-icons prefix">create</i>
+		          <i class="material-icons prefix">feedback</i>
 		          <textarea id="commento-${param.idDomanda}"
 		                    name="commentoImpiegato" 
 		                    class="materialize-textarea"></textarea>

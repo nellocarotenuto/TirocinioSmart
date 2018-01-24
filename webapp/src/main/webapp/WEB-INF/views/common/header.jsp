@@ -92,7 +92,7 @@
 			      
 			      
 			      <%-- Pulsante apertura sidebar --%>
-			      <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+			      <a href="#" data-target="mobile" class="sidenav-trigger">
 			        <i class="material-icons">menu</i>
 			      </a>
 			      
@@ -136,28 +136,13 @@
 			      </ul>
 			      
 			      
-			      <%-- Sidebar --%>
-			      <ul class="sidenav" id="mobile-demo">
-			        <li>
-			          <a href="#login modal-trigger">
-			            <c:out value="buttonLoginLabel" />
-			          </a>
-			        </li>
-			        <li>
-			          <a href="/registrazione">
-			            <c:out value="${buttonRegistrazioneLabel}" />
-			          </a>
-			        </li>
-			      </ul>
-			      
-			      
 			    </div>
 		    </div>
 	    </div>
 	    
 	    
 	    <%-- Tab di navigazione --%>
-	    <div class="nav-content">
+	    <div class="nav-content hide-on-med-and-down">
 	      <ul class="tabs tabs-transparent">
 	        
 	        
@@ -196,12 +181,91 @@
 	  </nav>
 	  
 	  
+		<%-- Sidebar --%>
+		 <ul class="sidenav" id="mobile">
+		 
+		 <li>
+		   <div class="user-view">
+		     
+		     
+		     <c:choose>
+		       
+		       
+		       <%-- Se l'utente è autenticato, mostrane il nome e il tasto di logout --%>
+		       <c:when test="${not empty utente}">
+		         <li>
+		           <a href="#" class="name">
+		             <c:out value="${utente.nome}"/>&nbsp;<c:out value="${utente.cognome}"/>
+		           </a>
+		         </li>
+		         <li>
+		           <a class="waves-effect" href="/logout">
+		             <c:out value="${buttonLogoutLabel}" />
+		           </a>
+		         </li>
+		       </c:when>
+		       
+		       
+		       <%-- Se l'utente non è autenticato, mostra i tasti di login e registrazione --%>
+		       <c:when test="${empty utente}" >
+		         <li>
+			         <a href="#login" class="modal-trigger waves-effect">
+			           <c:out value="${buttonLoginLabel}" />
+			         </a>
+			       </li>
+			       <li>
+			         <a href="/registrazione" class="waves-effect">
+			           <c:out value="${buttonRegistrazioneLabel}" />
+			         </a>
+			       </li>
+		       </c:when>
+		       
+		       
+		     </c:choose>
+		     
+
+		   </div>
+		 </li>
+		 
+     <li>
+       <div class="divider"></div>
+     </li>
+     
+     <%-- Voce home page --%>
+     <li <c:if test="${titoloTab == tabNavbarHome}">class="active"</c:if> >
+       <a href="/" class="waves-effect">
+         <c:out value="${tabNavbarHome}" />
+       </a>
+     </li>
+     
+     
+     <%-- Voce aziende --%>
+     <li <c:if test="${titoloTab == tabNavbarAziende}">class="active"</c:if> >
+       <a href="/aziende" class="waves-effect">
+         <c:out value="${tabNavbarAziende}" />
+       </a>
+     </li>
+		 
+		 
+		 <%-- Tab dashboard [solo se l'utente è autenticato] --%>
+     <c:if test="${not empty utente}">
+       <li <c:if test="${titoloTab == tabNavbarDashboard}">class="active"</c:if> >
+         <a href="/dashboard" >
+           <c:out value="${tabNavbarDashboard}" />
+         </a>
+       </li>
+     </c:if>
+		 
+		   
+		 </ul>
+	  
+	  
 	  <%-- Inclusione del modal di login --%>
     <jsp:include page="/WEB-INF/views/forms/login.jsp" >
       <jsp:param value="login" name="idModalLogin" />
     </jsp:include>
 
 	  
-	  <!-- Script per l'inizializzazione e la validazione del form di login -->
+	  <%-- Script per l'inizializzazione e la validazione del form di login --%>
 		<script type="text/javascript"
 		        src="<c:url value="/resources/js/header.js" />" ></script>
