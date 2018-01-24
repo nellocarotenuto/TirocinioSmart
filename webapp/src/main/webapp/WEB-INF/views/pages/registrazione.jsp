@@ -50,9 +50,5 @@
 	  </div>
 	</div>
 </main>
-
-<!-- Script per l'inizializzazione e la validazione dei form -->
-<script type="text/javascript"
-        src="<c:url value="/resources/js/registrazione.js" />" ></script>
     
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

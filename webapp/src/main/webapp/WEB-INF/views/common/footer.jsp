@@ -68,6 +68,9 @@
 		    </div>
 		    
 		    
+		    <%-- Script di inizializzazione di tutte le componenti grafiche --%>
+		    <script type="text/javascript"
+		            src="<c:url value="/resources/js/footer.js" />" ></script>
 		  </div>
 		</footer>
     

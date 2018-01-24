@@ -250,6 +250,3 @@
 
   </div>
 </div>
-
-
-<script src="/resources/js/invioDomandaTirocinio.js"></script>

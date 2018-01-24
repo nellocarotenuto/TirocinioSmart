@@ -66,7 +66,7 @@
 			      <%-- Descrizione del progetto --%>
 			      <div class="row">
 			        <div class="input-field col s12">
-			          <i class="material-icons prefix"></i>
+			          <i class="material-icons prefix">chat</i>
 			          <form:textarea path="descrizione"
 			                         id="${idModal}-descrizione"
 			                         class="materialize-textarea" />

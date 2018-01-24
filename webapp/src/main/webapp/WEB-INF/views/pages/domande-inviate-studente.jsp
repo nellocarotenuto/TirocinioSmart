@@ -45,8 +45,3 @@
     
 <%-- Inclusione del footer --%>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
-
-<!-- Script per l'inizializzazione e la validazione dei form -->
-<script type="text/javascript"
-        src="<c:url value="/resources/js/domandeUfficioTirocini.js" />" ></script>

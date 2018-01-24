@@ -228,7 +228,3 @@
     </li>
   </ul>
 </c:forEach>
-
-<!-- Script per l'inizializzazione e la validazione dei form -->
-<script type="text/javascript"
-        src="<c:url value="/resources/js/domandeTirocinio.js" />" ></script>

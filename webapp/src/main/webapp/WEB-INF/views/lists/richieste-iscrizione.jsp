@@ -207,7 +207,3 @@
   </jsp:include>
 
 </c:forEach>
-
-<!-- Script per l'inizializzazione e la validazione dei form -->
-<script type="text/javascript"
-        src="<c:url value="/resources/js/richiesteIscrizione.js" />" ></script>
