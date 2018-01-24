@@ -131,7 +131,7 @@
 	              </a>      
 	            </div>
 	            <div class="col s11">
-	              <c:out value="${current.cfu}"/>
+	              <c:out value="${current.cfu}"/> CFU
 	            </div>
 	          </div>
 	        </div>
