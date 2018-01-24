@@ -127,7 +127,7 @@ public class UtenzaController {
     }
     
     if (utente instanceof ImpiegatoUfficioTirocini) {
-      return "redirect:/dashboard/domande";
+      return "redirect:/dashboard/tirocini";
     } else if (utente instanceof DelegatoAziendale) {
       return "redirect:/dashboard/tirocini";
     } else if (utente instanceof Studente) {

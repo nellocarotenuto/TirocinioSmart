@@ -36,7 +36,7 @@
     
     <%-- Definizione titolo della pagina --%>
     <title>
-      <c:out value="${titoloPagina}"/>
+      <c:out value="${titoloPagina}"/> - TirocinioSmart
     </title>
     
     
@@ -105,7 +105,7 @@
 			          <%-- Aggiunta del nominativo se l'utente è autenticato (con tasto di logout) --%>
 			          <c:when test="${not empty utente}">
                   <li>
-                    <c:out value="${utente.nome}"/> <c:out value="${utente.cognome}"/>
+                    <c:out value="${utente.nome}"/>&nbsp;<c:out value="${utente.cognome}"/>
                   </li>
                   <li>
                     <a class="white-text waves-effect waves-light btn-flat modal-trigger"

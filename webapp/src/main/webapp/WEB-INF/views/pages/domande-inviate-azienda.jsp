@@ -2,12 +2,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page trimDirectiveWhitespaces="true" %>
 
 
 <%-- Definizione variabili utilizzate per titolo e menù --%>
 <spring:message var="titoloPagina" scope="request" code="pagina.domandeInviate.titolo" />
-<spring:message var="titoloTab" scope="request" code="tab.dashboard.titolo" />
-<spring:message var="voceMenu" scope="request" code="vmenu.domandeTirocinio.titolo" />
+<spring:message var="titoloTab" scope="request" code="tab.navbar.dashboard" />
+<spring:message var="voceMenu" scope="request" code="vmenu.dashboard.domandeTirocinioInviate" />
 
 
 <%-- Inclusione header --%>
@@ -28,7 +29,7 @@
         
           <%-- Titolo della pagina --%>
           <span class="card-title">
-            <c:out value="titoloPagina" />
+            <c:out value="${titoloPagina}" />
           </span>
           
         </div>

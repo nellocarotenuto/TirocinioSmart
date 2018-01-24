@@ -2,11 +2,19 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page trimDirectiveWhitespaces="true" %>
 
+<%-- Definizione variabili utilizzate per titolo e menù --%>
 <spring:message var="titoloPagina" scope="request" code="pagina.registrazione.titolo" />
 
-<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
+<%-- Inclusione header --%>
+<jsp:include page="/WEB-INF/views/common/header.jsp" >
+  <jsp:param name="titoloPagina" value="${titoloPagina}"/>
+</jsp:include>
+
+
+<%-- Corpo della pagina --%>
 <main class="container">
 	<div class="row">
 	  <div class="col s12">

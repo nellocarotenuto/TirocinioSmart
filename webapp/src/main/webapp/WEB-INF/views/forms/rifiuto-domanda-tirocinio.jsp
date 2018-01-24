@@ -50,11 +50,11 @@
 			    <div class="row">
 		        <div class="input-field col s12">
 		          <i class="material-icons prefix">create</i>
-		          <textarea id="commento-${param.idDomanda}"
+		          <textarea id="${param.idModal}-motivazione"
 		                    name="commentoAzienda" 
 		                    class="materialize-textarea"></textarea>
-		          <label for="commento-${param.idDomanda}">
-		            <c:out value="formLabelMotivazione" />
+		          <label for="${param.idModal}-motivazione">
+		            <c:out value="${formLabelMotivazione}" />
 		          </label>
 		        </div>
 		      </div>

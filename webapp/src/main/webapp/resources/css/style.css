@@ -139,6 +139,7 @@ a.tooltipped.tooltipped-icon {
 
 .collapsible span.badge {
 	margin-left: 14px;
+	min-width: 70px;
 }
 
 @media (max-width: 600px) {

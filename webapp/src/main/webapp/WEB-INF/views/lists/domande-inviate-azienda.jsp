@@ -15,13 +15,15 @@
 <%-- Definizione etichette tooltips --%>
 <spring:message var="tooltipProgettoFormativoNome" code="tooltip.progettoFormativo.nome"/>
 <spring:message var="tooltipCommonNominativo" code="tooltip.common.nominativo" />
-<spring:message var="tooltipCommonDataDiNascita" code="tooltip.common.dataDiNascita" />
-<spring:message var="tooltipCommonSesso" code="tooltip.common.sesso" />
 <spring:message var="tooltipCommonEmail" code="tooltip.common.email" />
 <spring:message var="tooltipCommonTelefono" code="tooltip.common.telefono" />
 
+<spring:message var="tooltipDomandaTirocinioCommentoAzienda"
+                code="tooltip.domandaTirocinio.commentoAzienda" />
 <spring:message var="tooltipDomandaTirocinioCommentoStudente"
                 code="tooltip.domandaTirocinio.commentoStudente" />
+<spring:message var="tooltipDomandaTirocinioCommentoImpiegato"
+                code="tooltip.domandaTirocinio.commentoImpiegato" />
 <spring:message var="tooltipDomandaTirocinioPeriodoTirocinio"
                 code="tooltip.domandaTirocinio.periodoTirocinio" />
 
@@ -32,7 +34,7 @@
 
 
 <%-- Definizione etichette badges --%>
-<spring:message var="badgeDomandaTirocinioAccettata" code="badge.domandaTirocinio.accettata" />
+<spring:message var="badgeDomandaTirocinioInAttesa" code="badge.domandaTirocinio.inAttesa" />
 <spring:message var="badgeDomandaTirocinioApprovata" code="badge.domandaTirocinio.approvata" />
 <spring:message var="badgeDomandaTirocinioRespinta" code="badge.domandaTirocinio.respinta" />
 
@@ -61,18 +63,18 @@
 	        <span class="right-align"><tags:localDateTime date="${current.data}"/></span>
 	        <c:choose>
 	          <c:when test="${current.status == statoDomandaAccettata}">
-	            <span class="new badge yellow"
-	                  data-badge-caption="<c:out value="${badgeDomandaTirocinioAccettata}" />" >
+	            <span class="new badge yellow darken-1 black-text"
+	                  data-badge-caption="<c:out value="${badgeDomandaTirocinioInAttesa}" />" >
 	            </span>
 	          </c:when>
 	          <c:when test="${current.status == statoDomandaApprovata}">
 	            <span class="new badge green"
-	                  data-badge-caption="<c:out value="${badgeDomandaTirocinioAccettata}" />" >
+	                  data-badge-caption="<c:out value="${badgeDomandaTirocinioApprovata}" />" >
 	            </span>
 	          </c:when>
 	          <c:when test="${current.status == statoDomandaRespinta}">
 	            <span class="new badge red"
-	                  data-badge-caption="<c:out value="${badgeDomandaTirocinioAccettata}" />" >
+	                  data-badge-caption="<c:out value="${badgeDomandaTirocinioRespinta}" />" >
 	            </span>
 	          </c:when>
 	        </c:choose>
@@ -103,49 +105,6 @@
 		          <div class="col s11">
 		            <c:out value="${current.studente.nome}" />  
 		            <c:out value="${current.studente.cognome}" />
-		          </div>
-		        </div>
-	        </div>
-	        
-	        
-	        <%-- Data di nascita dello studente --%>
-	        <div class="col s12">
-		        <div class="row valign-wrapper" >
-		          <div class="col s1">
-		            <a class="tooltipped tooltipped-icon" 
-		               data-position="right"
-		               data-delay="50"
-		               data-tooltip="${tooltipCommonDataDiNascita}">
-		               <i class ="small material-icons">cake</i>
-		            </a>      
-		          </div>
-		          <div class="col s11">
-		            <tags:localDate date="${current.studente.dataDiNascita}"/>
-		          </div>
-		        </div>
-	        </div>
-	          
-	          
-	        <%-- Sesso dello studente --%>
-	        <div class="col s12">
-		        <div class="row valign-wrapper" >
-		          <div class="col s1">
-		            <a class="tooltipped tooltipped-icon" 
-		               data-position="right"
-		               data-delay="50"
-		               data-tooltip="${tooltipCommonSesso}">
-		               <i class ="small material-icons">wc</i>
-		            </a>      
-		          </div>
-		          <div class="col s11">
-		            <c:choose>
-		              <c:when test="${current.studente.sesso == 'M'}">
-		                <c:out value="${labelSessoMaschile}" />
-		              </c:when>
-		              <c:when test="${current.studente.sesso == 'F'}">
-		                <c:out value="${labelSessoFemminile}" />
-		              </c:when>
-		            </c:choose>
 		          </div>
 		        </div>
 	        </div>
@@ -240,7 +199,27 @@
 	            </div>
 	          </div>
 	        </div>
-          
+            
+            
+          <%-- Commento ufficio tirocini --%>
+          <c:if test="${not empty current.commentoImpiegato}">
+              <div class="col s12">
+                <div class="row valign-wrapper" >
+                  <div class="col s1">
+                    <a class="tooltipped tooltipped-icon" 
+                       data-position="right"
+                       data-delay="50"
+                       data-tooltip="${tooltipDomandaTirocinioCommentoImpiegato}">
+                      <i class ="small material-icons">feedback</i>
+                    </a>      
+                  </div>
+                  <div class="col s11">
+                    <c:out value="${current.commentoImpiegato}"/>
+                  </div>
+                </div>
+              </div>
+            </c:if>
+            
           
         </div>
       </div>

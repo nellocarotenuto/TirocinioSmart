@@ -54,8 +54,8 @@
 			      <div class="row">
 				      <div class="input-field col s12">
 				        <i class="material-icons prefix">business_center</i>
-				        <form:input path="nome" id="aggiungiProgettoFormativo-nome" />
-				        <label for="aggiungiProgettoFormativo-nome">
+				        <form:input path="nome" id="${idModal}-nome" />
+				        <label for="${idModal}-nome">
 				          <c:out value="${formLabelNomeProgettoFormativo}" />
 				        </label>
 				        <form:errors path="nome" cssClass="helper-text" />
@@ -68,9 +68,9 @@
 			        <div class="input-field col s12">
 			          <i class="material-icons prefix"></i>
 			          <form:textarea path="descrizione"
-			                         id="aggiungiProgettoFormativo-descrizione"
+			                         id="${idModal}-descrizione"
 			                         class="materialize-textarea" />
-			          <label for="aggiungiProgettoFormativo-commento">
+			          <label for="${idModal}-descrizione">
 			            <c:out value="${formLabelDescrizione}" />
 			          </label>
 			          <form:errors path="descrizione" cssClass="helper-text" />

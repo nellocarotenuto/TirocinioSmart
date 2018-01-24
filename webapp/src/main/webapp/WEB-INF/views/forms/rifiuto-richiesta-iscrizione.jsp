@@ -4,18 +4,48 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 
+
+<%-- Definizione variabili header modal --%>
+<spring:message var="modalTitoloRifiutaRichiestaIscrizione"
+                code="modal.titolo.rifiutaRichiestaIscrizione" />
+<spring:message var="modalDescrizioneRifiutaRichiestaIscrizione"
+                code="modal.descrizione.rifiutaRichiestaIscrizione" />
+
+
+<%-- Definizione etichette campi del form --%>
+<spring:message var="formLabelMotivazione" code="form.label.motivazione" />
+
+
+<%-- Definizione etichette pulsanti --%>
+<spring:message var="buttonCommonAnnulla" code="button.common.annulla" />
+<spring:message var="buttonCommonRifiuta" code="button.common.rifiuta" />
+
+
+<%-- Definizione modal --%>
 <div id="${param.idModal}" class="modal">
   <div class="modal-content">
   
+    
+    <%-- Testata del modal --%>
 		<div class="row">
 		  <div class="col s12">
+		  
+		  
+		    <%-- Titolo del modal --%>
 		    <h4>
-			    <spring:message code="pagina.rifiutaRichiestaIscrizione.titolo" />
+			    <c:out value="${modalTitoloRifiutaRichiestaIscrizione}" />
 			  </h4>
-			  <p><spring:message code="richiesteIscrizione.rifiuta.messaggio" /></p>
+			  <p>
+			    <c:out value="${modalDescrizioneRifiutaRichiestaIscrizione}" />
+			  </p>
+			  
+			  
+			  <%-- Definizione form --%>
 			  <form action="/dashboard/richieste/iscrizione/rifiuta"
 			        method="POST">
 			    
+			    
+			    <%-- Commento alla richiesta --%>
 			    <div class="row">
 		        <div class="input-field col s12">
 		          <i class="material-icons prefix">create</i>
@@ -23,25 +53,32 @@
 		                    name="commentoRichiesta" 
 		                    class="materialize-textarea"></textarea>
 		          <label for="commento-${param.idRichiesta}">
-		            <spring:message code="richiestaIscrizione.motivazione.label" />
+		            <c:out value="${formLabelMotivazione}" />
 		          </label>
 		        </div>
 		      </div>
 			    
+			    
+			    <%-- Pulsanti per conferma e annullamento dell'operazione --%>
 			    <div class="row">
 			      <div class="col s12 right-align">
 			        <a class="btn-flat waves-effect modal-close">
-		            <spring:message code="button.annulla.label" />
+		            <c:out value="${buttonCommonAnnulla}" />
 		          </a>
 			        <input type="hidden" name="idRichiesta" value="${param.idRichiesta}">
 				      <button class="btn waves-effect waves-light red" type="submit" name="action">
-				        <spring:message code="form.rifiuta.label" />
+				        <c:out value="${buttonCommonRifiuta}" />
 				      </button>
 			      </div>
 			    </div>
+			    
+			    
 			  </form>
+			  
+			  
 		  </div>
 		</div>
+	
 	
 	</div>
 </div>		      

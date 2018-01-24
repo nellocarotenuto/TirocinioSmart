@@ -50,11 +50,11 @@
           <div class="row">
             <div class="input-field col s12">
               <i class="material-icons prefix">create</i>
-              <textarea id="commento-${param.idDomanda}"
+              <textarea id="${param.idModal}-commento"
                         name="commentoAzienda" 
                         class="materialize-textarea"></textarea>
-              <label for="commento-${param.idDomanda}">
-                <c:out value="formLabelCommento" />
+              <label for="${param.idModal}-commento">
+                <c:out value="${formLabelCommento}" />
               </label>
             </div>
           </div>
@@ -67,7 +67,7 @@
                 <c:out value="${buttonCommonAnnulla}" />
               </a>
               <input type="hidden" name="idDomanda" value="${param.idDomanda}">
-              <button class="btn waves-effect waves-light red" type="submit" name="action">
+              <button class="btn waves-effect waves-light green" type="submit" name="action">
                 <c:out value="${buttonCommonAccetta}" />
               </button>
             </div>

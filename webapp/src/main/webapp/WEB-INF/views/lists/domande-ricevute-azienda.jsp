@@ -25,13 +25,18 @@
 <spring:message var="labelSessoFemminile" code="label.sesso.femminile" />
 
 
+<%-- Definizione etichette pulsanti --%>
+<spring:message var="buttonCommonRifiuta" code="button.common.rifiuta" />
+<spring:message var="buttonCommonAccetta" code="button.common.accetta" />
+
+
 <%-- Lista delle domande --%>
 <c:forEach items="${elencoDomandeTirocinio}" var="current" varStatus="loop">
 	
 	
 	<%-- Imposta variabili per gli id dei modal --%>
-	<c:set var="idModalRifiuta" value="domandaTirocinio-modal-rifiuta-${loop.index}" />
-  <c:set var="idModalAccetta" value="domandaTirocinio-modal-accetta-${loop.index}" />
+	<c:set var="idModalRifiuta" value="domanda-tirocinio-modal-rifiuta-${loop.index}" />
+  <c:set var="idModalAccetta" value="domandaa-tirocinio-modal-accetta-${loop.index}" />
 		
 		
 		<ul id="idCollapsible" class="collapsible">
@@ -224,11 +229,11 @@
             <div class="col s12 right-align">
 	            <a class="btn red white-text waves-effect waves-light modal-trigger"
 	               href="#<c:out value="${idModalRifiuta}"/>">
-	              <spring:message code="form.rifiuta.label" />
+	              <c:out value="${buttonCommonRifiuta}" />
 	            </a>
 	            <a class="btn green white-text waves-effect waves-light modal-trigger"
 	               href="#<c:out value="${idModalAccetta}"/>">
-	              <spring:message code="form.accetta.label" />
+	              <c:out value="${buttonCommonAccetta}" />
 	            </a>
             </div>
           </div>
@@ -239,17 +244,17 @@
 		</ul>
 		
 		
-    <%-- Includi modal per accettazione domanda --%>
+    <%-- Includi modal per rifiuto domanda --%>
     <jsp:include page="/WEB-INF/views/forms/rifiuto-domanda-tirocinio.jsp">
       <jsp:param value="${current.id}" name="idDomanda" />
-      <jsp:param value="idModalRifiuta" name="idModal" />
+      <jsp:param value="${idModalRifiuta}" name="idModal" />
     </jsp:include>
     
     
-    <%-- Includi modal per rifiuto domanda --%>
+    <%-- Includi modal per accettazione domanda --%>
     <jsp:include page="/WEB-INF/views/forms/accettazione-domanda-tirocinio.jsp">
       <jsp:param value="${current.id}" name="idDomanda" />
-      <jsp:param value="idModalAccetta" name="idModal" />
+      <jsp:param value="${idModalAccetta}" name="idModal" />
     </jsp:include>
     
 

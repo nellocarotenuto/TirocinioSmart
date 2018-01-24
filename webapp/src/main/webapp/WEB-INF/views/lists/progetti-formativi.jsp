@@ -28,8 +28,8 @@
 	  
 	  
 	  <%-- Definizione variabili per l'identificazione dei modal --%>
-	  <c:set var="idModalArchivia" value="progettoFormativo-modal-archivia-${loop.index}" />
-	  <c:set var="idModalProponiti" value="progettoFormativo-modal-proponiti-${loop.index}" />  
+	  <c:set var="idModalArchivia" value="progetto-formativo-modal-archivia-${loop.index}" />
+	  <c:set var="idModalProponiti" value="progetto-formativo-modal-proponiti-${loop.index}" />  
 	  
 	  
 	  <ul id="idCollapsible" class="collapsible">

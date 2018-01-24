@@ -70,12 +70,17 @@ public class DomandaTirocinioController {
    *         domande di tirocinio non è autorizzato a svolgere l'operazione
    */
   @RequestMapping(value = "/dashboard/domande/ricevute", method = RequestMethod.GET)
-  public String visualizzaElencoDomande(RedirectAttributes redirectAttributes, Model model) 
-      throws RichiestaNonAutorizzataException {
+  public String visualizzaElencoDomande(RedirectAttributes redirectAttributes, Model model) {
     UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
     
-    List<DomandaTirocinio> domande = domandeService.elencaDomandeRicevute();
-    model.addAttribute("elencoDomandeTirocinio", domande);
+    try {
+      List<DomandaTirocinio> domande = domandeService.elencaDomandeRicevute();
+      model.addAttribute("elencoDomandeTirocinio", domande);
+    } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+      return "redirect:/";
+    }
     
     if (utente instanceof ImpiegatoUfficioTirocini) {
       return "domande-ricevute-ufficio";
@@ -197,10 +202,10 @@ public class DomandaTirocinioController {
                                            "toast.domandaTirocinio.domandaAccettata");
     } catch (IdDomandaTirocinioNonValidoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
-                                           "toast.domandaTirocinio.idNonValidoException");
+                                           "toast.domandaTirocinio.idNonValido");
     } catch (DomandaTirocinioGestitaException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
-                                         "toast.domandaTirocinio.domandaTirocinioGestitaException");
+                                           "toast.domandaTirocinio.gestita");
     } catch (RichiestaNonAutorizzataException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
@@ -238,13 +243,13 @@ public class DomandaTirocinioController {
                                            "toast.domandaTirocinio.domandaRifiutata");
     } catch (IdDomandaTirocinioNonValidoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
-                                           "toast.domandaTirocinio.idNonValidoException");
+                                           "toast.domandaTirocinio.idNonValido");
     } catch (DomandaTirocinioGestitaException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
-                                        "toast.domandaTirocinio.domandaTirocinioGestitaException");
+                                        "toast.domandaTirocinio.gestita");
     } catch (CommentoDomandaTirocinioNonValidoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
-                                           "toast.domandaTirocinio.commentoNonValidoException");
+                                           "toast.domandaTirocinio.commentoNonValido");
     } catch (RichiestaNonAutorizzataException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
@@ -279,10 +284,53 @@ public class DomandaTirocinioController {
                                            "toast.domandaTirocinio.domandaApprovata");
     } catch (IdDomandaTirocinioNonValidoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
-                                           "toast.domandaTirocinio.idNonValidoException");
+                                           "toast.domandaTirocinio.idNonValido");
     } catch (StatoDomandaNonIdoneoException e) {
       redirectAttributes.addFlashAttribute("testoNotifica",  
-                                           "toast.domandaTirocinio.StatoDomandaNonIdoneoException");
+                                           "toast.domandaTirocinio.StatoDomandaNonIdoneo");
+    } catch (RichiestaNonAutorizzataException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.autorizzazioni.richiestaNonAutorizzata");
+    } catch (Exception e) {
+      logger.severe(e.getMessage());
+      return "redirect:/errore";
+    }
+    
+    return "redirect:/dashboard/domande/ricevute";
+  }
+  
+  /**
+   * Elabora le domande di tirocinio effettuandone il rifiuto.
+   * 
+   * @param idDomanda Long che rappresenta l'identificatore della domanda
+   * 
+   * @param commentoImpiegato Stringa che rappresenta il commento dell'impiegato dell'ufficio
+   *        tirocini (motivazione del rifiuto)
+   *        
+   * @param redirectAttributes incapsula gli attributi da salvare in sessione in modo
+   *        da renderli disponibili anche dopo il redirect
+   *                           
+   * @return Stringa indicante l'URL della pagina da mostrare (tramite redirect) in caso di
+   *         successo, Stringa indicante l'URL della pagina da mostrare (tramite redirect)
+   *         in caso di insuccesso
+   */
+  @RequestMapping(value = "/dashboard/domande/respingi", method = RequestMethod.POST)
+  public String respingiDomandaTirocinio(@RequestParam Long idDomanda,
+                                         @RequestParam String commentoImpiegato,
+                                         RedirectAttributes redirectAttributes) {
+    try {
+      domandeService.respingiDomandaTirocinio(idDomanda, commentoImpiegato);
+      redirectAttributes.addFlashAttribute("testoNotifica",   
+                                           "toast.domandaTirocinio.domandaRespinta");
+    } catch (IdDomandaTirocinioNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.domandaTirocinio.idNonValido");
+    } catch (StatoDomandaNonIdoneoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica",  
+                                           "toast.domandaTirocinio.StatoDomandaNonIdoneo");
+    } catch (CommentoDomandaTirocinioNonValidoException e) {
+      redirectAttributes.addFlashAttribute("testoNotifica", 
+                                           "toast.domandaTirocinio.commentoNonValido");
     } catch (RichiestaNonAutorizzataException e) {
       redirectAttributes.addFlashAttribute("testoNotifica", 
                                            "toast.autorizzazioni.richiestaNonAutorizzata");
@@ -327,6 +375,7 @@ public class DomandaTirocinioController {
       return "redirect:/";
     }
   }
+  
   
   /**
    * Permette di visualizzare l'elenco dei tirocini in corso a seconda dell'utente autenticato.

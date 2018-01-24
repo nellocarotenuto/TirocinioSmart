@@ -40,6 +40,8 @@
         <c:out value="${buttonProgettiFormativiVisualizza}" />
       </a>
 	  </div>
+	  
+	  
 	</div>
 	
 	

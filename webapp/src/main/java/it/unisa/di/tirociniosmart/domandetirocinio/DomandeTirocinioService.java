@@ -317,8 +317,8 @@ public class DomandeTirocinioService {
    * @throws IdDomandaTirocinioNonValidoException se non esiste alcuna domanda di tirocinio
    *         nel sistema con identificatore uguale ad idDomanda
    * 
-   * @throws DomandaTirocinioGestitaException se la domanda identificata da idDomanda
-   *         si trova in uno stato diverso da quello in attesa
+   * @throws StatoDomandaNonIdoneoException se la domanda identificata da idDomanda
+   *         si trova in uno stato diverso da quello di "accettata"
    *         
    * @throws CommentoDomandaTirocinioNonValidoException se il commento da associare alla
    *         domanda è nullo o vuoto
@@ -395,12 +395,12 @@ public class DomandeTirocinioService {
       throw new DataDiInizioTirocinioNonValidaException();
     } else {
       LocalDate oggi = LocalDate.now();
-        
+
       if (dataInizio.isBefore(oggi) || dataInizio.equals(oggi)) {
         throw new DataDiInizioTirocinioNonValidaException();
       } else {
         return dataInizio;
-      } 
+      }
     }
   }
   
@@ -507,7 +507,8 @@ public class DomandeTirocinioService {
     LocalDate oggi = LocalDate.now();
     List<DomandaTirocinio> tirociniInCorso = new ArrayList<DomandaTirocinio>();
     for (DomandaTirocinio domanda : domandeApprovate) {
-      if (domanda.getInizioTirocinio().isBefore(oggi)
+      if ((domanda.getInizioTirocinio().isBefore(oggi)
+          || domanda.getInizioTirocinio().isEqual(oggi))
           && domanda.getFineTirocinio().isAfter(oggi)) {
         tirociniInCorso.add(domanda);
       }

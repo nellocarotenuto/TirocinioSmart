@@ -4,10 +4,30 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 
-<c:set var="numeroModal" value="${param.numeroModal}" />
-<c:set var="nomeProgetto" value="${param.nomeProgetto}" />
-<c:set var="nomeAzienda" value="${param.nomeAzienda}" />
-<c:set var="idProgetto" value="${param.idProgetto}" />
+
+<%-- Etichette campi form --%>
+<spring:message var="formLabelNomeProgettoFormativo" code="form.label.nomeProgettoFormativo" />
+<spring:message var="formLabelNomeAzienda" code="from.label.nomeAzienda" />
+<spring:message var="formLabelDataInizio" code="form.label.dataInizio" />
+<spring:message var="formLabelDataFine" code="form.label.dataFine" />
+<spring:message var="formLabelCfu" code="form.label.cfu" />
+<spring:message var="formLabelCommento" code="form.label.commento" />
+
+<spring:message var="formPlaceholderGiorno" code="form.placeholder.giorno" />
+<spring:message var="formPlaceholderMese" code="form.placeholder.mese" />
+<spring:message var="formPlaceholderAnno" code="form.placeholder.anno" />
+
+
+<%-- Definizione etichette pulsanti --%>
+<spring:message var="buttonCommonAnnulla" code="button.common.annulla" />
+<spring:message var="buttonDomandaTirocinioProponiti" code="button.domandaTirocinio.proponiti" />
+
+
+<%-- Definizione variabile header modal --%>
+<spring:message var="modalTitoloInviaDomandaTirocinio"
+                code="modal.titolo.inviaDomandaTirocinio" />
+<spring:message var="modalDescrizioneInviaDomandaTirocinio"
+                code="modal.descrizione.inviaDomandaTirocinio" />
 
 
 <%-- Definizione modal --%>
@@ -17,38 +37,40 @@
 		<div class="row">
 		  <div class="col s12">
 		    <h4>
-		      <spring:message code="pagina.inviaDomandaTirocinio.titolo" />
+		      <c:out value="${modalTitoloInviaDomandaTirocinio}" />
 		    </h4>
-		    <p><spring:message code="domandeTirocinio.proponiti.messaggio" /></p>
+		    <p>
+		      <c:out value="${modalDescrizioneInviaDomandaTirocinio}" />
+		    </p>
 		    
 		    
 		    <%-- Definizione form --%>
 		    <form:form action="/dashboard/domande/invia"
 		               method="POST"
-		               modelAttribute="domandaTirocinioForm-${numeroModal}"
+		               modelAttribute="domandaTirocinioForm-${param.numeroModal}"
 		               novalidate="novalidate" >
 		              
 		      <div class="row">
 		
 		        <div class="input-field col s6">
 		          <i class="material-icons prefix">business_center</i>
-		          <input id="progettoFormativo-nome-${numeroModal}"
+		          <input id="progetto-formativo-nome-${param.numeroModal}"
 		                 type="text"
 		                 disabled="disabled"
-		                 value="${nomeProgetto}" />
-		          <label for="progettoFormativo-nome-${numeroModal}">
-		            <spring:message code="progettiFormativi.nomeProgetto.label" />
+		                 value="${param.nomeProgetto}" />
+		          <label for="progetto-formativo-nome-${param.numeroModal}">
+		            <c:out value="${formLabelNomeProgettoFormativo}" />
 		          </label>
 		        </div>
 		        
 		        <div class="input-field col s6">
 		          <i class="material-icons prefix">business</i>
-		          <input id="progettoFormativo-azienda-${numeroModal}"
+		          <input id="progetto-formativo-azienda-${param.numeroModal}"
 		                 type="text"
 		                 disabled="disabled"
-		                 value="${nomeAzienda}" />
-		          <label for="progettoFormativo-azienda-${numeroModal}">
-		            <spring:message code="progettiFormativi.aziendaProgetto.label" />
+		                 value="${param.nomeAzienda}" />
+		          <label for="progetto-formativo-azienda-${param.numeroModal}">
+		            <c:out value="${formLabelNomeAzienda}" />
 		          </label>
 		        </div>
 		      
@@ -57,20 +79,19 @@
 		      <div class="row date-input">
 		        <div class="col s12">
 		          <label class="row-label">
-		            <spring:message code="domandeTirocinio.dataInizio.label" />
+		            <c:out value="${formLabelDataInizio}" />
 		          </label>
 		        </div>
 		        <div class="input-field col s4">
 		          <i class="material-icons prefix">event</i>
-		          <spring:message var="giornoLabel" code="richiestaIscrizioneForm.giornoDiNascita.label" />
 		          <form:input
-		            placeholder="${giornoLabel}" 
-		            path="giornoInizio" id="domanda-tirocinio-${numeroModal}-giorno-inizio" />  
+		            placeholder="${formPlaceholderGiorno}" 
+		            path="giornoInizio" id="domanda-tirocinio-${param.numeroModal}-giorno-inizio" />  
 		        </div>
 		        <div class="input-field col s5">
-		          <form:select path="meseInizio" id="domanda-tirocinio-${numeroModal}-mese-inizio">
+		          <form:select path="meseInizio" id="domanda-tirocinio-${param.numeroModal}-mese-inizio">
 		            <form:option value="" disabled="true" selected="selected">
-		              <spring:message code="form.select.segnaposto"/>
+		              <c:out value="${formPlaceholderMese}" />
 		            </form:option>
 		            <form:option value="1">
 		              <spring:message code="form.mese.gennaio"/>
@@ -111,10 +132,9 @@
 		          </form:select>
 		        </div>
 		        <div class="input-field col s3">
-		          <spring:message var="annoLabel" code="richiestaIscrizioneForm.annoDiNascita.label" />
-		          <form:input placeholder="${annoLabel}"
+		          <form:input placeholder="${formPlaceholderAnno}"
 		                      path="annoInizio"
-		                      id="domanda-tirocinio-${numeroModal}-anno-inizio" /> 
+		                      id="domanda-tirocinio-${param.numeroModal}-anno-inizio" /> 
 		        </div>
 		        <div class="input-field col s12">
 		          <form:errors path="giornoInizio" cssClass="helper-text" />
@@ -124,20 +144,19 @@
 		      <div class="row date-input">
 		        <div class="col s12">
 		          <label class="row-label">
-		            <spring:message code="domandeTirocinio.dataFine.label" />
+		            <c:out value="${formLabelDataFine}" />
 		          </label>
 		        </div>
 		        <div class="input-field col s4">
 		          <i class="material-icons prefix">event</i>
-		          <spring:message var="giornoLabel" code="richiestaIscrizioneForm.giornoDiNascita.label" />
 		          <form:input
-		            placeholder="${giornoLabel}" 
-		            path="giornoFine" id="domanda-tirocinio-${numeroModal}-giorno-fine" />  
+		            placeholder="${formPlaceholderGiorno}" 
+		            path="giornoFine" id="domanda-tirocinio-${param.numeroModal}-giorno-fine" />  
 		        </div>
 		        <div class="input-field col s5">
-		          <form:select path="meseFine" id="domanda-tirocinio-${numeroModal}-mese-fine">
+		          <form:select path="meseFine" id="domanda-tirocinio-${param.numeroModal}-mese-fine">
 		            <form:option value="" disabled="true" selected="selected">
-		              <spring:message code="form.select.segnaposto"/>
+		              <c:out value="${formPlaceholderMese}" />
 		            </form:option>
 		            <form:option value="1">
 		              <spring:message code="form.mese.gennaio"/>
@@ -178,10 +197,9 @@
 		          </form:select>
 		        </div>
 		        <div class="input-field col s3">
-		          <spring:message var="annoLabel" code="richiestaIscrizioneForm.annoDiNascita.label" />
-		          <form:input placeholder="${annoLabel}"
+		          <form:input placeholder="${formPlaceholderAnno}"
 		                      path="annoFine"
-		                      id="domanda-tirocinio-${numeroModal}-anno-fine" /> 
+		                      id="domanda-tirocinio-${param.numeroModal}-anno-fine" /> 
 		        </div>
 		        <div class="input-field col s12">
 		          <form:errors path="giornoFine" cssClass="helper-text" />
@@ -189,12 +207,12 @@
 		      </div>
 		      
 		      <div class="row">
-		        <div class="input-field col s6">
+		        <div class="input-field col s4 m6">
 			        <i class="material-icons prefix">school</i>
 			        <form:input path="cfu"
-			                    id="progettoFormativo-cfu-${numeroModal}" />
-			        <label for="progettoFormativo-cfu-${numeroModal}">
-			          <spring:message code="progettiFormativi.cfu.label" />
+			                    id="progettoFormativo-cfu-${param.numeroModal}" />
+			        <label for="progettoFormativo-cfu-${param.numeroModal}">
+			          <c:out value="${formLabelCfu}" />
 			        </label>
 			        <form:errors path="cfu" cssClass="helper-text" />
 			      </div>
@@ -204,10 +222,10 @@
 		        <div class="input-field col s12">
 		          <i class="material-icons prefix">sms</i>
 		          <form:textarea path="commentoStudente"
-		                         id="domanda-tirocinio-${numeroModal}-commento-studente"
+		                         id="domanda-tirocinio-${param.numeroModal}-commento-studente"
 		                         class="materialize-textarea" />
-		          <label for="domanda-tirocinio-${numeroModal}-commento-studente">
-		            <spring:message code="domandeTirocinio.commentoStudente.label" />
+		          <label for="domanda-tirocinio-${param.numeroModal}-commento-studente">
+		            <c:out value="${formLabelCommento}" />
 		          </label>
 		          <form:errors path="commentoStudente" cssClass="helper-text" />
 		        </div>
@@ -216,13 +234,13 @@
 		      <div class="row">
 		        <div class="col s12 right-align">
 		          <a class="btn-flat waves-effect modal-close">
-		            <spring:message code="button.annulla.label" />
+		            <c:out value="${buttonCommonAnnulla}" />
 		          </a>
-		          <form:input type="hidden" path="idProgettoFormativo" value="${idProgetto}" />
-		          <form:input type="hidden" path="posizione" value="${numeroModal}" />
+		          <form:input type="hidden" path="idProgettoFormativo" value="${param.idProgetto}" />
+		          <form:input type="hidden" path="posizione" value="${param.numeroModal}" />
 		          <button class="btn waves-effect waves-light" type="submit" name="action">
 		            <i class="material-icons right">send</i>
-		            <spring:message code="progettoFormativo.proponiti.label" />
+		            <c:out value="${buttonDomandaTirocinioProponiti}" />
 		          </button>
 		        </div>
 		      </div>
@@ -232,5 +250,6 @@
 
   </div>
 </div>
+
 
 <script src="/resources/js/invioDomandaTirocinio.js"></script>

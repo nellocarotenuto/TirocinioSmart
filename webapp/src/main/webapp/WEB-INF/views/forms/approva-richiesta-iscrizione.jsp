@@ -5,32 +5,65 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 
 
+<%-- Definizione variabili header modal --%>
+<spring:message var="modalTitoloApprovaRichiestaIscrizione"
+                code="modal.titolo.approvaRichiestaIscrizione" />
+<spring:message var="modalDescrizioneApprovaRichiestaIscrizione"
+                code="modal.descrizione.approvaRichiestaIscrizione" />
+
+
+<%-- Definizione etichette pulsanti --%>
+<spring:message var="buttonCommonAnnulla" code="button.common.annulla" />
+<spring:message var="buttonCommonApprova" code="button.common.approva" />
+
+
+<%-- Definizione modal --%>
 <div id="${param.idModal}" class="modal">
   <div class="modal-content">
   
+  
+    <%-- Testata del modal --%>
 		<div class="row">
 		  <div class="col s12">
+		    
+		    
+		    <%-- Titolo del modal --%>
 		    <h4>
-		      <spring:message code="pagina.approvaRichiestaIscrizione.titolo" />
+		      <c:out value="${modalTitoloApprovaRichiestaIscrizione}" />
 		    </h4>
-		    <p><spring:message code="richiesteIscrizione.approva.messaggio" /></p>
+		    
+		    
+		    <%-- Descrizione del modal --%>
+		    <p>
+		      <c:out value="${modalDescrizioneApprovaRichiestaIscrizione}" />
+		    </p>
+		    
+		    
+		    <%-- Definizione del form --%>
 		    <form action="/dashboard/richieste/iscrizione/approva"
 		          method="POST">
-		          
+		      
+		      
+		      <%-- Pulsanti di conferma e annullamento dell'operazione --%>
 		      <div class="row">
 		        <div class="col s12 right-align">
 		          <a class="btn-flat waves-effect modal-close">
-		            <spring:message code="button.annulla.label" />
+		            <c:out value="${buttonCommonAnnulla}" />
 		          </a>
 		          <input type="hidden" name="idRichiesta" value="${param.idRichiesta}">
 		          <button class="btn waves-effect waves-light green" type="submit" name="action">
-		            <spring:message code="form.approva.label" />
+		            <c:out value="${buttonCommonApprova}" />
 		          </button>
 		        </div>
 		      </div>
+		      
+		      
 		    </form>
+		    
+		    
 		  </div>
 		</div>
+		
 		
   </div>
 </div>

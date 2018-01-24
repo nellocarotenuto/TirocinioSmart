@@ -3,42 +3,60 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<spring:message var="voceMenuDomandeRicevute" code="vmenu.domandeTirocinio.ricevute" />
-<spring:message var="voceMenuDomandeInviate" code="vmenu.domandeTirocinio.inviate" />
-<spring:message var="voceMenuProgetti" code="vmenu.progettiFormativi.titolo" />
-<spring:message var="voceMenuTirocini" code="vmenu.tirocini.titolo" />
 
+<%-- Voci del menù --%>
+<spring:message var="voceMenuDomandeRicevute" code="vmenu.dashboard.domandeTirocinioRicevute" />
+<spring:message var="voceMenuDomandeInviate" code="vmenu.dashboard.domandeTirocinioInviate" />
+<spring:message var="voceMenuProgetti" code="vmenu.dashboard.progettiFormativi" />
+<spring:message var="voceMenuTirocini" code="vmenu.dashboard.tirociniInCorso" />
+
+
+<%-- Menù laterale --%>
 <div class="card vertical-nav hide-on-med-and-down">
   <div class="card-content">
     <ul>
+      
+      
+      <%-- Voce menù tirocini --%>
       <li <c:if test="${voceMenu == voceMenuTirocini}">class="active"</c:if> >
         <a href="/dashboard/tirocini"
            class="waves-effect">
           <i class="material-icons">content_paste</i>
-          <spring:message code="vmenu.tirocini.titolo" />
+          <c:out value="${voceMenuTirocini}" />
         </a>
       </li>
+      
+      
+      <%-- Voce menù domande ricevute --%>
       <li <c:if test="${voceMenu == voceMenuDomandeRicevute}">class="active"</c:if> >
         <a href="/dashboard/domande/ricevute"
            class="waves-effect">
           <i class="material-icons">call_received</i>
-          <spring:message code="vmenu.domandeTirocinio.ricevute" />
+          <c:out value="${voceMenuDomandeRicevute}" />
         </a>
       </li>
+      
+      
+      <%-- Voce menù domande inviate --%>
       <li <c:if test="${voceMenu == voceMenuDomandeInviate}">class="active"</c:if> >
         <a href="/dashboard/domande/inviate"
            class="waves-effect">
           <i class="material-icons">call_made</i>
-          <spring:message code="vmenu.domandeTirocinio.ricevute" />
+          <c:out value="${voceMenuDomandeInviate}" />
         </a>
       </li>
+      
+      
+      <%-- Voce menù progetti formativi --%>
       <li <c:if test="${voceMenu == voceMenuProgetti}">class="active"</c:if> >
         <a href="/dashboard/progetti"
            class="waves-effect">
           <i class="material-icons">business_center</i>
-          <spring:message code="vmenu.progettiFormativi.titolo" />
+          <c:out value="${voceMenuProgetti}" />
         </a>
       </li>
+      
+      
     </ul>
   </div>
 </div>
