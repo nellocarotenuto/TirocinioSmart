@@ -150,6 +150,14 @@ a.tooltipped.tooltipped-icon {
 	min-width: 70px;
 }
 
+.sidenav .collapsible-header  {
+  padding: 0 32px;
+}
+
+.sidenav .collapsible-body a {
+  padding: 0 37.5px 0 45px !important;
+}
+
 @media (max-width: 600px) {
   #navbar .brand-logo img {
     height: 48px;

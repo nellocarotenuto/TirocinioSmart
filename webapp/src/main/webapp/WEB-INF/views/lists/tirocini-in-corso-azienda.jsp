@@ -24,14 +24,11 @@
 	    
 	    <%-- Testata del collassabile --%>
 	    <div class="collapsible-header">
-	      <div class="col s8 valign-wrapper">
+	      <div class="col s12 valign-wrapper">
 	        <i class="material-icons">content_paste</i>
 	        <c:out value="${current.studente.nome}"/> 
 	        <c:out value="${current.studente.cognome}"/> - 
 	        <c:out value="${current.progettoFormativo.nome}" />
-	      </div>
-	      <div class="col s4 right-align">
-	        <span class="right-align"><tags:localDateTime date="${current.data}"/></span>
 	      </div>
 	    </div>
 	  

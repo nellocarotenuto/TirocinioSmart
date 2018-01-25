@@ -14,6 +14,15 @@
 <spring:message var="sitoTitolo" code="sito.titolo" />
 
 
+<%-- Voci del menù --%>
+<spring:message var="voceMenuDomande" code="vmenu.dashboard.domandeTirocinioRicevute" />
+<spring:message var="voceMenuIscrizioni" code="vmenu.dashboard.richiesteIscrizione" />
+<spring:message var="voceMenuConvenzioni" code="vmenu.dashboard.richiesteConvenzionamento" />
+<spring:message var="voceMenuTirocini" code="vmenu.dashboard.tirociniInCorso" />
+<spring:message var="voceMenuDomandeInviate" code="vmenu.dashboard.domandeTirocinioInviate" />
+<spring:message var="voceMenuProgetti" code="vmenu.dashboard.progettiFormativi" />
+
+
 <%-- Etichette pulsanti --%>
 <spring:message var="buttonLogoutLabel" code="button.common.logout" />
 <spring:message var="buttonLoginLabel" code="button.common.login" />
@@ -249,10 +258,89 @@
 		 
 		 <%-- Tab dashboard [solo se l'utente è autenticato] --%>
      <c:if test="${not empty utente}">
-       <li <c:if test="${titoloTab == tabNavbarDashboard}">class="active"</c:if> >
-         <a href="/dashboard" >
-           <c:out value="${tabNavbarDashboard}" />
-         </a>
+       <li class="no-padding <c:if test="${titoloTab == tabNavbarDashboard}">active</c:if>" >
+         <ul class="collapsible collapsible-accordion">
+           <li>
+           
+             <a class="collapsible-header">
+	             <c:out value="${tabNavbarDashboard}" />
+	           </a>
+             <div class="collapsible-body">
+               <ul>
+                 
+                 
+                 <%-- Voce tirocini in corso --%>
+                 <li <c:if test="${voceMenu == voceMenuTirocini}">class="active"</c:if> >
+					         <a href="/dashboard/tirocini"
+					            class="waves-effect">
+					           <c:out value="${voceMenuTirocini}" />
+					         </a>
+					       </li>
+					       
+					       
+					       <%-- Voce menù tirocini --%>
+					       <c:if test="${utente.getClass().getSimpleName() == 'ImpiegatoUfficioTirocini'
+					                     or utente.getClass().getSimpleName() == 'DelegatoAziendale'}" >
+						       <li <c:if test="${voceMenu == voceMenuDomande}">class="active"</c:if> >
+	                   <a href="/dashboard/domande/ricevute"
+	                      class="waves-effect">
+	                     <c:out value="${voceMenuDomande}" />
+	                   </a>
+	                 </li>
+					       </c:if>
+					       
+					       
+					      <%-- Voce menù domande inviate --%>
+								<c:if test="${utente.getClass().getSimpleName() == 'DelegatoAziendale'
+                              or utente.getClass().getSimpleName() == 'Studente'}" >
+									<li <c:if test="${voceMenu == voceMenuDomandeInviate}">class="active"</c:if> >
+									  <a href="/dashboard/domande/inviate"
+									     class="waves-effect">
+									    <c:out value="${voceMenuDomandeInviate}" />
+									  </a>
+									</li>
+							  </c:if>
+							  
+							  
+							  <%-- Voce menù domande inviate --%>
+                <c:if test="${utente.getClass().getSimpleName() == 'DelegatoAziendale'}" >
+                  <li <c:if test="${voceMenu == voceMenuProgetti}">class="active"</c:if> >
+                    <a href="/dashboard/progetti"
+                       class="waves-effect">
+                      <c:out value="${voceMenuProgetti}" />
+                    </a>
+                  </li>
+                </c:if>
+      
+      
+					      <%-- Voce menù richieste d'iscrizione --%>
+					      <c:if test="${utente.getClass().getSimpleName() == 'ImpiegatoUfficioTirocini'}" >
+						      <li <c:if test="${voceMenu == voceMenuIscrizioni}">class="active"</c:if> >
+						        <a href="/dashboard/richieste/iscrizione"
+						           class="waves-effect">
+						          <c:out value="${voceMenuIscrizioni}" />
+						        </a>
+						      </li>
+					      </c:if>
+					      
+					      
+					      <%-- Voce menù richieste di convenzionamento --%>
+					      <c:if test="${utente.getClass().getSimpleName() == 'ImpiegatoUfficioTirocini'}" >
+						      <li <c:if test="${voceMenu == voceMenuConvenzioni}">class="active"</c:if> >
+						        <a href="/dashboard/richieste/convenzionamento"
+						           class="waves-effect">
+						          <c:out value="${voceMenuConvenzioni}" />
+						        </a>
+						      </li>
+					      </c:if>
+      
+      
+               </ul>
+             </div>
+             
+             
+           </li>
+         </ul>
        </li>
      </c:if>
 		 
