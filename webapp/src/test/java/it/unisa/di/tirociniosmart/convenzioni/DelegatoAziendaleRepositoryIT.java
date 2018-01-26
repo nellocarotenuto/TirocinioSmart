@@ -51,7 +51,7 @@ public class DelegatoAziendaleRepositoryIT {
     listaDelegati = new ArrayList<DelegatoAziendale>();
     
     
-    // Crea l'azienda #1 ed inseriscila in lista
+    // Crea il delegato #1 ed inseriscilo in lista
     Azienda azienda1 = new Azienda();
     azienda1.setId("acmeltd");
     azienda1.setNome("ACME Ltd.");
@@ -75,7 +75,7 @@ public class DelegatoAziendaleRepositoryIT {
     listaDelegati.add(delegato1);
     
     
-    // Crea l'azienda #2 ed inseriscila in lista
+ // Crea il delegato #2 ed inseriscilo in lista
     Azienda azienda2 = new Azienda();
     azienda2.setId("starkind");
     azienda2.setNome("Stark Industries");
@@ -99,7 +99,7 @@ public class DelegatoAziendaleRepositoryIT {
     listaDelegati.add(delegato2);
     
     
-    // Crea l'azienda #3 ed inseriscila in lista
+    // Crea il delegato #3 ed inseriscilo in lista
     Azienda azienda3 = new Azienda();
     azienda3.setId("cyberdynecorp");
     azienda3.setNome("Cyberdyne System Corporation");
@@ -144,8 +144,8 @@ public class DelegatoAziendaleRepositoryIT {
    */
   @Test
   public void findByUsernameAndPassword() {
-    // Controlla che ogni azienda della lista per il test sia presente su database ricercandola per
-    // l'identificatore
+    // Controlla che ogni delegato della lista per il test sia presente su database ricercandolo per
+    // username e password
     for (DelegatoAziendale delegato : listaDelegati) {
       DelegatoAziendale delegatoSalvato = delegatoAziendaleRepository
                          .findByUsernameAndPassword(delegato.getUsername(), delegato.getPassword());
@@ -163,7 +163,7 @@ public class DelegatoAziendaleRepositoryIT {
    */
   @Test
   public void findByUsername() {
-    //Controlla che un delegato aziendale inserito per il test sia presente su database ricercandolo
+    //Controlla che ogni delegato della lista per il test sia presente su database ricercandolo
     //per username
     for (DelegatoAziendale delegato : listaDelegati) {
       DelegatoAziendale delegatoSalvato = delegatoAziendaleRepository
