@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class AziendaRepositoryIT {
     azienda1.setNome("ACME Ltd.");
     azienda1.setPartitaIva("01234567890");
     azienda1.setSenzaBarriere(true);
+    azienda1.setIndirizzo("Grand Canyon");
     
     DelegatoAziendale delegato1 = azienda1.getDelegato();
     delegato1.setUsername("wilee");
@@ -69,6 +71,10 @@ public class AziendaRepositoryIT {
     delegato1.setSesso(UtenteRegistrato.SESSO_MASCHILE);
     delegato1.setTelefono("9876543210");
     
+    RichiestaConvenzionamento richiesta1 = azienda1.getRichiesta();
+    richiesta1.setStatus(RichiestaConvenzionamento.APPROVATA);
+    richiesta1.setDataRichiesta(LocalDateTime.of(2017, 12, 8, 23, 55));
+    
     listaAziende.add(azienda1);
     
     
@@ -78,6 +84,7 @@ public class AziendaRepositoryIT {
     azienda2.setNome("Stark Industries");
     azienda2.setPartitaIva("74598763241");
     azienda2.setSenzaBarriere(true);
+    azienda2.setIndirizzo("Marvel Valley, 45");
     
     DelegatoAziendale delegato2 = azienda2.getDelegato();
     delegato2.setUsername("tonystark");
@@ -88,6 +95,10 @@ public class AziendaRepositoryIT {
     delegato2.setSesso(UtenteRegistrato.SESSO_MASCHILE);
     delegato2.setTelefono("7485214786");
     
+    RichiestaConvenzionamento richiesta2 = azienda2.getRichiesta();
+    richiesta2.setStatus(RichiestaConvenzionamento.APPROVATA);
+    richiesta2.setDataRichiesta(LocalDateTime.of(2017, 11, 17, 18, 32));
+    
     listaAziende.add(azienda2);
     
     
@@ -97,6 +108,7 @@ public class AziendaRepositoryIT {
     azienda3.setNome("Cyberdyne System Corporation");
     azienda3.setPartitaIva("54569814752");
     azienda3.setSenzaBarriere(false);
+    azienda3.setIndirizzo("Steel Mountain, 57");
     
     DelegatoAziendale delegato3 = azienda3.getDelegato();
     delegato3.setUsername("milesdyson");
@@ -107,8 +119,13 @@ public class AziendaRepositoryIT {
     delegato3.setSesso(UtenteRegistrato.SESSO_MASCHILE);
     delegato3.setTelefono("7451453658");
     
+    RichiestaConvenzionamento richiesta3 = azienda3.getRichiesta();
+    richiesta3.setStatus(RichiestaConvenzionamento.APPROVATA);
+    richiesta3.setDataRichiesta(LocalDateTime.of(2017, 12, 31, 23, 59));
+    
     listaAziende.add(azienda3);
   }
+  
   
   /**
    * Salva la lista delle aziende su database prima dell'esecuzione di ogni singolo test.
@@ -119,6 +136,7 @@ public class AziendaRepositoryIT {
       aziendaRepository.save(azienda);
     }
   }
+  
   
   /**
    * Testa l'interazione con il database per l'inserimento ed il successivo caricamento di una lista
@@ -134,8 +152,8 @@ public class AziendaRepositoryIT {
     // utilizzata per il test e viceversa
     List<Azienda> listaAziendeSalvate = aziendaRepository.findAll();
     assertThat(listaAziende, everyItem(isIn(listaAziendeSalvate)));
-    assertThat(listaAziendeSalvate, everyItem(isIn(listaAziende)));
   }
+  
   
   /**
    * Testa l'interazione con il database per il singolo caricamento delle aziende della lista
@@ -155,11 +173,12 @@ public class AziendaRepositoryIT {
     }
   }
   
+  
   /**
    * Testa l'interazione con il database per il caricamento della lista di aziende che non hanno
    * barriere architettoniche.
    * 
-   * @test {@link AziendaRepository#findAllBySenzaBarriere(boolean)
+   * @test {@link AziendaRepository#findAllBySenzaBarriere(boolean)}
    * 
    * @result Il test è superato se sono caricate solo le aziende della lista che non hanno barriere
    *         architettoniche
@@ -177,37 +196,35 @@ public class AziendaRepositoryIT {
     // Controlla che ogni elemento della lista restituita dalla repository sia nella lista
     // utilizzata per il test
     List<Azienda> listaAziendeSenzaBarriereSalvate = aziendaRepository.findAllBySenzaBarriere(true);
-    assertThat(listaAziendeSenzaBarriereSalvate, everyItem(isIn(listaAziendeSenzaBarriere)));
     assertThat(listaAziendeSenzaBarriere, everyItem(isIn(listaAziendeSenzaBarriereSalvate)));
   }
   
+  
   /**
-   * Testa l'interazione con il database per determinare se la ricerca di un'azienda tramite partita
-   * IVA avvenga correttamente.
+   * Testa l'interazione con il database per il caricamento della lista di aziende la cui richiesta
+   * di convenzionamento si trovano in uno stato specificato.
    * 
-   * @test {@link AziendaRepository#existsByPartitaIva(String)}
+   * @test {@link AziendaRepository#findAllByRichiestaConvenzionamentoStatus(int)}
    * 
-   * @result Il test è superato se la ricerca delle partite IVA delle aziende presenti nella lista
-   *         utilizzata per il test ha successo e se la ricerca di una partita IVA vuota o
-   *         inesistente non ha successo
+   * @result Il test è superato se sono caricate solo le aziende della lista la cui richiesta di
+   *         convenzionamento si trova nello stato specificato
    */
   @Test
-  public void existsByPartitaIva() {
-    // Controlla che ogni azienda della lista utilizzata per il test sia presente su database 
-    // ricercandola per partita IVA
+  public void findAllByRichiestaConvenzionamentoStatus() {
+    List<Azienda> listaAziendeConvenzionate = new ArrayList<Azienda>();
     for (Azienda azienda : listaAziende) {
-      boolean aziendaEsistente = aziendaRepository.existsByPartitaIva(azienda.getPartitaIva());
-      assertThat(aziendaEsistente, is(true));
+      if (azienda.getRichiesta().getStatus() == RichiestaConvenzionamento.APPROVATA) {
+        listaAziendeConvenzionate.add(azienda);
+      }
     }
     
-    // Controlla che non esistono aziende con partita IVA vuota
-    boolean aziendaSenzaPartitaIvaEsistente = aziendaRepository.existsByPartitaIva("");
-    assertThat(aziendaSenzaPartitaIvaEsistente, is(false));
-    
-    // Controlla che non esistono aziende con partita IVA inesistente
-    boolean aziendaPartitaIvaFintaEsistente = aziendaRepository.existsByPartitaIva("11111111111");
-    assertThat(aziendaPartitaIvaFintaEsistente, is(false));
+    // Controlla che la lista delle aziende convenzionate ottenuta dalla repository contenga
+    // le aziende convenzionate definite per il test
+    List<Azienda> listaAziendeConvenzionateSalvate = aziendaRepository
+                     .findAllByRichiestaConvenzionamentoStatus(RichiestaConvenzionamento.APPROVATA);
+    assertThat(listaAziendeConvenzionate, everyItem(isIn(listaAziendeConvenzionateSalvate)));
   }
+
   
   /**
    * Testa l'interazione con il database per determinare se la ricerca di un'azienda tramite
@@ -227,14 +244,29 @@ public class AziendaRepositoryIT {
       boolean aziendaEsistente = aziendaRepository.existsById(azienda.getId());
       assertThat(aziendaEsistente, is(true));
     }
-    
-    // Controlla che non esistono aziende con id vuoto
-    boolean aziendaSenzaPartitaIvaEsistente = aziendaRepository.existsById("");
-    assertThat(aziendaSenzaPartitaIvaEsistente, is(false));
-    
-    // Controlla che non esistono aziende con id inesistente
-    boolean aziendaPartitaIvaFintaEsistente = aziendaRepository.existsById("11111111111");
-    assertThat(aziendaPartitaIvaFintaEsistente, is(false));
   }
+  
+  
+  /**
+   * Testa l'interazione con il database per determinare se la ricerca di un'azienda tramite partita
+   * IVA avvenga correttamente.
+   * 
+   * @test {@link AziendaRepository#existsByPartitaIva(String)}
+   * 
+   * @result Il test è superato se la ricerca delle partite IVA delle aziende presenti nella lista
+   *         utilizzata per il test ha successo e se la ricerca di una partita IVA vuota o
+   *         inesistente non ha successo
+   */
+  @Test
+  public void existsByPartitaIva() {
+    // Controlla che ogni azienda della lista utilizzata per il test sia presente su database 
+    // ricercandola per partita IVA
+    for (Azienda azienda : listaAziende) {
+      boolean aziendaEsistente = aziendaRepository.existsByPartitaIva(azienda.getPartitaIva());
+      assertThat(aziendaEsistente, is(true));
+    }
+  }
+  
+
   
 }
