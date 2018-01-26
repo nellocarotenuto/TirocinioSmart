@@ -27,7 +27,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
-
+/**
+ * Classe che definisce i casi di test per le operazioni sul database inerenti alle richieste di 
+ * convenzionamento e definite dalla relativa repository.
+ *
+ * @see RichiestaConvenzionamento
+ * @see RichiestaConvenzionamentoRepository
+ */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @Transactional
