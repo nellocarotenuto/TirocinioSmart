@@ -128,7 +128,7 @@ public class DelegatoAziendaleRepositoryIT {
    * Salva la lista di delegati su database prima dell'esecuzione di ogni singolo test.
    */
   @Before
-  public void salvaAziende() {
+  public void salvaDelegati() {
     for (DelegatoAziendale delegato : listaDelegati) {
       delegatoAziendaleRepository.save(delegato);
     }
