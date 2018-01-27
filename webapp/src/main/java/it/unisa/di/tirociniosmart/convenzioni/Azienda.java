@@ -228,7 +228,7 @@ public class Azienda {
   @OneToOne(cascade = CascadeType.ALL)
   private DelegatoAziendale delegato;
   
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "azienda")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "azienda")
   private List<ProgettoFormativo> progettiFormativi;
   
   @OneToOne(cascade = CascadeType.ALL)

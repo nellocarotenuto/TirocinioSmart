@@ -234,7 +234,7 @@ public class Studente extends UtenteRegistrato {
   @OneToOne(cascade = CascadeType.ALL)
   private RichiestaIscrizione richiestaIscrizione;
   
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "studente")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "studente")
   private List<DomandaTirocinio> domandeTirocinio;
   
   /** Espressione regolare che definisce il formato del campo matricola. */

@@ -6,6 +6,7 @@ import it.unisa.di.tirociniosmart.domandetirocinio.DomandaTirocinio;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -157,7 +158,7 @@ public class ProgettoFormativo {
    * @pre azienda != null
    */
   public void setAzienda(Azienda azienda) {
-    if (this.azienda != azienda) {
+    if (!azienda.equals(this.azienda)) {
       this.azienda = azienda;
       azienda.addProgettoFormativo(this);
     }
@@ -198,7 +199,7 @@ public class ProgettoFormativo {
   @ManyToOne
   private Azienda azienda;
   
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "progettoFormativo")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "progettoFormativo")
   private List<DomandaTirocinio> domandeTirocinio;
   
   

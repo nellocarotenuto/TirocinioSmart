@@ -103,9 +103,6 @@ public class RichiestaIscrizione {
     this.status = status;
   }
   
-  public void setId(long id) {
-    this.id = id;
-  }
   /**
    * Permette di ottenere la data e l'ora in cui è stata inviata la richiesta d'iscrizione.
    * 
