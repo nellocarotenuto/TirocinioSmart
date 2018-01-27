@@ -87,16 +87,14 @@ public interface DomandaTirocinioRepository
    * Permette di ottenere l'elenco delle domande di tirocinio a partire dal progetto formativo 
    * selezionato.
    * 
-   * @param progettoFormativo Oggetto {@link ProgettoFormativo} che rappresenta il progetto 
-   *                          formativo assegnato alla domanda di tirocinio
+   * @param idProgetto Intero lungo che rappresenta l'id dell'oggetto {@link ProgettoFormativo} 
+   *                   associato alla domanda di tirocinio
    *           
    * @return Lista di {@link DomandaTirocinio} che rappresenta la lista delle domande 
    *         di tirocinio
-   *                                         
-   * @pre progettoFormativo != null
    * 
    */
-  List<DomandaTirocinio> findAllByProgettoFormativo(ProgettoFormativo progettoFormativo);
+  List<DomandaTirocinio> findAllByProgettoFormativoId(long idProgetto);
   
   /**
    * Permette di ottenere la lista di domande di tirocinio inviate da uno studente,
