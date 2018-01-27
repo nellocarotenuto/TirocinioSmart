@@ -74,6 +74,12 @@
       <artifactId>jstl</artifactId>
       <version>1.2</version>
     </dependency>
+    
+    <!-- Hibernate-Java8 -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-java8</artifactId>
+    </dependency>
 
 		
     <!-- MySQL -->
