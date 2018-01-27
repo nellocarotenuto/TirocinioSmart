@@ -36,15 +36,16 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Transactional
-@Rollback
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class RichiestaConvenzionamentoIT {
 
+  private static List<RichiestaConvenzionamento> listaRichiesteConvenzionamento;
+  
   @Autowired
   private RichiestaConvenzionamentoRepository richiestaConvenzionamentoRepository;
   
-  private static List<RichiestaConvenzionamento> listaRichiesteConvenzionamento;
+  @Autowired
+  private AziendaRepository aziendaRepository;
   
   /**
    * Popola la lista {@link #listaRichiesteConvenzionamento} con oggetti fittizi che faranno 
@@ -140,15 +141,20 @@ public class RichiestaConvenzionamentoIT {
   
   @Before
   public void salvaRichieste() {
-    for (RichiestaConvenzionamento richiesta: listaRichiesteConvenzionamento) {
-      richiestaConvenzionamentoRepository.save(richiesta);
+    for (int i = 0; i < listaRichiesteConvenzionamento.size(); i++) {
+      RichiestaConvenzionamento richiesta = listaRichiesteConvenzionamento.get(i);
+      
+      Azienda azienda = aziendaRepository.save(richiesta.getAzienda());
+      listaRichiesteConvenzionamento.set(i, azienda.getRichiesta());
     }
+    
+    aziendaRepository.flush();
   }
   
    
   /**
-   * Testa l'interazione con il database per l'inserimento ed il successivo caricamento di una lista
-   * di richieste convenzionamento.
+   * Testa l'interazione con il database per il caricamento di una lista di richieste di
+   * convenzionamento.
    * 
    * @test {@link RichiestaConvenzionamentoRepository#findAll()}
    * 
@@ -158,12 +164,13 @@ public class RichiestaConvenzionamentoIT {
   public void findAll() {
     List<RichiestaConvenzionamento> listaRichiesteSalvate = 
         richiestaConvenzionamentoRepository.findAll();
+    
     assertThat(listaRichiesteConvenzionamento, everyItem(isIn(listaRichiesteSalvate)));
   }
   
   
   /**
-   * Testa l'interazione con il database per il singolo caricamento delle richieste della lista
+   * Testa l'interazione con il database per il caricamento delle singole richieste della lista
    * tramite identificatore.
    * 
    * @test {@link RichiestaConvenzionamentoRepository#findById(String)}
@@ -175,6 +182,7 @@ public class RichiestaConvenzionamentoIT {
     for (RichiestaConvenzionamento richiesta: listaRichiesteConvenzionamento) {
       RichiestaConvenzionamento richiestaSalvata = 
           richiestaConvenzionamentoRepository.findById(richiesta.getId());
+      
       assertThat(richiesta, is(equalTo(richiestaSalvata)));
     }
   }
@@ -192,6 +200,7 @@ public class RichiestaConvenzionamentoIT {
   public void findAllByStatus() {
     List<RichiestaConvenzionamento> richiesteApprovate = 
         richiestaConvenzionamentoRepository.findAllByStatus(RichiestaConvenzionamento.APPROVATA);
+    
     for (RichiestaConvenzionamento richiesta: listaRichiesteConvenzionamento) {
       if (richiesta.getStatus() == RichiestaConvenzionamento.APPROVATA) {
         richiesteApprovate.add(richiesta);

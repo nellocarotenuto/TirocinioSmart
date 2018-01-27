@@ -7,7 +7,12 @@ import static org.hamcrest.collection.IsIn.isIn;
 import static org.junit.Assert.assertThat;
 
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
+import it.unisa.di.tirociniosmart.convenzioni.AziendaRepository;
+import it.unisa.di.tirociniosmart.convenzioni.DelegatoAziendale;
+import it.unisa.di.tirociniosmart.convenzioni.RichiestaConvenzionamento;
+import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +46,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class ProgettoFormativoRepositoryIT {
 
+  private static List<ProgettoFormativo> listaProgettiFormativi;
+  
   @Autowired
   private ProgettoFormativoRepository progettoRepository;
   
-  private static List<ProgettoFormativo> listaProgettiFormativi;
-  
+  @Autowired
+  private AziendaRepository aziendaRepository;
   
   /**
    * Popola la lista {@link #listaProgettiFormativi} con oggetti fittizi che faranno da sorgente di 
@@ -64,13 +71,28 @@ public class ProgettoFormativoRepositoryIT {
     azienda1.setSenzaBarriere(true);
     azienda1.setIndirizzo("Grand Canyon");
     
+    DelegatoAziendale delegato1 = azienda1.getDelegato();
+    delegato1.setUsername("wilee");
+    delegato1.setPassword("beepbeep");
+    delegato1.setEmail("wilee@coyote.com");
+    delegato1.setNome("Wile E.");
+    delegato1.setCognome("Coyote");
+    delegato1.setSesso(UtenteRegistrato.SESSO_MASCHILE);
+    delegato1.setTelefono("9876543210");
+    
+    RichiestaConvenzionamento richiesta1 = azienda1.getRichiesta();
+    richiesta1.setStatus(RichiestaConvenzionamento.APPROVATA);
+    richiesta1.setDataRichiesta(LocalDateTime.of(2017, 12, 8, 23, 55));
+    
     //Crea progetto formativo #1
     ProgettoFormativo progetto1 = new ProgettoFormativo();
+    progetto1.setAzienda(azienda1);
     progetto1.setNome("ProjectX");
     progetto1.setDescrizione("descrizioneeeeee");
     progetto1.setStatus(ProgettoFormativo.ATTIVO);
 
     listaProgettiFormativi.add(progetto1);
+    
     
     // Crea l'azienda #2 possedente il progetto formativo #2
     Azienda azienda2 = new Azienda();
@@ -80,14 +102,29 @@ public class ProgettoFormativoRepositoryIT {
     azienda2.setSenzaBarriere(true);
     azienda2.setIndirizzo("Marvel Valley, 45");
     
+    DelegatoAziendale delegato2 = azienda2.getDelegato();
+    delegato2.setUsername("tonystark");
+    delegato2.setPassword("ironman");
+    delegato2.setEmail("tony@starkind.com");
+    delegato2.setNome("Anthony Edward");
+    delegato2.setCognome("Stark");
+    delegato2.setSesso(UtenteRegistrato.SESSO_MASCHILE);
+    delegato2.setTelefono("7485214786");
+    
+    RichiestaConvenzionamento richiesta2 = azienda2.getRichiesta();
+    richiesta2.setStatus(RichiestaConvenzionamento.APPROVATA);
+    richiesta2.setDataRichiesta(LocalDateTime.of(2017, 11, 17, 18, 32));
+    
     //Crea progetto formativo #2
     ProgettoFormativo progetto2 = new ProgettoFormativo();
+    progetto2.setAzienda(azienda2);
     progetto2.setNome("Assiri");
     progetto2.setDescrizione("descrizioneeeeee");
     progetto2.setStatus(ProgettoFormativo.ARCHIVIATO);
 
     listaProgettiFormativi.add(progetto2);
    
+    
     //Crea l'azienda possedente il progetto formativo #3
     Azienda azienda3 = new Azienda();
     azienda3.setId("cyberdynecorp");
@@ -96,14 +133,27 @@ public class ProgettoFormativoRepositoryIT {
     azienda3.setSenzaBarriere(false);
     azienda3.setIndirizzo("Steel Mountain, 57");
     
+    DelegatoAziendale delegato3 = azienda3.getDelegato();
+    delegato3.setUsername("milesdyson");
+    delegato3.setPassword("terminator");
+    delegato3.setEmail("miles@cyberdyne.net");
+    delegato3.setNome("Miles");
+    delegato3.setCognome("Dyson");
+    delegato3.setSesso(UtenteRegistrato.SESSO_MASCHILE);
+    delegato3.setTelefono("7451453658");
+    
+    RichiestaConvenzionamento richiesta3 = azienda3.getRichiesta();
+    richiesta3.setStatus(RichiestaConvenzionamento.APPROVATA);
+    richiesta3.setDataRichiesta(LocalDateTime.of(2017, 12, 31, 23, 59));
+    
     //Crea progetto formativo #3
     ProgettoFormativo progetto3 = new ProgettoFormativo();
+    progetto3.setAzienda(azienda3);
     progetto3.setNome("America");
     progetto3.setDescrizione("descrizioneeeeee");
     progetto3.setStatus(ProgettoFormativo.ATTIVO);
 
     listaProgettiFormativi.add(progetto3);
-    
   }
   
   
@@ -112,9 +162,14 @@ public class ProgettoFormativoRepositoryIT {
    */
   @Before
   public void salvaProgettiFormativi() {
-    for (ProgettoFormativo progetto: listaProgettiFormativi) {
-      progettoRepository.save(progetto);
+    for (int i = 0; i < listaProgettiFormativi.size(); i++) {
+      ProgettoFormativo progetto = listaProgettiFormativi.get(i);
+      
+      Azienda azienda = aziendaRepository.save(progetto.getAzienda());
+      listaProgettiFormativi.set(i, azienda.getProgettiFormativi().get(0));
     }
+    
+    aziendaRepository.flush();
   }
   
   /**

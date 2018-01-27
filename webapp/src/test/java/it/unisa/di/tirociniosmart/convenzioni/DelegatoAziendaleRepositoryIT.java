@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -32,13 +29,14 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Transactional
-@Rollback
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class DelegatoAziendaleRepositoryIT {
-
+  
   @Autowired
   private DelegatoAziendaleRepository delegatoAziendaleRepository;
+  
+  @Autowired
+  private AziendaRepository aziendaRepository;
   
   private static List<DelegatoAziendale> listaDelegati;
   
@@ -121,7 +119,6 @@ public class DelegatoAziendaleRepositoryIT {
     richiesta3.setDataRichiesta(LocalDateTime.of(2017, 12, 31, 23, 59));
     
     listaDelegati.add(delegato3);
-    
   }
   
   /**
@@ -129,18 +126,23 @@ public class DelegatoAziendaleRepositoryIT {
    */
   @Before
   public void salvaDelegati() {
-    for (DelegatoAziendale delegato : listaDelegati) {
-      delegatoAziendaleRepository.save(delegato);
+    for (int i = 0; i < listaDelegati.size(); i++) {
+      DelegatoAziendale delegato = listaDelegati.get(i);
+      
+      Azienda azienda = aziendaRepository.save(delegato.getAzienda());
+      listaDelegati.set(i, azienda.getDelegato());
     }
+    
+    aziendaRepository.flush();
   }
   
   /**
-   * Testa l'interazione con il database per il caricamento della lista di delegati
-   * tramite username e password.
+   * Testa l'interazione con il database per il caricamento dei singoli delegati tramite username e
+   * password.
    * 
    * @test {@link DelegatoAziendaleRepository#findByUsernameAndPassword(String, String)}
    * 
-   * @result Il test è superato se l'entità coivolta viene correttamente caricata dal database
+   * @result Il test è superato se le entità coivolte sono correttamente caricate dal database
    */
   @Test
   public void findByUsernameAndPassword() {
@@ -149,17 +151,17 @@ public class DelegatoAziendaleRepositoryIT {
     for (DelegatoAziendale delegato : listaDelegati) {
       DelegatoAziendale delegatoSalvato = delegatoAziendaleRepository
                          .findByUsernameAndPassword(delegato.getUsername(), delegato.getPassword());
+      
       assertThat(delegato, is(equalTo(delegatoSalvato)));
     }
   }
   
   /**
-   * Testa l'interazione con il database per il caricamento della lista di delegati
-   * tramite username.
+   * Testa l'interazione con il database per il caricamento dei singoli delegati tramite username.
    * 
    * @test {@link DelegatoAziendaleRepository#findByUsername(String)}
    * 
-   * @result Il test è superato l'entità coinvolta viene correttamente caricata dal database
+   * @result Il test è superato se le entità coivolte sono correttamente caricate dal database
    */
   @Test
   public void findByUsername() {

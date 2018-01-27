@@ -58,6 +58,7 @@ public class ImpiegatoUfficioTirociniRepositoryIT {
     
     listaImpiegati.add(impiegato1);
     
+    
     //Crea oggetto impiegato #2
     ImpiegatoUfficioTirocini impiegato2 = new ImpiegatoUfficioTirocini();
     impiegato2.setNome("Lucia");
@@ -67,6 +68,7 @@ public class ImpiegatoUfficioTirociniRepositoryIT {
     impiegato2.setEmail("luciacasaburi@gmail.com");
     
     listaImpiegati.add(impiegato2);
+    
     
     //Crea oggetto impiegato #3
     ImpiegatoUfficioTirocini impiegato3 = new ImpiegatoUfficioTirocini();
@@ -87,6 +89,8 @@ public class ImpiegatoUfficioTirociniRepositoryIT {
     for (ImpiegatoUfficioTirocini impiegato : listaImpiegati) {
       impiegatoRepository.save(impiegato);
     }
+    
+    impiegatoRepository.flush();
   }
   
   /**
@@ -104,6 +108,7 @@ public class ImpiegatoUfficioTirociniRepositoryIT {
     for (ImpiegatoUfficioTirocini impiegato : listaImpiegati) {
       ImpiegatoUfficioTirocini impiegatoSalvato = impiegatoRepository
                        .findByUsernameAndPassword(impiegato.getUsername(), impiegato.getPassword());
+      
       assertThat(impiegato, is(equalTo(impiegatoSalvato)));
     }
   }
@@ -123,9 +128,9 @@ public class ImpiegatoUfficioTirociniRepositoryIT {
     for (ImpiegatoUfficioTirocini impiegato : listaImpiegati) {
       ImpiegatoUfficioTirocini impiegatoSalvato = impiegatoRepository
                                                            .findByUsername(impiegato.getUsername());
+      
       assertThat(impiegato, is(equalTo(impiegatoSalvato)));
     }
-    
   }
   
 }

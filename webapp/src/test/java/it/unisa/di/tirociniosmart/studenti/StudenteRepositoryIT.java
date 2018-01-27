@@ -125,6 +125,8 @@ public class StudenteRepositoryIT {
     for (Studente studente : listaStudenti) {
       studenteRepository.save(studente);
     }
+    
+    studenteRepository.flush();
   }
   
   /**

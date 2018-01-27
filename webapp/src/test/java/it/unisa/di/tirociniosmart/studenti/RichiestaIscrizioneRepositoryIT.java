@@ -42,11 +42,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class RichiestaIscrizioneRepositoryIT {
 
+  private static List<RichiestaIscrizione> listaIscrizioni;
+  
   @Autowired
   private RichiestaIscrizioneRepository richiestaIscrizioneRepository;
   
-  private static List<RichiestaIscrizione> listaIscrizioni;
-  
+  @Autowired
+  private StudenteRepository studenteRepository;
   
   /**
    * Popola la lista {@link #listaIscrizioni} con oggetti fittizi che faranno da sorgente di dati
@@ -54,7 +56,6 @@ public class RichiestaIscrizioneRepositoryIT {
    */
   @BeforeClass
   public static void inizializzaStudenti() {
-    
     listaIscrizioni = new ArrayList<RichiestaIscrizione>();
     
     //Crea lo studente #1 
@@ -72,11 +73,10 @@ public class RichiestaIscrizioneRepositoryIT {
     studente1.setPassword("francescof");
    
     //Crea la richiesta iscrizione #1
-    RichiestaIscrizione richiesta1 = new RichiestaIscrizione();
+    RichiestaIscrizione richiesta1 = studente1.getRichiestaIscrizione();
     richiesta1.setDataRichiesta(LocalDateTime.of(2017, 11, 24, 15, 12));
     richiesta1.setStatus(RichiestaIscrizione.IN_ATTESA);
     richiesta1.setCommentoUfficioTirocini("commento");
-    richiesta1.setId(12L);
     listaIscrizioni.add(richiesta1);
     
     //Crea lo studente #2 
@@ -94,11 +94,10 @@ public class RichiestaIscrizioneRepositoryIT {
     studente2.setPassword("nicolas");
     
     //Crea la richiesta iscrizione #2
-    RichiestaIscrizione richiesta2 = new RichiestaIscrizione();
+    RichiestaIscrizione richiesta2 = studente2.getRichiestaIscrizione();
     richiesta2.setDataRichiesta(LocalDateTime.of(2017, 5, 27, 15, 12));
     richiesta2.setStatus(RichiestaIscrizione.APPROVATA);
     richiesta2.setCommentoUfficioTirocini("commento");
-    richiesta2.setId(13L);
     listaIscrizioni.add(richiesta2);
     
     //Crea lo studente #3
@@ -116,11 +115,10 @@ public class RichiestaIscrizioneRepositoryIT {
     studente3.setPassword("alessandraa");
     
     //Crea la richiesta iscrizione #3
-    RichiestaIscrizione richiesta3 = new RichiestaIscrizione();
+    RichiestaIscrizione richiesta3 = studente3.getRichiestaIscrizione();
     richiesta3.setDataRichiesta(LocalDateTime.of(2017, 1, 14, 15, 12));
     richiesta3.setStatus(RichiestaIscrizione.APPROVATA);
     richiesta3.setCommentoUfficioTirocini("commento");
-    richiesta3.setId(14L);
     listaIscrizioni.add(richiesta3);
     
   }
@@ -131,9 +129,14 @@ public class RichiestaIscrizioneRepositoryIT {
    */
   @Before
   public void salvaRichiesteIscrizioni() {
-    for (RichiestaIscrizione richiesta: listaIscrizioni) {
-      richiestaIscrizioneRepository.save(richiesta);
+    for (int i = 0; i < listaIscrizioni.size(); i++) {
+      RichiestaIscrizione richiesta = listaIscrizioni.get(i);
+      
+      Studente studente = studenteRepository.save(richiesta.getStudente());
+      listaIscrizioni.set(i, studente.getRichiestaIscrizione());
     }
+    
+    studenteRepository.flush();
   }
   
   /**

@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -35,15 +32,13 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Transactional
-@Rollback
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class AziendaRepositoryIT {
-
-  @Autowired
-  private AziendaRepository aziendaRepository;
   
   private static List<Azienda> listaAziende;
+  
+  @Autowired
+  private AziendaRepository aziendaRepository;
   
   /**
    * Popola la lista {@link #listaAziende} con oggetti fittizi che faranno da sorgente di dati per
@@ -135,12 +130,13 @@ public class AziendaRepositoryIT {
     for (Azienda azienda : listaAziende) {
       aziendaRepository.save(azienda);
     }
+    
+    aziendaRepository.flush();
   }
   
   
   /**
-   * Testa l'interazione con il database per l'inserimento ed il successivo caricamento di una lista
-   * di aziende.
+   * Testa l'interazione con il database per il caricamento di una lista di aziende.
    * 
    * @test {@link AziendaRepository#findAll()}
    * 
@@ -151,12 +147,13 @@ public class AziendaRepositoryIT {
     // Controlla che ogni elemento della lista restituita dalla repository sia presente nella lista
     // utilizzata per il test e viceversa
     List<Azienda> listaAziendeSalvate = aziendaRepository.findAll();
+    
     assertThat(listaAziende, everyItem(isIn(listaAziendeSalvate)));
   }
   
   
   /**
-   * Testa l'interazione con il database per il singolo caricamento delle aziende della lista
+   * Testa l'interazione con il database per il caricamento delle singole aziende della lista
    * tramite identificatore.
    * 
    * @test {@link AziendaRepository#findById(String)}
@@ -169,6 +166,7 @@ public class AziendaRepositoryIT {
     // l'identificatore
     for (Azienda azienda : listaAziende) {
       Azienda aziendaSalvata = aziendaRepository.findById(azienda.getId());
+      
       assertThat(azienda, is(equalTo(aziendaSalvata)));
     }
   }
@@ -196,6 +194,7 @@ public class AziendaRepositoryIT {
     // Controlla che ogni elemento della lista restituita dalla repository sia nella lista
     // utilizzata per il test
     List<Azienda> listaAziendeSenzaBarriereSalvate = aziendaRepository.findAllBySenzaBarriere(true);
+    
     assertThat(listaAziendeSenzaBarriere, everyItem(isIn(listaAziendeSenzaBarriereSalvate)));
   }
   
@@ -222,6 +221,7 @@ public class AziendaRepositoryIT {
     // le aziende convenzionate definite per il test
     List<Azienda> listaAziendeConvenzionateSalvate = aziendaRepository
                      .findAllByRichiestaConvenzionamentoStatus(RichiestaConvenzionamento.APPROVATA);
+    
     assertThat(listaAziendeConvenzionate, everyItem(isIn(listaAziendeConvenzionateSalvate)));
   }
 
@@ -242,6 +242,7 @@ public class AziendaRepositoryIT {
     // ricercandola per id
     for (Azienda azienda : listaAziende) {
       boolean aziendaEsistente = aziendaRepository.existsById(azienda.getId());
+      
       assertThat(aziendaEsistente, is(true));
     }
   }
@@ -263,10 +264,9 @@ public class AziendaRepositoryIT {
     // ricercandola per partita IVA
     for (Azienda azienda : listaAziende) {
       boolean aziendaEsistente = aziendaRepository.existsByPartitaIva(azienda.getPartitaIva());
+      
       assertThat(aziendaEsistente, is(true));
     }
   }
-  
-
   
 }
