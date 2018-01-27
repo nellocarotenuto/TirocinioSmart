@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +43,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class DomandaTirocinioRepositoryIT {
 
-  private static List<DomandaTirocinio> listaDomande;
-  private static List<ProgettoFormativo> listaProgetti;
-  private static List<Studente> listaStudenti;
+  private List<DomandaTirocinio> listaDomande;
   
   @Autowired
   private DomandaTirocinioRepository domandaRepository;
@@ -59,16 +56,13 @@ public class DomandaTirocinioRepositoryIT {
   
   @Autowired
   private ProgettoFormativoRepository progettoFormativoRepository;
-
+  
   /**
-   * Popola la lista {@link #listaDomande} con oggetti fittizi che faranno da sorgente di 
-   * dati per le operazioni di lettura e scrittura su database.
+   * Salva la lista delle domande tirocinio su database prima di ogni singolo test.
    */
-  @BeforeClass
-  public static void inizializzaDomandeTirocinio() {
+  @Before
+  public void salvaDomande() {
     listaDomande = new ArrayList<DomandaTirocinio>();
-    listaProgetti = new ArrayList<ProgettoFormativo>();
-    listaStudenti = new ArrayList<Studente>();
     
     // Crea lo studente #1 
     Studente studente1 = new Studente();
@@ -90,7 +84,7 @@ public class DomandaTirocinioRepositoryIT {
     richiestaIscrizione1.setStatus(RichiestaIscrizione.IN_ATTESA);
     richiestaIscrizione1.setCommentoUfficioTirocini("commento");
     
-    listaStudenti.add(studente1);
+    studente1 = studenteRepository.save(studente1);
     
     
     // Crea lo studente #2
@@ -113,7 +107,7 @@ public class DomandaTirocinioRepositoryIT {
     richiestaIscrizione2.setStatus(RichiestaIscrizione.APPROVATA);
     richiestaIscrizione2.setCommentoUfficioTirocini("commento");
     
-    listaStudenti.add(studente2);
+    studente2 = studenteRepository.save(studente2);
     
     
     // Crea l'azienda #1
@@ -137,16 +131,7 @@ public class DomandaTirocinioRepositoryIT {
     richiestaConvenzionamento1.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiestaConvenzionamento1.setDataRichiesta(LocalDateTime.of(2017, 12, 8, 23, 55));
     
-    // Crea progetto formativo #1
-    ProgettoFormativo progetto1 = new ProgettoFormativo();
-    progetto1.setAzienda(azienda1);
-    progetto1.setNome("ProjectX");
-    progetto1.setDescrizione("descrizioneeeeee");
-    progetto1.setStatus(ProgettoFormativo.ATTIVO);
-    progetto1.setAzienda(azienda1);
-    
-    
-    listaProgetti.add(progetto1);
+    azienda1 = aziendaRepository.save(azienda1);
     
     
     // Crea l'azienda #2
@@ -170,6 +155,20 @@ public class DomandaTirocinioRepositoryIT {
     richiestaConvenzionamento2.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiestaConvenzionamento2.setDataRichiesta(LocalDateTime.of(2017, 11, 17, 18, 32));
     
+    azienda2 = aziendaRepository.save(azienda2);
+    
+    
+    // Crea progetto formativo #1
+    ProgettoFormativo progetto1 = new ProgettoFormativo();
+    progetto1.setAzienda(azienda1);
+    progetto1.setNome("ProjectX");
+    progetto1.setDescrizione("descrizioneeeeee");
+    progetto1.setStatus(ProgettoFormativo.ATTIVO);
+    progetto1.setAzienda(azienda1);
+    
+    progetto1 = progettoFormativoRepository.save(progetto1);
+
+    
     // Crea il progetto formativo #2 
     ProgettoFormativo progetto2 = new ProgettoFormativo();
     progetto2.setAzienda(azienda2);
@@ -178,11 +177,13 @@ public class DomandaTirocinioRepositoryIT {
     progetto2.setStatus(ProgettoFormativo.ARCHIVIATO);
     azienda2.addProgettoFormativo(progetto2);
 
-    listaProgetti.add(progetto2);
+    progetto2 = progettoFormativoRepository.save(progetto2);
     
     
     //Crea domanda tirocinio #1
     DomandaTirocinio domanda1 = new DomandaTirocinio();
+    domanda1.setProgettoFormativo(progetto1);
+    domanda1.setStudente(studente1);
     domanda1.setStatus(DomandaTirocinio.ACCETTATA);
     domanda1.setCfu(8);
     domanda1.setData(LocalDateTime.now());
@@ -190,12 +191,15 @@ public class DomandaTirocinioRepositoryIT {
     domanda1.setFineTirocinio(LocalDate.of(2018, 04, 01));
     domanda1.setCommentoStudente("commento studente");
     domanda1.setCommentoAzienda("commento azienda");
-        
+    
+    domanda1 = domandaRepository.save(domanda1);
     listaDomande.add(domanda1);
     
     
     //Crea domanda tirocinio #2
     DomandaTirocinio domanda2 = new DomandaTirocinio();
+    domanda2.setProgettoFormativo(progetto2);
+    domanda2.setStudente(studente2);
     domanda2.setStatus(DomandaTirocinio.APPROVATA);
     domanda2.setCfu(8);
     domanda2.setData(LocalDateTime.now());
@@ -205,45 +209,12 @@ public class DomandaTirocinioRepositoryIT {
     domanda2.setCommentoAzienda("commento azienda");
     domanda2.setCommentoImpiegato("commento impiegato");
     
+    domanda2 = domandaRepository.save(domanda2);
     listaDomande.add(domanda2);
-  }
-  
-  /**
-   * Salva la lista delle domande tirocinio su database prima di ogni singolo test.
-   */
-  @Before
-  public void salvaDomande() {
-    // Scarica i progetti formativi su database
-    for (int i = 0; i < listaProgetti.size(); i++) {
-      ProgettoFormativo progetto = listaProgetti.get(i);
-      
-      Azienda azienda = aziendaRepository.save(progetto.getAzienda());
-      listaProgetti.set(i, azienda.getProgettiFormativi().get(0));
-    }
     
+
     aziendaRepository.flush();
-    
-    
-    // Scarica gli studenti su database
-    for (int i = 0; i < listaStudenti.size(); i++) {
-      Studente studente = studenteRepository.save(listaStudenti.get(i));
-      listaStudenti.set(i, studente);
-    }
-    
     studenteRepository.flush();
-    
-    
-    // Associa le domande di tirocinio a progetti formativi e studenti e scaricale su database
-    for (int i = 0; i < listaDomande.size(); i++) {
-      DomandaTirocinio domanda = listaDomande.get(i);
-      
-      domanda.setStudente(listaStudenti.get(i));
-      domanda.setProgettoFormativo(listaProgetti.get(i));
-      
-      domanda = domandaRepository.save(domanda);
-      listaDomande.set(i, domanda);
-    }
-    
     domandaRepository.flush();
   }
   
@@ -281,10 +252,11 @@ public class DomandaTirocinioRepositoryIT {
    * 
    * @result Il test è superato se ogni entità viene correttamente caricata dal database
    */
-  //@Test
+  @Test
   public void findById() {
     for (DomandaTirocinio domanda: listaDomande) {
       DomandaTirocinio domandaSalvata = domandaRepository.findById(domanda.getId());
+      
       assertThat(domanda, is(equalTo(domandaSalvata)));
     }
   }
@@ -298,7 +270,7 @@ public class DomandaTirocinioRepositoryIT {
    * @result Il test è superato se sono caricate solo le domande tirocinio dello studente il cui 
    *         stato si trova nello stato specificato
    */
-  //@Test
+  @Test
   public void findAllByStatusAndStudenteUsername() {
     List<DomandaTirocinio> domandeApprovateStudente = new ArrayList<DomandaTirocinio>();
     for (DomandaTirocinio domanda: listaDomande) {
@@ -326,7 +298,7 @@ public class DomandaTirocinioRepositoryIT {
    * @result Il test è superato se sono caricate solo le domande tirocinio dell'azienda il cui 
    *         stato si trova nello stato specificato
    */
-  //@Test
+  @Test
   public void findAllByStatusAndProgettoFormativoAziendaId() {
     Azienda azienda = new Azienda();
     azienda.setId("acmeltd");
@@ -351,12 +323,12 @@ public class DomandaTirocinioRepositoryIT {
    * Testa l'interazione con il database per il caricamento della lista di domande di tirocinio dato
    * un progetto formativo.
    * 
-   * @test {@link DomandaTirocinioRepository#findAllByProgettoFormativo(ProgettoFormativo)}
+   * @test {@link DomandaTirocinioRepository#findAllByProgettoFormativo(long)}
    * 
    * @result Il test è superato se sono caricate solo le domande tirocinio della lista di quel dato
    *         progetto formativo
    */
-  //@Test
+  @Test
   public void findAllByProgettoFormativo() {
     ProgettoFormativo progetto = new ProgettoFormativo();
     progetto.setNome("ProjectX");
@@ -373,7 +345,7 @@ public class DomandaTirocinioRepositoryIT {
     //Controlla che la lista delle domande ottenuta dalla repository sia uguale alla lista delle 
     //domande definite per il test
     List<DomandaTirocinio> domandeProgettoSalvate =
-                           domandaRepository.findAllByProgettoFormativo(progetto);
+                           domandaRepository.findAllByProgettoFormativoId(progetto.getId());
     assertThat(domandeProgettoFormativo, everyItem(isIn(domandeProgettoSalvate)));
   }
   
@@ -387,7 +359,7 @@ public class DomandaTirocinioRepositoryIT {
    * @result Il test è superato se sono caricate solo le domande tirocinio della lista di quel dato
    *         studente.
    */
-  //@Test
+  @Test
   public void findAllByStudenteUsername() {
     Studente studente = new Studente();
     studente.setUsername("FrancescoF");
@@ -403,4 +375,5 @@ public class DomandaTirocinioRepositoryIT {
                            domandaRepository.findAllByStudenteUsername(studente.getUsername());
     assertThat(domandeStudente, everyItem(isIn(domandeStudenteSalvate)));
   }
+  
 }
