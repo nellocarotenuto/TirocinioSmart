@@ -29,9 +29,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
-
-
 /**
  * Classe che definisce i casi di test per le operazioni sul database inerenti all'azienda e
  * definite dalla relativa repository.
@@ -41,12 +38,10 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Transactional
-@Rollback
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class ProgettoFormativoRepositoryIT {
 
-  private static List<ProgettoFormativo> listaProgettiFormativi;
+  private List<ProgettoFormativo> listaProgettiFormativi;
   
   @Autowired
   private ProgettoFormativoRepository progettoRepository;
@@ -54,16 +49,15 @@ public class ProgettoFormativoRepositoryIT {
   @Autowired
   private AziendaRepository aziendaRepository;
   
+  
   /**
-   * Popola la lista {@link #listaProgettiFormativi} con oggetti fittizi che faranno da sorgente di 
-   * dati per le operazioni di lettura e scrittura su database.
+   * Salva la lista dei progetti formativi su database prima di ogni singolo test.
    */
-  @BeforeClass
-  public static void inizializzaProgettiFormativi() {
-    
+  @Before
+  public void salvaProgettiFormativi() {
     listaProgettiFormativi = new ArrayList<ProgettoFormativo>();
     
-    //Crea l'azienda possedente il progetto formativo #1
+    // Crea l'azienda possedente il progetto formativo #1
     Azienda azienda1 = new Azienda();
     azienda1.setId("acmeltd");
     azienda1.setNome("ACME Ltd.");
@@ -84,14 +78,7 @@ public class ProgettoFormativoRepositoryIT {
     richiesta1.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta1.setDataRichiesta(LocalDateTime.of(2017, 12, 8, 23, 55));
     
-    //Crea progetto formativo #1
-    ProgettoFormativo progetto1 = new ProgettoFormativo();
-    progetto1.setAzienda(azienda1);
-    progetto1.setNome("ProjectX");
-    progetto1.setDescrizione("descrizioneeeeee");
-    progetto1.setStatus(ProgettoFormativo.ATTIVO);
-
-    listaProgettiFormativi.add(progetto1);
+    azienda1 = aziendaRepository.save(azienda1);
     
     
     // Crea l'azienda #2 possedente il progetto formativo #2
@@ -115,17 +102,10 @@ public class ProgettoFormativoRepositoryIT {
     richiesta2.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta2.setDataRichiesta(LocalDateTime.of(2017, 11, 17, 18, 32));
     
-    //Crea progetto formativo #2
-    ProgettoFormativo progetto2 = new ProgettoFormativo();
-    progetto2.setAzienda(azienda2);
-    progetto2.setNome("Assiri");
-    progetto2.setDescrizione("descrizioneeeeee");
-    progetto2.setStatus(ProgettoFormativo.ARCHIVIATO);
-
-    listaProgettiFormativi.add(progetto2);
+    azienda2 = aziendaRepository.save(azienda2);
    
     
-    //Crea l'azienda possedente il progetto formativo #3
+    // Crea l'azienda possedente il progetto formativo #3
     Azienda azienda3 = new Azienda();
     azienda3.setId("cyberdynecorp");
     azienda3.setNome("Cyberdyne System Corporation");
@@ -146,29 +126,42 @@ public class ProgettoFormativoRepositoryIT {
     richiesta3.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta3.setDataRichiesta(LocalDateTime.of(2017, 12, 31, 23, 59));
     
-    //Crea progetto formativo #3
+    azienda3 = aziendaRepository.save(azienda3);
+    
+    
+    // Crea progetto formativo #1
+    ProgettoFormativo progetto1 = new ProgettoFormativo();
+    progetto1.setAzienda(azienda1);
+    progetto1.setNome("ProjectX");
+    progetto1.setDescrizione("descrizioneeeeee");
+    progetto1.setStatus(ProgettoFormativo.ATTIVO);
+
+    progetto1 = progettoRepository.save(progetto1);
+    listaProgettiFormativi.add(progetto1);
+    
+    
+    // Crea progetto formativo #2
+    ProgettoFormativo progetto2 = new ProgettoFormativo();
+    progetto2.setAzienda(azienda2);
+    progetto2.setNome("Assiri");
+    progetto2.setDescrizione("descrizioneeeeee");
+    progetto2.setStatus(ProgettoFormativo.ARCHIVIATO);
+
+    progetto2 = progettoRepository.save(progetto2);
+    listaProgettiFormativi.add(progetto2);
+    
+    
+    // Crea progetto formativo #3
     ProgettoFormativo progetto3 = new ProgettoFormativo();
     progetto3.setAzienda(azienda3);
     progetto3.setNome("America");
     progetto3.setDescrizione("descrizioneeeeee");
     progetto3.setStatus(ProgettoFormativo.ATTIVO);
 
+    progetto3 = progettoRepository.save(progetto3);
     listaProgettiFormativi.add(progetto3);
-  }
-  
-  
-  /**
-   * Salva la lista dei progetti formativi su database prima di ogni singolo test.
-   */
-  @Before
-  public void salvaProgettiFormativi() {
-    for (int i = 0; i < listaProgettiFormativi.size(); i++) {
-      ProgettoFormativo progetto = listaProgettiFormativi.get(i);
-      
-      Azienda azienda = aziendaRepository.save(progetto.getAzienda());
-      listaProgettiFormativi.set(i, azienda.getProgettiFormativi().get(0));
-    }
     
+    progettoRepository.flush();
     aziendaRepository.flush();
   }
   

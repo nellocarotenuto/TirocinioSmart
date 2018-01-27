@@ -39,7 +39,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class RichiestaConvenzionamentoIT {
 
-  private static List<RichiestaConvenzionamento> listaRichiesteConvenzionamento;
+  private List<RichiestaConvenzionamento> listaRichiesteConvenzionamento;
   
   @Autowired
   private RichiestaConvenzionamentoRepository richiestaConvenzionamentoRepository;
@@ -47,14 +47,15 @@ public class RichiestaConvenzionamentoIT {
   @Autowired
   private AziendaRepository aziendaRepository;
   
+  
   /**
-   * Popola la lista {@link #listaRichiesteConvenzionamento} con oggetti fittizi che faranno 
-   * da sorgente di dati per le operazioni di lettura e scrittura su database.
+   * Salva la lista delle richieste convenzionamento su database prima 
+   * dell'esecuzione di ogni singolo test.
    */
-  @BeforeClass
-  public static void inizializzaRichiesteConvenzionamento() {
-    
-    listaRichiesteConvenzionamento = new ArrayList<RichiestaConvenzionamento>();
+  
+  @Before
+  public void salvaRichieste() {
+listaRichiesteConvenzionamento = new ArrayList<RichiestaConvenzionamento>();
     
     // Crea l'azienda #1 
     Azienda azienda1 = new Azienda();
@@ -79,7 +80,8 @@ public class RichiestaConvenzionamentoIT {
     richiesta1.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta1.setDataRichiesta(LocalDateTime.of(2017, 12, 8, 23, 55));
     
-    listaRichiesteConvenzionamento.add(richiesta1);
+    azienda1 = aziendaRepository.save(azienda1);
+    listaRichiesteConvenzionamento.add(azienda1.getRichiesta());
     
     
     // Crea l'azienda #2 
@@ -105,7 +107,8 @@ public class RichiestaConvenzionamentoIT {
     richiesta2.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta2.setDataRichiesta(LocalDateTime.of(2017, 11, 17, 18, 32));
     
-    listaRichiesteConvenzionamento.add(richiesta2);
+    azienda2 = aziendaRepository.save(azienda2);
+    listaRichiesteConvenzionamento.add(azienda2.getRichiesta());
     
     
     // Crea l'azienda #3
@@ -131,22 +134,8 @@ public class RichiestaConvenzionamentoIT {
     richiesta3.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta3.setDataRichiesta(LocalDateTime.of(2017, 12, 31, 23, 59));
     
-    listaRichiesteConvenzionamento.add(richiesta3);
-  }
-  
-  /**
-   * Salva la lista delle richieste convenzionamento su database prima 
-   * dell'esecuzione di ogni singolo test.
-   */
-  
-  @Before
-  public void salvaRichieste() {
-    for (int i = 0; i < listaRichiesteConvenzionamento.size(); i++) {
-      RichiestaConvenzionamento richiesta = listaRichiesteConvenzionamento.get(i);
-      
-      Azienda azienda = aziendaRepository.save(richiesta.getAzienda());
-      listaRichiesteConvenzionamento.set(i, azienda.getRichiesta());
-    }
+    azienda3 = aziendaRepository.save(azienda3);
+    listaRichiesteConvenzionamento.add(azienda3.getRichiesta());
     
     aziendaRepository.flush();
   }

@@ -10,7 +10,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +37,13 @@ public class ImpiegatoUfficioTirociniRepositoryIT {
   @Autowired
   private ImpiegatoUfficioTirociniRepository impiegatoRepository;
   
-  private static List<ImpiegatoUfficioTirocini> listaImpiegati;
+  private List<ImpiegatoUfficioTirocini> listaImpiegati;
   
   /**
-   * Popola la lista {@link #listaImpiegati} con oggetti fittizi che faranno da sorgente di dati 
-   * per le operazioni di lettura e scrittura su database.
-   */ 
-  @BeforeClass
-  public static void inizializzaImpiegati() {
+   * Salva la lista di impiegati su database prima dell'esecuzione di ogni singolo test.
+   */
+  @Before
+  public void salvaDelegati() {
     listaImpiegati = new ArrayList<ImpiegatoUfficioTirocini>();
     
     //Crea oggetto impiegato #1
@@ -56,6 +54,7 @@ public class ImpiegatoUfficioTirociniRepositoryIT {
     impiegato1.setPassword("GiovanniUnisa");
     impiegato1.setEmail("giovanniverdi@gmail.com");
     
+    impiegato1 = impiegatoRepository.save(impiegato1);
     listaImpiegati.add(impiegato1);
     
     
@@ -67,6 +66,7 @@ public class ImpiegatoUfficioTirociniRepositoryIT {
     impiegato2.setPassword("ufficioUnisa");
     impiegato2.setEmail("luciacasaburi@gmail.com");
     
+    impiegato2 = impiegatoRepository.save(impiegato2);
     listaImpiegati.add(impiegato2);
     
     
@@ -78,17 +78,8 @@ public class ImpiegatoUfficioTirociniRepositoryIT {
     impiegato3.setPassword("andreaunisa");
     impiegato3.setEmail("andrealorenzin@gmail.com");
     
+    impiegato3 = impiegatoRepository.save(impiegato3);
     listaImpiegati.add(impiegato3);
-  }
-  
-  /**
-   * Salva la lista di impiegati su database prima dell'esecuzione di ogni singolo test.
-   */
-  @Before
-  public void salvaDelegati() {
-    for (ImpiegatoUfficioTirocini impiegato : listaImpiegati) {
-      impiegatoRepository.save(impiegato);
-    }
     
     impiegatoRepository.flush();
   }

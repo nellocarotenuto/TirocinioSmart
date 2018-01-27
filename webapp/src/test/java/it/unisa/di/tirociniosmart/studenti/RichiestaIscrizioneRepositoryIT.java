@@ -24,10 +24,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
-
-
-
 /**
  * Classe che definisce i casi di test per le operazioni sul database inerenti alle richieste di 
  * iscrizione e definite dalla relativa repository.
@@ -37,8 +33,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Transactional
-@Rollback
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class RichiestaIscrizioneRepositoryIT {
 
@@ -50,15 +44,16 @@ public class RichiestaIscrizioneRepositoryIT {
   @Autowired
   private StudenteRepository studenteRepository;
   
+  
   /**
-   * Popola la lista {@link #listaIscrizioni} con oggetti fittizi che faranno da sorgente di dati
-   * per le operazioni di lettura e scrittura su database.
+   * Salva la lista delle richieste di iscrizione su database prima dell'esecuzione di ogni singolo
+   * test.
    */
-  @BeforeClass
-  public static void inizializzaStudenti() {
+  @Before
+  public void salvaRichiesteIscrizioni() {
     listaIscrizioni = new ArrayList<RichiestaIscrizione>();
     
-    //Crea lo studente #1 
+    // Crea lo studente #1 
     Studente studente1 = new Studente();
     studente1.setNome("Francesco");
     studente1.setCognome("Facchinetti");
@@ -72,14 +67,17 @@ public class RichiestaIscrizioneRepositoryIT {
     studente1.setUsername("FrancescoF");
     studente1.setPassword("francescof");
    
-    //Crea la richiesta iscrizione #1
+    // Crea la richiesta iscrizione #1
     RichiestaIscrizione richiesta1 = studente1.getRichiestaIscrizione();
     richiesta1.setDataRichiesta(LocalDateTime.of(2017, 11, 24, 15, 12));
     richiesta1.setStatus(RichiestaIscrizione.IN_ATTESA);
     richiesta1.setCommentoUfficioTirocini("commento");
-    listaIscrizioni.add(richiesta1);
     
-    //Crea lo studente #2 
+    studente1 = studenteRepository.save(studente1);
+    listaIscrizioni.add(studente1.getRichiestaIscrizione());
+    
+    
+    // Crea lo studente #2 
     Studente studente2 = new Studente();
     studente2.setNome("Nicola");
     studente2.setCognome("Scheggia");
@@ -93,14 +91,17 @@ public class RichiestaIscrizioneRepositoryIT {
     studente2.setUsername("NicolaS");
     studente2.setPassword("nicolas");
     
-    //Crea la richiesta iscrizione #2
+    // Crea la richiesta iscrizione #2
     RichiestaIscrizione richiesta2 = studente2.getRichiestaIscrizione();
     richiesta2.setDataRichiesta(LocalDateTime.of(2017, 5, 27, 15, 12));
     richiesta2.setStatus(RichiestaIscrizione.APPROVATA);
     richiesta2.setCommentoUfficioTirocini("commento");
-    listaIscrizioni.add(richiesta2);
     
-    //Crea lo studente #3
+    studente2 = studenteRepository.save(studente2);
+    listaIscrizioni.add(studente2.getRichiestaIscrizione());
+    
+    
+    // Crea lo studente #3
     Studente studente3 = new Studente();
     studente3.setNome("Alessandra");
     studente3.setCognome("Amoroso");
@@ -114,30 +115,19 @@ public class RichiestaIscrizioneRepositoryIT {
     studente3.setUsername("AlessandraA");
     studente3.setPassword("alessandraa");
     
-    //Crea la richiesta iscrizione #3
+    // Crea la richiesta iscrizione #3
     RichiestaIscrizione richiesta3 = studente3.getRichiestaIscrizione();
     richiesta3.setDataRichiesta(LocalDateTime.of(2017, 1, 14, 15, 12));
     richiesta3.setStatus(RichiestaIscrizione.APPROVATA);
     richiesta3.setCommentoUfficioTirocini("commento");
-    listaIscrizioni.add(richiesta3);
     
-  }
-  
-  /**
-   * Salva la lista delle richieste di iscrizione su database prima dell'esecuzione di ogni singolo
-   * test.
-   */
-  @Before
-  public void salvaRichiesteIscrizioni() {
-    for (int i = 0; i < listaIscrizioni.size(); i++) {
-      RichiestaIscrizione richiesta = listaIscrizioni.get(i);
-      
-      Studente studente = studenteRepository.save(richiesta.getStudente());
-      listaIscrizioni.set(i, studente.getRichiestaIscrizione());
-    }
+    studente3 = studenteRepository.save(studente3);
+    listaIscrizioni.add(studente3.getRichiestaIscrizione());
+    
     
     studenteRepository.flush();
   }
+  
   
   /**
    * Testa l'interazione con il database per il caricamento della lista di richieste di

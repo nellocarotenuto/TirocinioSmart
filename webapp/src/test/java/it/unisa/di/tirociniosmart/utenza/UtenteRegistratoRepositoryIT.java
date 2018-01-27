@@ -45,15 +45,14 @@ public class UtenteRegistratoRepositoryIT {
   @Autowired
   private UtenteRegistratoRepository utenteRegistratoRepository;
   
-  private static List<UtenteRegistrato> listaUtenti;
+  private List<UtenteRegistrato> listaUtenti;
   
   
   /**
-   * Popola la lista {@link #listaUtente} con oggetti fittizi che faranno da sorgente di dati per
-   * le operazioni di lettura e scrittura su database.
+   * Salva la lista delle aziende su database prima dell'esecuzione di ogni singolo test.
    */
-  @BeforeClass
-  public static void inizializzaUtenti() {
+  @Before
+  public void salvaUtenti() {
     listaUtenti = new ArrayList<UtenteRegistrato>();
     
     
@@ -71,6 +70,7 @@ public class UtenteRegistratoRepositoryIT {
     studente1.setIndirizzo("via delle Anatre, 14 - Paperopoli");
     studente1.setMatricola("0512104785");
     
+    studente1 = utenteRegistratoRepository.save(studente1);
     listaUtenti.add(studente1);
     
     
@@ -95,6 +95,7 @@ public class UtenteRegistratoRepositoryIT {
     richiesta1.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta1.setDataRichiesta(LocalDateTime.of(2017, 12, 8, 23, 55));
     
+    delegato1 = utenteRegistratoRepository.save(delegato1);
     listaUtenti.add(delegato1);
     
     
@@ -106,18 +107,8 @@ public class UtenteRegistratoRepositoryIT {
     impiegato1.setPassword("GiovanniUnisa");
     impiegato1.setEmail("giovanniverdi@gmail.com");
     
+    impiegato1 = utenteRegistratoRepository.save(impiegato1);
     listaUtenti.add(impiegato1);
-  }
-  
-  
-  /**
-   * Salva la lista delle aziende su database prima dell'esecuzione di ogni singolo test.
-   */
-  @Before
-  public void salvaUtenti() {
-    for (UtenteRegistrato utente : listaUtenti) {
-      utenteRegistratoRepository.save(utente);
-    }
     
     utenteRegistratoRepository.flush();
   }

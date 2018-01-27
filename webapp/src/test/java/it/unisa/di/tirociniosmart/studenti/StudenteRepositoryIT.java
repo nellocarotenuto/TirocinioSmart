@@ -39,18 +39,17 @@ public class StudenteRepositoryIT {
   @Autowired
   private StudenteRepository studenteRepository;
   
-  private static List<Studente> listaStudenti;
+  private List<Studente> listaStudenti;
+  
   
   /**
-   * Popola la lista {@link #listaStudenti} con oggetti fittizi che faranno da sorgente di dati 
-   * per le operazioni di lettura e scrittura su database.
+   * Salva la lista di studenti su database prima dell'esecuzione di ogni singolo test.
    */
-  @BeforeClass
-  public static void inizializzaStudenti() {
+  @Before
+  public void salvaDelegati() {
+listaStudenti = new ArrayList<Studente>();
     
-    listaStudenti = new ArrayList<Studente>();
-    
-    //Crea lo studente #1 
+    // Crea lo studente #1 
     Studente studente1 = new Studente();
     studente1.setNome("Francesco");
     studente1.setCognome("Facchinetti");
@@ -64,12 +63,13 @@ public class StudenteRepositoryIT {
     studente1.setUsername("FrancescoF");
     studente1.setPassword("francescof");
     
-    //Crea la richiesta iscrizione #1
+    // Crea la richiesta iscrizione #1
     RichiestaIscrizione richiesta1 = new RichiestaIscrizione();
     richiesta1.setDataRichiesta(LocalDateTime.of(2017, 11, 24, 15, 12));
     richiesta1.setStatus(RichiestaIscrizione.APPROVATA);
     richiesta1.setCommentoUfficioTirocini("commento");
     
+    studente1 = studenteRepository.save(studente1);
     listaStudenti.add(studente1);
     
     //Crea lo studente #2
@@ -92,6 +92,7 @@ public class StudenteRepositoryIT {
     richiesta2.setStatus(RichiestaIscrizione.APPROVATA);
     richiesta2.setCommentoUfficioTirocini("commento");
     
+    studente2 = studenteRepository.save(studente2);
     listaStudenti.add(studente2);
     
     //Crea lo studente #3
@@ -114,17 +115,9 @@ public class StudenteRepositoryIT {
     richiesta3.setStatus(RichiestaIscrizione.APPROVATA);
     richiesta3.setCommentoUfficioTirocini("commento");
     
+    studente3 = studenteRepository.save(studente3);
     listaStudenti.add(studente3);
-  }
-  
-  /**
-   * Salva la lista di studenti su database prima dell'esecuzione di ogni singolo test.
-   */
-  @Before
-  public void salvaDelegati() {
-    for (Studente studente : listaStudenti) {
-      studenteRepository.save(studente);
-    }
+    
     
     studenteRepository.flush();
   }

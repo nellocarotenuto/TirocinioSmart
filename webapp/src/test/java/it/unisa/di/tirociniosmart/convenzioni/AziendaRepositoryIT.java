@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,19 +34,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class AziendaRepositoryIT {
   
-  private static List<Azienda> listaAziende;
+  private List<Azienda> listaAziende;
   
   @Autowired
   private AziendaRepository aziendaRepository;
   
+  
   /**
-   * Popola la lista {@link #listaAziende} con oggetti fittizi che faranno da sorgente di dati per
-   * le operazioni di lettura e scrittura su database.
+   * Salva la lista delle aziende su database prima dell'esecuzione di ogni singolo test.
    */
-  @BeforeClass
-  public static void inizializzaAziende() {
+  @Before
+  public void salvaAziende() {
     listaAziende = new ArrayList<Azienda>();
-    
+
     
     // Crea l'azienda #1 ed inseriscila in lista
     Azienda azienda1 = new Azienda();
@@ -70,6 +69,7 @@ public class AziendaRepositoryIT {
     richiesta1.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta1.setDataRichiesta(LocalDateTime.of(2017, 12, 8, 23, 55));
     
+    azienda1 = aziendaRepository.save(azienda1);
     listaAziende.add(azienda1);
     
     
@@ -94,6 +94,7 @@ public class AziendaRepositoryIT {
     richiesta2.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta2.setDataRichiesta(LocalDateTime.of(2017, 11, 17, 18, 32));
     
+    azienda2 = aziendaRepository.save(azienda2);
     listaAziende.add(azienda2);
     
     
@@ -118,18 +119,8 @@ public class AziendaRepositoryIT {
     richiesta3.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta3.setDataRichiesta(LocalDateTime.of(2017, 12, 31, 23, 59));
     
+    azienda3 = aziendaRepository.save(azienda3);
     listaAziende.add(azienda3);
-  }
-  
-  
-  /**
-   * Salva la lista delle aziende su database prima dell'esecuzione di ogni singolo test.
-   */
-  @Before
-  public void salvaAziende() {
-    for (Azienda azienda : listaAziende) {
-      aziendaRepository.save(azienda);
-    }
     
     aziendaRepository.flush();
   }

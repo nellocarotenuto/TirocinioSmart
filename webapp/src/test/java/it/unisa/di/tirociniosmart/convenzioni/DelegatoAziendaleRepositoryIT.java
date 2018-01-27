@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +37,13 @@ public class DelegatoAziendaleRepositoryIT {
   @Autowired
   private AziendaRepository aziendaRepository;
   
-  private static List<DelegatoAziendale> listaDelegati;
+  private List<DelegatoAziendale> listaDelegati;
   
   /**
-   * Popola la lista {@link #listaDelegati} con oggetti fittizi che faranno da sorgente di dati 
-   * per le operazioni di lettura e scrittura su database.
-   */ 
-  @BeforeClass
-  public static void inizializzaDelegati() {
+   * Salva la lista di delegati su database prima dell'esecuzione di ogni singolo test.
+   */
+  @Before
+  public void salvaDelegati() {
     listaDelegati = new ArrayList<DelegatoAziendale>();
     
     
@@ -70,7 +68,8 @@ public class DelegatoAziendaleRepositoryIT {
     richiesta1.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta1.setDataRichiesta(LocalDateTime.of(2017, 12, 8, 23, 55));
     
-    listaDelegati.add(delegato1);
+    azienda1 = aziendaRepository.save(azienda1);
+    listaDelegati.add(azienda1.getDelegato());
     
     
     // Crea il delegato #2 ed inseriscilo in lista
@@ -94,7 +93,8 @@ public class DelegatoAziendaleRepositoryIT {
     richiesta2.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta2.setDataRichiesta(LocalDateTime.of(2017, 11, 17, 18, 32));
     
-    listaDelegati.add(delegato2);
+    azienda2 = aziendaRepository.save(azienda2);
+    listaDelegati.add(azienda2.getDelegato());
     
     
     // Crea il delegato #3 ed inseriscilo in lista
@@ -118,20 +118,8 @@ public class DelegatoAziendaleRepositoryIT {
     richiesta3.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta3.setDataRichiesta(LocalDateTime.of(2017, 12, 31, 23, 59));
     
-    listaDelegati.add(delegato3);
-  }
-  
-  /**
-   * Salva la lista di delegati su database prima dell'esecuzione di ogni singolo test.
-   */
-  @Before
-  public void salvaDelegati() {
-    for (int i = 0; i < listaDelegati.size(); i++) {
-      DelegatoAziendale delegato = listaDelegati.get(i);
-      
-      Azienda azienda = aziendaRepository.save(delegato.getAzienda());
-      listaDelegati.set(i, azienda.getDelegato());
-    }
+    azienda3 = aziendaRepository.save(azienda3);
+    listaDelegati.add(azienda3.getDelegato());
     
     aziendaRepository.flush();
   }
