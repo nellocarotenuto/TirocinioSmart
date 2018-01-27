@@ -75,7 +75,7 @@ public class DelegatoAziendaleRepositoryIT {
     listaDelegati.add(delegato1);
     
     
- // Crea il delegato #2 ed inseriscilo in lista
+    // Crea il delegato #2 ed inseriscilo in lista
     Azienda azienda2 = new Azienda();
     azienda2.setId("starkind");
     azienda2.setNome("Stark Industries");
