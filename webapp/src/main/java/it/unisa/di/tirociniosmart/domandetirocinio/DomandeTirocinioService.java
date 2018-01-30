@@ -40,11 +40,33 @@ public class DomandeTirocinioService {
    * @param domanda {@link DomandaTirocinio} per cui si vuole registrare una domanda di tirocinio.
    *                 Non è necessario specificare la data della domanda di tirocinio ad essa
    *                 associata poiché è il metodo stesso ad impostarla.
+   *                 
+   * @throws RichiestaNonAutorizzataException se l'utente autenticato non è autorizzato a svolgere
+   *         la seguente operazione
+   *         
+   * @throws DataDiInizioTirocinioNonValidaException se la data è nulla o se non rispetta i 
+   *         parametri stabiliti
+   *         
+   * @throws DataDiFineTirocinioNonValidaException se la data è nulla o se non rispetta i 
+   *         parametri stabiliti
+   *         
+   * @throws NumeroCfuNonValidoException se il numero di cfu non rispetta i parametri stabiliti
+   * 
+   * @throws CommentoDomandaTirocinioNonValidoException se il commento passato come parametro
+   *         è nullo oppure è rappresentato da una stringa con lunghezza minore di 2
+   * 
+   * @throws ProgettoFormativoArchiviatoException se il progetto formativo è archiviato
    * 
    * @pre domanda != null
    */
   @Transactional(rollbackFor = Exception.class)
-  public void registraDomandaTirocinio(DomandaTirocinio domanda) throws Exception {
+  public void registraDomandaTirocinio(DomandaTirocinio domanda) 
+      throws RichiestaNonAutorizzataException, 
+      DataDiInizioTirocinioNonValidaException, 
+      DataDiFineTirocinioNonValidaException,
+      NumeroCfuNonValidoException,
+      CommentoDomandaTirocinioNonValidoException,
+      ProgettoFormativoArchiviatoException {
     UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
     
     // Solo uno studente può registrare una nuova domanda di tirocinio
