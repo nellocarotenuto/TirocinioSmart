@@ -1,7 +1,16 @@
 package it.unisa.di.tirociniosmart.convenzioni;
 
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.utenza.CognomeNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.EmailEsistenteException;
+import it.unisa.di.tirociniosmart.utenza.EmailNonValidaException;
+import it.unisa.di.tirociniosmart.utenza.NomeNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.PasswordNonValidaException;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.SessoNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.TelefonoNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.UsernameEsistenteException;
+import it.unisa.di.tirociniosmart.utenza.UsernameNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
@@ -39,11 +48,81 @@ public class ConvenzioniService {
    *                Non è necessario specificare la data della richiesta di convenzionamento ad essa
    *                associata né la lista dei progetti formativi offerti poiché vengono impostati da
    *                questo metodo.
+   *                
+   * @throws RichiestaNonAutorizzataException se l'utente non è autorizzato ad eseguire la seguente 
+   *         operazione
+   *         
+   * @throws UsernameEsistenteException se l'username specificato è già presente nel sistema
+   * 
+   * @throws UsernameNonValidoException se l'username non è specificato oppure se non rispetta il
+   *         formato {@link UtenteRegistrato#USERNAME_PATTERN}
+   * 
+   * @throws PasswordNonValidaException se la password non è specificata oppure se non rispetta il
+   *         formato {@link UtenteRegistrato#PASSWORD_PATTERN} 
+   * 
+   * @throws EmailEsistenteException se l'e-mail specificata è già presente nel sistema
+   * 
+   * @throws EmailNonValidaException se l'e-mail non è specificata oppure se non rispetta il formato
+   *         {@link UtenteRegistrato#EMAIL_PATTERN}
+   * 
+   * @throws NomeNonValidoException se il nome è nullo oppure se la sua lunghezza non rientra
+   *         nell'intervallo che va da {@link UtenteRegistrato#MIN_LUNGHEZZA_NOME} a
+   *         {@link UtenteRegistrato#MAX_LUNGHEZZA_NOME}
+   * 
+   * @throws CognomeNonValidoException se il cognome è nullo oppure se la sua lunghezza non rientra
+   *         nell'intervallo che va da {@link UtenteRegistrato#MIN_LUNGHEZZA_NOME} a
+   *         {@link UtenteRegistrato#MAX_LUNGHEZZA_NOME}
+   * 
+   * @throws TelefonoNonValidoException se il numero di telefono del delegato non è specificato o
+   *         non rispetta il formato definito in {@link UtenteRegistrato#TELEFONO_PATTERN}
+   * 
+   * @throws SessoNonValidoException se il sesso del delegato non è una delle costanti
+   *         {@link UtenteRegistrato#SESSO_MASCHILE} e {@link UtenteRegistrato#SESSO_FEMMINILE}
+   * 
+   * @throws PartitaIvaAziendaNonValidaException se la partita IVA passata come parametro è nulla
+   *         oppure se non rispetta il formato {@link Azienda#PARTITA_IVA_PATTERN}
+   * 
+   * @throws PartitaIvaAziendaEsistenteException se la partita IVA passata come parametro è già
+   *         presente nel sistema
+   * 
+   * @throws NomeAziendaNonValidoException se il nome passato come parametro è nullo o se la sua
+   *         lunghezza non rientra nell'intervallo che va da
+   *         {@link UtenteRegistrato#MIN_LUNGHEZZA_NOME} a
+   *         {@link UtenteRegistrato#MAX_LUNGHEZZA_NOME}
+   * 
+   * @throws IdAziendaNonValidoException se l'identificatore passato come parametro è nullo oppure
+   *         se non rispetta il formato {@link Azienda#ID_PATTERN}
+   * 
+   * @throws IdAziendaEsistenteException se l'id specificato è già presente nel sistema
+   * 
+   * @throws CommentoRichiestaConvenzionamentoNonValidoException se il commento passato come 
+   *         parametro è nullo oppure è rappresentato da una stringa di lunghezza minore di 2
+   * 
+   * @throws IndirizzoAziendaNonValidoException se l'indirizzo dell'azienda è nullo o se la sua
+   *         lunghezza non rientra nell'intervallo che va da {@link Azienda#MIN_LUNGHEZZA_INDIRIZZO}
+   *         a {@link Azienda#MAX_LUNGHEZZA_INDIRIZZO}
    * 
    * @pre azienda != null
    */
   @Transactional(rollbackFor = Exception.class)
-  public void registraRichiestaConvenzionamento(Azienda azienda) throws Exception {
+  public void registraRichiestaConvenzionamento(Azienda azienda) 
+      throws IndirizzoAziendaNonValidoException,
+      PartitaIvaAziendaNonValidaException,
+      PartitaIvaAziendaEsistenteException,
+      NomeAziendaNonValidoException, 
+      IdAziendaNonValidoException,
+      IdAziendaEsistenteException, 
+      CommentoRichiestaConvenzionamentoNonValidoException,
+      RichiestaNonAutorizzataException, 
+      UsernameNonValidoException, 
+      UsernameEsistenteException, 
+      PasswordNonValidaException, 
+      EmailNonValidaException, 
+      EmailEsistenteException, 
+      NomeNonValidoException, 
+      CognomeNonValidoException, 
+      TelefonoNonValidoException, 
+      SessoNonValidoException {
     // Un utente già autenticato nel sistema non può inviare un nuova richiesta di convenzionamento
     if (utenzaService.getUtenteAutenticato() != null) {
       throw new RichiestaNonAutorizzataException();
