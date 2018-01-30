@@ -117,6 +117,11 @@ public class StudentiService {
   @Transactional
   public List<RichiestaIscrizione> elencaListaRichiesteIscrizione()
          throws RichiestaNonAutorizzataException {    
+    //Solo gli impiegato dell'ufficio tirocini possono visualizzare l'elenco delle richieste
+    if (!(utenzaService.getUtenteAutenticato() instanceof ImpiegatoUfficioTirocini)) {
+      throw new RichiestaNonAutorizzataException();
+    }
+    
     List<RichiestaIscrizione> richiesteIscrizione = richiestaIscrizioneRepository.findAllByStatus(
                                                                      RichiestaIscrizione.IN_ATTESA);
     return richiesteIscrizione;
