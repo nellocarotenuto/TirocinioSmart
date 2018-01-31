@@ -7,7 +7,17 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.utenza.CognomeNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.EmailEsistenteException;
+import it.unisa.di.tirociniosmart.utenza.EmailNonValidaException;
+import it.unisa.di.tirociniosmart.utenza.NomeNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.PasswordNonValidaException;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.SessoNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.TelefonoNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.UsernameEsistenteException;
+import it.unisa.di.tirociniosmart.utenza.UsernameNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.time.LocalDateTime;
@@ -40,6 +50,772 @@ public class ConvenzioneServiceTest {
   
   @Mock
   private UtenzaService utenzaService;
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se la richiesta viene registrata con successo
+   */
+  @Test
+  public void registraRichiestaConvenzionamento() {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException | PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se la viene lanciata l'eccezione aspettata
+   */
+  @Test(expected =  RichiestaNonAutorizzataException.class)
+  public void registraRichiestaConvenzionamentoRichiestaNonAutorizzata() 
+      throws RichiestaNonAutorizzataException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo ci sia un delegato autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(delegato);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException | PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException 
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws IndirizzoAziendaNonValidoException se la sua lunghezza è minore di
+   *         {@link Azienda#MIN_LUNGHEZZA_INDIRIZZO} 
+   */
+  @Test(expected = IndirizzoAziendaNonValidoException.class)
+  public void registraRichiestaConvenzionamentoConIndirizzoNonValido()
+      throws IndirizzoAziendaNonValidoException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws IndirizzoAziendaNonValidoException se la sua lunghezza è maggiore di 
+   *         {@link Azienda#MAX_LUNGHEZZA_INDIRIZZO}
+   */
+  @Test(expected = IndirizzoAziendaNonValidoException.class)
+  public void registraRichiestaConvenzionamentoConIndirizzoNonValidoCasoDue()
+      throws IndirizzoAziendaNonValidoException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("abcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzab"
+        + "abcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilm"
+        + "nopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzab"
+        + "abcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdcdabcdefghi"
+        + "lmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvz"
+        + "abcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilm"
+        + "nopqrstuvzabcdabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrst");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws IndirizzoAziendaNonValidoException se l'indirizzo è null
+   */
+  @Test(expected = IndirizzoAziendaNonValidoException.class)
+  public void registraRichiestaConvenzionamentoConIndirizzoNullo()
+      throws IndirizzoAziendaNonValidoException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws PartitaIvaAziendaNonValidaException se la partita IVA passata come parametro non 
+   *         rispetta il formato {@link Azienda#PARTITA_IVA_PATTERN}
+   */
+  @Test(expected = PartitaIvaAziendaNonValidaException.class)
+  public void registraRichiestaConvenzionamentoConPartitaIvaNonValida() 
+      throws PartitaIvaAziendaNonValidaException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("012367890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException 
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws PartitaIvaAziendaNonValidaException se la partita IVA passata come parametro è null
+   */
+  @Test(expected = PartitaIvaAziendaNonValidaException.class)
+  public void registraRichiestaConvenzionamentoConPartitaIvaNulla() 
+      throws PartitaIvaAziendaNonValidaException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("ACME Ltd.");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException 
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws PartitaIvaAziendaEsistenteException se la partita IVA è già presente sul database
+   */
+  @Test(expected = PartitaIvaAziendaEsistenteException.class)
+  public void registraRichiestaConvenzionamentoConPartitaIvaEsistente() 
+      throws PartitaIvaAziendaEsistenteException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    //Stabilisce che la partita Iva sia già presente nel database
+    when(aziendaRepository.existsByPartitaIva("01234567890")).thenReturn(true);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException | PartitaIvaAziendaNonValidaException
+        | NomeAziendaNonValidoException
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws NomeAziendaNonValidoException se il nome passato come parametro ha una lunghezza  
+   *         minore di {@link UtenteRegistrato#MIN_LUNGHEZZA_NOME} 
+   */
+  @Test(expected = NomeAziendaNonValidoException.class)
+  public void registraRichiestaConvenzionamentoConNomeNonValidoCasoUno() 
+      throws NomeAziendaNonValidoException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException | PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException 
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws NomeAziendaNonValidoException se il nome passato come parametro ha una lunghezza  
+   *         maggiore di {@link UtenteRegistrato#MAX_LUNGHEZZA_NOME} 
+   */
+  @Test(expected = NomeAziendaNonValidoException.class)
+  public void registraRichiestaConvenzionamentoConNomeNonValidoCasoDue() 
+      throws NomeAziendaNonValidoException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("abcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcd "
+        + "abcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilm"
+        + "nopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzab"
+        + "abcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdcdabcdefghi"
+        + "lmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvz"
+        + "abcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilm"
+        + "nopqrstuvzabcdabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrstuvzabcdabcdefghilmnopqrst");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException | PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException 
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws NomeAziendaNonValidoException se il nome passato come parametro è null
+   */
+  @Test(expected = NomeAziendaNonValidoException.class)
+  public void registraRichiestaConvenzionamentoConNomeNullo() 
+      throws NomeAziendaNonValidoException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException | PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException 
+        | IdAziendaNonValidoException | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws IdAziendaNonValidoException se l'identificatore passato come parametro non rispetta
+   *         il formato {@link Azienda#ID_PATTERN}
+   */
+  @Test(expected =  IdAziendaNonValidoException.class)
+  public void registraRichiestaConvenzionamentoConIdNonValido() throws IdAziendaNonValidoException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("");
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException | PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   * 
+   * @throws IdAziendaNonValidoException se l'identificatore passato come parametro è nullo
+   */
+  @Test(expected =  IdAziendaNonValidoException.class)
+  public void registraRichiestaConvenzionamentoConIdNullo() throws IdAziendaNonValidoException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException | PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaEsistenteException
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo che permette di memorizzare su database una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#registraRichiestaConvenzionamento(Azienda)}
+   * 
+   * @result il test è superato se viene lanciata l'eccezione aspettata
+   */
+  @Test(expected = IdAziendaEsistenteException.class)
+  public void registraRichiestaConvenzionamentoConIdEsistente() throws IdAziendaEsistenteException {
+    
+    //Crea Azienda
+    Azienda azienda = new Azienda();
+    azienda.setId("acmeltd");
+    azienda.setNome("ACME Ltd.");
+    azienda.setPartitaIva("01234567890");
+    azienda.setSenzaBarriere(true);
+    azienda.setIndirizzo("Grand Canyon");
+    
+    //Associa delegato aziendale ad azienda
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setNome("Giuseppe");
+    delegato.setCognome("Errore");
+    delegato.setEmail("giuseppe@errore.com");
+    delegato.setSesso("Maschile");
+    delegato.setTelefono("3333333333");
+    delegato.setUsername("user");
+    delegato.setPassword("user");
+    
+    //Associa richiesta ad azienda
+    RichiestaConvenzionamento richiesta = azienda.getRichiesta();
+    richiesta.setDataRichiesta(LocalDateTime.now());
+    richiesta.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    
+    //Stabilisce che al momento dell'invocazione del metodo non ci sia alcun utente autenticato
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    
+    //Stabilisce che l'id sia già presente nel database
+    when(aziendaRepository.existsById("acmeltd")).thenReturn(true);
+    
+    try {
+      //Permette di memorizzare su database la richiesta di convenzionamento
+      convenzioniService.registraRichiestaConvenzionamento(azienda);
+    } catch (IndirizzoAziendaNonValidoException | PartitaIvaAziendaNonValidaException
+        | PartitaIvaAziendaEsistenteException | NomeAziendaNonValidoException
+        | IdAziendaNonValidoException 
+        | CommentoRichiestaConvenzionamentoNonValidoException | RichiestaNonAutorizzataException
+        | UsernameNonValidoException | UsernameEsistenteException | PasswordNonValidaException
+        | EmailNonValidaException | EmailEsistenteException | NomeNonValidoException
+        | CognomeNonValidoException | TelefonoNonValidoException | SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
   
   /**
    * Testa il metodo per ottenere un'azienda a partire dal proprio id.
@@ -249,13 +1025,13 @@ public class ConvenzioneServiceTest {
    */
   @Test
   public void elencaRichiesteConvenzionamentoInAttesa() {
-    List<RichiestaConvenzionamento> listaRichieste = new ArrayList<RichiestaConvenzionamento>();
     
     RichiestaConvenzionamento richiesta1 = new RichiestaConvenzionamento();
     richiesta1.setStatus(RichiestaConvenzionamento.IN_ATTESA);
     richiesta1.setDataRichiesta(LocalDateTime.now());
     richiesta1.setCommentoUfficioTirocini("commento richiesta uno");
     
+    List<RichiestaConvenzionamento> listaRichieste = new ArrayList<RichiestaConvenzionamento>();
     listaRichieste.add(richiesta1);
     
     RichiestaConvenzionamento richiesta2 = new RichiestaConvenzionamento();
@@ -298,12 +1074,14 @@ public class ConvenzioneServiceTest {
    */
   @Test(expected = RichiestaNonAutorizzataException.class)
   public void elencaRichiesteNonImp() throws RichiestaNonAutorizzataException {
- List<RichiestaConvenzionamento> listaRichieste = new ArrayList<RichiestaConvenzionamento>();
+ 
     
     RichiestaConvenzionamento richiesta1 = new RichiestaConvenzionamento();
     richiesta1.setStatus(RichiestaConvenzionamento.IN_ATTESA);
     richiesta1.setDataRichiesta(LocalDateTime.now());
     richiesta1.setCommentoUfficioTirocini("commento richiesta uno");
+    
+    List<RichiestaConvenzionamento> listaRichieste = new ArrayList<RichiestaConvenzionamento>();
     
     listaRichieste.add(richiesta1);
     
@@ -340,7 +1118,6 @@ public class ConvenzioneServiceTest {
    */
   @Test
   public void elencaAziendeConvenzionate() {
-    List<Azienda> listaAziende = new ArrayList<Azienda>();
     
     // Crea l'azienda #1 ed inseriscila in lista
     Azienda azienda1 = new Azienda();
@@ -354,6 +1131,7 @@ public class ConvenzioneServiceTest {
     richiesta1.setStatus(RichiestaConvenzionamento.APPROVATA);
     richiesta1.setDataRichiesta(LocalDateTime.of(2017, 12, 8, 23, 55));
    
+    List<Azienda> listaAziende = new ArrayList<Azienda>();
     listaAziende.add(azienda1);
     
     
@@ -556,8 +1334,9 @@ public class ConvenzioneServiceTest {
    * 
    * @result Il test è superato se il metodo lancia l'eccezione aspettata
    * 
-   * @throws RichiestaConvenzionamentoGestitaException se la richiesta di convenzionamento è stata 
-   *         già approvata o rifiutata
+   * @throws CommentoRichiestaConvenzionamentoNonValidoException se il commento non rispetta il 
+   *         pattern stabilito
+   *        
    */
   @Test(expected =  CommentoRichiestaConvenzionamentoNonValidoException.class)
   public void rifiutaRichiestaConCommentoNonValido() 
@@ -577,7 +1356,48 @@ public class ConvenzioneServiceTest {
     when(richiestaConvenzionamentoRepository.findById(1111111111111111L)).thenReturn(r);
     when(utenzaService.getUtenteAutenticato()).thenReturn(impiegato);
     try {
-      convenzioniService.rifiutaRichiestaConvenzionamento(1111111111111111L, "1");
+      convenzioniService.rifiutaRichiestaConvenzionamento(1111111111111111L, "");
+    } catch (IdRichiestaConvenzionamentoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaConvenzionamentoGestitaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Testa il metodo per rifiuta una richiesta di convenzionamento.
+   * 
+   * @test {@link ConvenzioniService#rifiutaRichiestaConvenzionamento(long, String)}
+   * 
+   * @result Il test è superato se il metodo lancia l'eccezione aspettata
+   * 
+   * @throws CommentoRichiestaConvenzionamentoNonValidoException se il commento è null 
+   *        
+   */
+  @Test(expected =  CommentoRichiestaConvenzionamentoNonValidoException.class)
+  public void rifiutaRichiestaConCommentoNullo() 
+      throws CommentoRichiestaConvenzionamentoNonValidoException {
+    
+    ImpiegatoUfficioTirocini impiegato = new ImpiegatoUfficioTirocini();
+    impiegato.setNome("Antonio");
+    impiegato.setCognome("Rossi");
+    impiegato.setEmail("antonio@rossi.com");
+    impiegato.setUsername("antonio");
+    impiegato.setPassword("antonio");
+    
+    RichiestaConvenzionamento r = new RichiestaConvenzionamento();
+    r.setStatus(RichiestaConvenzionamento.IN_ATTESA);
+    r.setDataRichiesta(LocalDateTime.now());
+    
+    when(richiestaConvenzionamentoRepository.findById(1111111111111111L)).thenReturn(r);
+    when(utenzaService.getUtenteAutenticato()).thenReturn(impiegato);
+    try {
+      convenzioniService.rifiutaRichiestaConvenzionamento(1111111111111111L, null);
     } catch (IdRichiestaConvenzionamentoNonValidoException e) {
       fail(e.getMessage());
       e.printStackTrace();
