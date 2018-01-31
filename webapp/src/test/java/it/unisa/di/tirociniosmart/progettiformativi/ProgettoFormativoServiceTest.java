@@ -158,13 +158,13 @@ public class ProgettoFormativoServiceTest {
     delegato.setSesso(UtenteRegistrato.SESSO_MASCHILE);
     delegato.setTelefono("9876543210");
     
-    ProgettoFormativo progetto = new ProgettoFormativo();
+    ProgettoFormativo progetto = new ProgettoFormativo(); 
     progetto.setNome("progetto");
     progetto.setDescrizione("descrizione progetto");
     progetto.setStatus(ProgettoFormativo.ATTIVO);
     
     when(utenzaService.getUtenteAutenticato()).thenReturn(delegato);
-    when(progettoFormativoRepository.exists(1234L)).thenReturn(false);
+    when(progettoFormativoRepository.existsById(progetto.getId())).thenReturn(false);
     try {
       progettoFormativoService.archiviaProgettoFormativo(progetto.getId());
     } catch (RichiestaNonAutorizzataException e) {
@@ -198,6 +198,55 @@ public class ProgettoFormativoServiceTest {
     }
   }
   
+  /**
+   * Metodo che testa l'archiviazione di un progetto formativo.
+   * 
+   * @test {@link ProgettoFormativoServiceTest
+   *            #testArchiviaProgettoFormativoRichiestaAutorizzataAziendaDelegatoProgetto()}
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = RichiestaNonAutorizzataException.class)
+  public void testArchiviaProgettoFormativoRichiestaNonAutorizzataAziendaDelegatoProgetto()
+         throws RichiestaNonAutorizzataException {
+       
+    Azienda azienda2 = new Azienda();
+    azienda2.setId("azienda2");
+    DelegatoAziendale delegato2 = azienda2.getDelegato();
+    delegato2.setUsername("Andrea1");
+    delegato2.setPassword("andrea1");
+    delegato2.setEmail("azndrea@carozza.com");
+    delegato2.setNome("Andrea");
+    delegato2.setCognome("Carozza");
+    delegato2.setSesso(UtenteRegistrato.SESSO_MASCHILE);
+    delegato2.setTelefono("9876543210");
+    ProgettoFormativo progetto = new ProgettoFormativo();
+    progetto.setAzienda(azienda2);
+    progetto.setNome("progetto");
+    progetto.setDescrizione("descrizione progetto");
+    progetto.setStatus(ProgettoFormativo.ATTIVO);
+    
+    Azienda azienda1 = new Azienda();
+    azienda1.setId("azienda1");
+    DelegatoAziendale delegato = azienda1.getDelegato();
+    delegato.setUsername("Andrea1");
+    delegato.setPassword("andrea1");
+    delegato.setEmail("azndrea@carozza.com");
+    delegato.setNome("Andrea");
+    delegato.setCognome("Carozza");
+    delegato.setSesso(UtenteRegistrato.SESSO_MASCHILE);
+    delegato.setTelefono("9876543210"); 
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(delegato);
+    when(progettoFormativoRepository.existsById(progetto.getId())).thenReturn(true);
+    when(progettoFormativoRepository.findById(progetto.getId())).thenReturn(progetto);
+    try {
+      progettoFormativoService.archiviaProgettoFormativo(progetto.getId());
+    } catch (IdProgettoFormativoInesistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
   
   
   /**
@@ -335,12 +384,12 @@ public class ProgettoFormativoServiceTest {
    * Metodo che testa l'aggiunta di un progetto formativo.
    * 
    *  @test {@link ProgettoFormativoServiceTest
-   *               #testaAggiungiProgettoFormativoNomeNonValido()}
+   *               #testaAggiungiProgettoFormativoNomeNonValidoMin()}
    *  
    *  @result Il test è superato se viene lanciata l'eccezione
    */
   @Test (expected = NomeProgettoNonValidoException.class)
-  public void testaAggiunngiProgettoFormativoNomeNonValido()
+  public void testaAggiunngiProgettoFormativoNomeNonValidoMin()
          throws NomeProgettoNonValidoException {
     
     Azienda azienda = new Azienda();
@@ -357,6 +406,94 @@ public class ProgettoFormativoServiceTest {
     ProgettoFormativo progetto = new ProgettoFormativo();
     progetto.setAzienda(azienda);
     progetto.setNome("P");
+    progetto.setDescrizione("descrizione progetto");
+    progetto.setStatus(ProgettoFormativo.ATTIVO);
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(delegato);
+    when(progettoFormativoRepository.save(progetto)).thenReturn(null);
+    try {
+      progettoFormativoService.aggiungiProgettoFormativo(progetto);
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DescrizioneProgettoNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+   
+  }
+  
+  /**
+   * Metodo che testa l'aggiunta di un progetto formativo.
+   * 
+   *  @test {@link ProgettoFormativoServiceTest
+   *               #testaAggiungiProgettoFormativoNomeNonValidoMax()}
+   *  
+   *  @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = NomeProgettoNonValidoException.class)
+  public void testaAggiunngiProgettoFormativoNomeNonValidoMax()
+         throws NomeProgettoNonValidoException {
+    
+    Azienda azienda = new Azienda();
+    azienda.setId("idAzienda");
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setUsername("Andrea1");
+    delegato.setPassword("andrea1");
+    delegato.setEmail("azndrea@carozza.com");
+    delegato.setNome("Andrea");
+    delegato.setCognome("Carozza");
+    delegato.setSesso(UtenteRegistrato.SESSO_MASCHILE);
+    delegato.setTelefono("9876543210");
+    
+    ProgettoFormativo progetto = new ProgettoFormativo();
+    progetto.setAzienda(azienda);
+    progetto.setNome("NomeProgetto NomeProgetto NomeProgetto NomeProgetto NomeProgetto "
+        + "           NomeProgetto NomeProgetto NomeProgetto NomeProgetto NomeProgetto"
+        + "           NomeProgetto NomeProgetto NomeProgetto NomeProgetto NomeProgetto"
+        + "           NomeProgetto NomeProgetto NomeProgetto NomeProgetto NomeProgetto");
+    progetto.setDescrizione("descrizione progetto");
+    progetto.setStatus(ProgettoFormativo.ATTIVO);
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(delegato);
+    when(progettoFormativoRepository.save(progetto)).thenReturn(null);
+    try {
+      progettoFormativoService.aggiungiProgettoFormativo(progetto);
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DescrizioneProgettoNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+   
+  }
+  
+  /**
+   * Metodo che testa l'aggiunta di un progetto formativo.
+   * 
+   *  @test {@link ProgettoFormativoServiceTest
+   *               #testaAggiungiProgettoFormativoNomeNullo()}
+   *  
+   *  @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = NomeProgettoNonValidoException.class)
+  public void testaAggiunngiProgettoFormativoNomeNullo()
+         throws NomeProgettoNonValidoException {
+    
+    Azienda azienda = new Azienda();
+    azienda.setId("idAzienda");
+    DelegatoAziendale delegato = azienda.getDelegato();
+    delegato.setUsername("Andrea1");
+    delegato.setPassword("andrea1");
+    delegato.setEmail("azndrea@carozza.com");
+    delegato.setNome("Andrea");
+    delegato.setCognome("Carozza");
+    delegato.setSesso(UtenteRegistrato.SESSO_MASCHILE);
+    delegato.setTelefono("9876543210");
+    
+    ProgettoFormativo progetto = new ProgettoFormativo();
+    progetto.setAzienda(azienda);
     progetto.setDescrizione("descrizione progetto");
     progetto.setStatus(ProgettoFormativo.ATTIVO);
     
@@ -399,6 +536,45 @@ public class ProgettoFormativoServiceTest {
     ProgettoFormativo progetto = new ProgettoFormativo();
     progetto.setNome("Progetto");
     progetto.setDescrizione("D");
+    progetto.setStatus(ProgettoFormativo.ATTIVO);
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(delegato);
+    try {
+      progettoFormativoService.aggiungiProgettoFormativo(progetto);
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeProgettoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+   
+  }
+  
+  /**
+   * Metodo che testa l'aggiunta di un progetto formativo.
+   * 
+   *  @test {@link ProgettoFormativoServiceTest
+   *               #testaAggiungiProgettoFormativoDescrizioneNulla()}
+   *  
+   *  @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = DescrizioneProgettoNonValidaException.class)
+  public void testaAggiunngiProgettoFormativoDescrizioneNulla()
+          throws DescrizioneProgettoNonValidaException {
+    
+    Azienda azienda = new Azienda();
+    DelegatoAziendale delegato = azienda.getDelegato();    
+    delegato.setUsername("Andrea1");
+    delegato.setPassword("andrea1");
+    delegato.setEmail("azndrea@carozza.com");
+    delegato.setNome("Andrea");
+    delegato.setCognome("Carozza");
+    delegato.setSesso(UtenteRegistrato.SESSO_MASCHILE);
+    delegato.setTelefono("9876543210");
+    
+    ProgettoFormativo progetto = new ProgettoFormativo();
+    progetto.setNome("Progetto");
     progetto.setStatus(ProgettoFormativo.ATTIVO);
     
     when(utenzaService.getUtenteAutenticato()).thenReturn(delegato);
