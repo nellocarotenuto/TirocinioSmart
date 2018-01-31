@@ -1,7 +1,16 @@
 package it.unisa.di.tirociniosmart.studenti;
 
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.utenza.CognomeNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.EmailEsistenteException;
+import it.unisa.di.tirociniosmart.utenza.EmailNonValidaException;
+import it.unisa.di.tirociniosmart.utenza.NomeNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.PasswordNonValidaException;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.SessoNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.TelefonoNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.UsernameEsistenteException;
+import it.unisa.di.tirociniosmart.utenza.UsernameNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import java.time.LocalDate;
@@ -43,7 +52,14 @@ public class StudentiService {
    * @pre studente != null
    */
   @Transactional(rollbackFor = Exception.class)
-  public void registraRichiestaIscrizione(Studente studente) throws Exception {
+  public void registraRichiestaIscrizione(Studente studente) 
+         throws UsernameNonValidoException, PasswordNonValidaException, UsernameEsistenteException,
+                EmailEsistenteException, EmailNonValidaException, 
+                NomeNonValidoException, CognomeNonValidoException, 
+                TelefonoNonValidoException, SessoNonValidoException,
+                IndirizzoStudenteNonValidoException, 
+                MatricolaStudenteEsistenteException, MatricolaStudenteNonValidaException,
+                DataDiNascitaStudenteNonValidaException, RichiestaNonAutorizzataException {
     // Solamente gli ospiti possono registrare nuove richieste di iscrizione
     if (utenzaService.getUtenteAutenticato() != null) {
       throw new RichiestaNonAutorizzataException();

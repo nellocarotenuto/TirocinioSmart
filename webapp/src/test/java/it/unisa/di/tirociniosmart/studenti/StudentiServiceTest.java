@@ -2,7 +2,16 @@ package it.unisa.di.tirociniosmart.studenti;
 
 import it.unisa.di.tirociniosmart.convenzioni.Azienda;
 import it.unisa.di.tirociniosmart.impiegati.ImpiegatoUfficioTirocini;
+import it.unisa.di.tirociniosmart.utenza.CognomeNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.EmailEsistenteException;
+import it.unisa.di.tirociniosmart.utenza.EmailNonValidaException;
+import it.unisa.di.tirociniosmart.utenza.NomeNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.PasswordNonValidaException;
 import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
+import it.unisa.di.tirociniosmart.utenza.SessoNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.TelefonoNonValidoException;
+import it.unisa.di.tirociniosmart.utenza.UsernameEsistenteException;
+import it.unisa.di.tirociniosmart.utenza.UsernameNonValidoException;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
 import static org.mockito.Mockito.when;
@@ -14,6 +23,7 @@ import static org.hamcrest.collection.IsIn.isIn;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +36,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
- * Classe che offre di casi di test di StudentiService
+ * Classe che offre di casi di test di StudentiService.
  * 
  * @see StudentiService
  * @see StudenteRepository
@@ -451,6 +461,51 @@ public class StudentiServiceTest {
   /**
    * Metodo che testa il rifiuto di una richiesta di iscrizione.
    * 
+   * @throws CommentoRichiestaIscrizioneNonValidoException
+   * 
+   * @test {@link StudentiServiceTest#testaRifiutaRichiestaIscrizioneCommentoNulloNonValido()}
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = CommentoRichiestaIscrizioneNonValidoException.class)
+  public void testaRifiutaRichiestaIscrizioneCommentoNulloNonValido()
+         throws CommentoRichiestaIscrizioneNonValidoException {
+    
+    Azienda azienda = new Azienda();
+    azienda.setId("idAzienda");
+    ImpiegatoUfficioTirocini impiegato = new ImpiegatoUfficioTirocini();
+    impiegato.setNome("Nome");
+    impiegato.setCognome("Cognome");
+    impiegato.setEmail("nome@cognome.it");
+    impiegato.setUsername("impiegato");
+    impiegato.setPassword("impiegato");
+    
+    Studente studente = new Studente();
+    studente.setUsername("studente");
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());  
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(impiegato);
+    when(richiestaIscrizioneRepository.findById(1234L)).thenReturn(iscrizione);
+    try {
+      studentiService.rifiutaRichiestaIscrizione(1234L, iscrizione.getCommentoUfficioTirocini());
+    } catch (IdRichiestaIscrizioneNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaIscrizioneGestitaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Metodo che testa il rifiuto di una richiesta di iscrizione.
+   * 
    * @throws RichiestaNonAutorizzataException
    * 
    * @test {@link StudentiServiceTest#testaRifiutoRichiestaIscrizioneRichiestaNonAutorizzata()}
@@ -471,6 +526,863 @@ public class StudentiServiceTest {
       fail(e.getMessage());
       e.printStackTrace();
     } catch (CommentoRichiestaIscrizioneNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizione()}
+   * 
+   * @result Il test è superato se la richiesta viene registrata correttamente
+   */
+  @Test
+  public void testaRegistraRichiestaIscrizione() {
+        
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setDataDiNascita(LocalDate.of(1997, 02, 12));
+    studente.setIndirizzo("indirizzo, 3");
+    studente.setMatricola("0512112345");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.save(studente)).thenReturn(null);
+  
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (IndirizzoStudenteNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DataDiNascitaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+    
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneRichiestaNonAutorizzata()}
+   * 
+   * @throws RichiestaNonAutorizzataException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = RichiestaNonAutorizzataException.class)
+  public void testaRegistrazioneRichiestaIscrizioneRichiestaNonAutorizzata() 
+         throws RichiestaNonAutorizzataException {
+    
+    Azienda azienda = new Azienda();
+    azienda.setId("idAzienda");
+    ImpiegatoUfficioTirocini impiegato = new ImpiegatoUfficioTirocini();
+    impiegato.setNome("Nome");
+    impiegato.setCognome("Cognome");
+    impiegato.setEmail("nome@cognome.it");
+    impiegato.setUsername("impiegato");
+    impiegato.setPassword("impiegato");
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(impiegato);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (IndirizzoStudenteNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DataDiNascitaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+    
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneDataDiNascinaNonValidaMin()}
+   * 
+   * @throws DataDiNascitaStudenteNonValidaException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = DataDiNascitaStudenteNonValidaException.class)
+  public void testaRegistraRichiestaIscrizioneDataDiNascinaNonValidaMin() 
+         throws DataDiNascitaStudenteNonValidaException {
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setDataDiNascita(LocalDate.of(2020, 02, 12));
+    studente.setIndirizzo("indirizzo, 3");
+    studente.setMatricola("0512112345");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.save(studente)).thenReturn(null);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (IndirizzoStudenteNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+    
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneDataDiNascinaNonValidaMax()}
+   * 
+   * @throws DataDiNascitaStudenteNonValidaException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = DataDiNascitaStudenteNonValidaException.class)
+  public void testaRegistraRichiestaIscrizioneDataDiNascinaNonValidaMax() 
+         throws DataDiNascitaStudenteNonValidaException {
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setDataDiNascita(LocalDate.of(1880, 02, 12));
+    studente.setIndirizzo("indirizzo, 3");
+    studente.setMatricola("0512112345");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.save(studente)).thenReturn(null);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (IndirizzoStudenteNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+    
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneDataDiNascinaNulla()}
+   * 
+   * @throws DataDiNascitaStudenteNonValidaException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = DataDiNascitaStudenteNonValidaException.class)
+  public void testaRegistraRichiestaIscrizioneDataDiNascinaNulla() 
+         throws DataDiNascitaStudenteNonValidaException {
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setIndirizzo("indirizzo, 3");
+    studente.setMatricola("0512112345");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.save(studente)).thenReturn(null);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (IndirizzoStudenteNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+    
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneIndirizzoNonValidoMin()}
+   * 
+   * @throws IndirizzoStudenteNonValidoException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = IndirizzoStudenteNonValidoException.class)
+  public void testaRegistraRichiestaIscrizioneIndirizzoNonValidoMin() 
+         throws IndirizzoStudenteNonValidoException {
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setDataDiNascita(LocalDate.of(1997, 02, 12));
+    studente.setIndirizzo("i");
+    studente.setMatricola("0512112345");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.save(studente)).thenReturn(null);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DataDiNascitaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneIndirizzoNonValidoMax()}
+   * 
+   * @throws IndirizzoStudenteNonValidoException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = IndirizzoStudenteNonValidoException.class)
+  public void testaRegistraRichiestaIscrizioneIndirizzoNonValidoMax() 
+         throws IndirizzoStudenteNonValidoException {
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setDataDiNascita(LocalDate.of(1997, 02, 12));
+    studente.setIndirizzo("indirizzo indirizzo indirizzo indirizzo indirizzo indirizzo"
+        + "                indirizzo indirizzo indirizzo indirizzo indirizzo indirizzo"
+        + "                indirizzo indirizzo indirizzo, 1234567890 1234567890 1234567890"
+        + "                1234567890 1234567890 1234567890 1234567890 1234567890 1234567890"
+        + "                1234567890 1234567890 1234567890 1234567890 1234567890 1234567890");
+    studente.setMatricola("0512112345");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.save(studente)).thenReturn(null);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DataDiNascitaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneIndirizzoNullo()}
+   * 
+   * @throws IndirizzoStudenteNonValidoException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = IndirizzoStudenteNonValidoException.class)
+  public void testaRegistraRichiestaIscrizioneIndirizzoNullo() 
+         throws IndirizzoStudenteNonValidoException {
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setDataDiNascita(LocalDate.of(1997, 02, 12));
+    studente.setMatricola("0512112345");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.save(studente)).thenReturn(null);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DataDiNascitaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneMatricolaEsistente()}
+   * 
+   * @throws MatricolaStudenteEsistenteException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = MatricolaStudenteEsistenteException.class)
+  public void testaRegistraRichiestaIscrizioneMatricolaEsistente() 
+         throws MatricolaStudenteEsistenteException {
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setDataDiNascita(LocalDate.of(1997, 02, 12));
+    studente.setIndirizzo("indirizzo, 3");
+    studente.setMatricola("0512112345");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.existsByMatricola(studente.getMatricola())).thenReturn(true);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IndirizzoStudenteNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DataDiNascitaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneMatricolaNulla()}
+   * 
+   * @throws MatricolaStudenteNonValidaException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = MatricolaStudenteNonValidaException.class)
+  public void testaRegistraRichiestaIscrizioneMatricolaNulla() 
+         throws MatricolaStudenteNonValidaException {
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setDataDiNascita(LocalDate.of(1997, 02, 12));
+    studente.setIndirizzo("indirizzo, 3");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.save(studente)).thenReturn(null);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (IndirizzoStudenteNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DataDiNascitaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Metodo che testa la registrazione di una richiesta di iscrizione.
+   * 
+   * @test {@link StudentiServiceTest#testaRegistraRichiestaIscrizioneMatricolaNonValida()}
+   * 
+   * @throws MatricolaStudenteNonValidaException
+   * 
+   * @result Il test è superato se viene lanciata l'eccezione
+   */
+  @Test (expected = MatricolaStudenteNonValidaException.class)
+  public void testaRegistraRichiestaIscrizioneMatricolaNonValida()
+         throws MatricolaStudenteNonValidaException {
+    
+    Studente studente = new Studente();
+    studente.setUsername("username");
+    studente.setPassword("password");
+    studente.setNome("Nome");
+    studente.setCognome("cognome");
+    studente.setEmail("nome@cognome.com");
+    studente.setDataDiNascita(LocalDate.of(1997, 02, 12));
+    studente.setIndirizzo("indirizzo, 3");
+    studente.setMatricola("05121123");
+    studente.setSesso(Studente.SESSO_MASCHILE);
+    studente.setTelefono("1234567890");
+    studente.setDataRegistrazione(LocalDateTime.now());
+    
+    RichiestaIscrizione iscrizione = studente.getRichiestaIscrizione();
+    iscrizione.setStatus(RichiestaIscrizione.IN_ATTESA);
+    iscrizione.setDataRichiesta(LocalDateTime.now());
+    iscrizione.setCommentoUfficioTirocini("commento");
+    
+    when(utenzaService.getUtenteAutenticato()).thenReturn(null);
+    when(studenteRepository.save(studente)).thenReturn(null);
+    
+    try {
+      studentiService.registraRichiestaIscrizione(studente);
+    } catch (UsernameNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (PasswordNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (UsernameEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (EmailNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (NomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (CognomeNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (TelefonoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (SessoNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (IndirizzoStudenteNonValidoException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (MatricolaStudenteEsistenteException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (DataDiNascitaStudenteNonValidaException e) {
+      fail(e.getMessage());
+      e.printStackTrace();
+    } catch (RichiestaNonAutorizzataException e) {
       fail(e.getMessage());
       e.printStackTrace();
     }
