@@ -226,7 +226,7 @@ public class UtenzaService {
    * 
    * @return L'utente autenticato nel sistema, <b>null</b> se non vi è alcun utente autenticato
    */
-  public UtenteRegistrato getUtenteAutenticato() {
+  public UtenteRegistrato getUtenteAutenticato() {  
     // Ottieni l'username dell'utente autenticato e restituisci null se non è presente alcun utente
     // in sessione
     String username = (AutenticazioneHolder.getUtente());
@@ -355,7 +355,7 @@ public class UtenzaService {
   /**
    * Permette la rimozione dell'utente dalla sessione.
    */
-  public void logout() {
+  public void logout() { 
     AutenticazioneHolder.setUtente(null);
   }
   
