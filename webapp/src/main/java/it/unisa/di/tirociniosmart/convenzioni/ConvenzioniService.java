@@ -221,7 +221,8 @@ public class ConvenzioniService {
    *         impiegato dell'ufficio tirocini 
    */
   @Transactional(rollbackFor = Exception.class)
-  public RichiestaConvenzionamento rifiutaRichiestaConvenzionamento(long idRichiesta, String commento)
+  public RichiestaConvenzionamento rifiutaRichiestaConvenzionamento(long idRichiesta,
+                                                                                    String commento)
          throws IdRichiestaConvenzionamentoNonValidoException,
                 RichiestaConvenzionamentoGestitaException,
                 CommentoRichiestaConvenzionamentoNonValidoException,
