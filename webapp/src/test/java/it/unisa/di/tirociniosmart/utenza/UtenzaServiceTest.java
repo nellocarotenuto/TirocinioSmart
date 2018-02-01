@@ -1,6 +1,7 @@
 package it.unisa.di.tirociniosmart.utenza;
 
-import static org.mockito.Mockito.doNothing;
+import static org.powermock.api.mockito.PowerMockito.doNothing;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
+
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -67,7 +68,7 @@ public class UtenzaServiceTest {
   
   @Before
   public void inizializzaMock() {
-    PowerMockito.mockStatic(AutenticazioneHolder.class);
+    mockStatic(AutenticazioneHolder.class);
   }
   
   /**
@@ -214,13 +215,33 @@ public class UtenzaServiceTest {
     utenzaService.setUtenteAutenticato(studente.getUsername());
   }
   
-  /*
+  /**
+   * Testa il metodo per settare l'utente autenticato nel caso in cui esso sia ospite.
+   * 
+   * @test {@link UtenzaService#setUtenteAutenticato()}
+   * 
+   * @result Il test è superato se setta correttamente l'utente autenticato
+   */
+  @Test
+  public void testaSetUtenteAutenticato() {
+    
+    String username = null;
+    utenzaService.setUtenteAutenticato(username);
+  }
+  
+  /**
+   * Testa il metodo per effettuare il logout dal sistema.
+   * 
+   * @test {@link UtenzaService#logout()}
+   * 
+   * @result Il test è superato se il logout viene effettuato
+   */
   @Test
   public void testaLogout() {
     
-    when(AutenticazioneHolder.setUtente(null)); 
+    doNothing().when(AutenticazioneHolder.class); 
+    utenzaService.logout();
   }
-  */
   
   /**
    * Metodo che testa il login di un impiegato.
