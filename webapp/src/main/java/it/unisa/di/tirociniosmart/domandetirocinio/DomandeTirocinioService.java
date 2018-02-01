@@ -8,8 +8,6 @@ import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ public class DomandeTirocinioService {
    *                 Non è necessario specificare la data della domanda di tirocinio ad essa
    *                 associata poiché è il metodo stesso ad impostarla.
    *  
-   * @return la domanda tirocinio passata come parametro a cui è stato aggiunto anche l'id             
+   * @return la domanda tirocinio passata come parametro a cui è stato aggiunto anche l'id        
    *                 
    * @throws RichiestaNonAutorizzataException se l'utente autenticato non è autorizzato a svolgere
    *         la seguente operazione

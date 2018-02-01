@@ -85,8 +85,8 @@ public class StudentiService {
     richiesta.setDataRichiesta(LocalDateTime.now());
     
     // Registra le informazioni
-     studente = studenteRepository.save(studente);
-     return studente;
+    studente = studenteRepository.save(studente);
+    return studente;
   }
   
   /**
