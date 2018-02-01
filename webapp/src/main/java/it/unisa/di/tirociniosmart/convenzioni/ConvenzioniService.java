@@ -49,6 +49,9 @@ public class ConvenzioniService {
    *                associata né la lista dei progetti formativi offerti poiché vengono impostati da
    *                questo metodo.
    *                
+   * @return l'azienda presa come parametro a cui è stata associato l'id alla richiesta di 
+   *         convenzionamento corrispondete               
+   *                
    * @throws RichiestaNonAutorizzataException se l'utente non è autorizzato ad eseguire la seguente 
    *         operazione
    *         
@@ -105,7 +108,7 @@ public class ConvenzioniService {
    * @pre azienda != null
    */
   @Transactional(rollbackFor = Exception.class)
-  public void registraRichiestaConvenzionamento(Azienda azienda) 
+  public Azienda registraRichiestaConvenzionamento(Azienda azienda) 
       throws IndirizzoAziendaNonValidoException,
       PartitaIvaAziendaNonValidaException,
       PartitaIvaAziendaEsistenteException,
@@ -150,7 +153,8 @@ public class ConvenzioniService {
     richiesta.setDataRichiesta(LocalDateTime.now());
     
     // Registra le informazioni
-    aziendaRepository.save(azienda);
+    azienda = aziendaRepository.save(azienda);
+    return azienda;
   }
   
   /**
@@ -158,6 +162,8 @@ public class ConvenzioniService {
    * 
    * @param idRichiesta Long che rappresenta l'identificatore della richiesta di convenzionamento
    *                    da approvare
+   *                    
+   * @return la richiesta di convenzionamento che è stata approvata
    * 
    * @throws IdRichiestaConvenzionamentoNonValidoException se non esiste alcuna richiesta di
    *         convenzionamento nel sistema con identificatore uguale ad idRichiesta
@@ -169,7 +175,7 @@ public class ConvenzioniService {
    *         impiegato dell'ufficio tirocini
    */
   @Transactional(rollbackFor = Exception.class)
-  public void approvaRichiestaConvenzionamento(long idRichiesta)
+  public RichiestaConvenzionamento approvaRichiestaConvenzionamento(long idRichiesta)
          throws IdRichiestaConvenzionamentoNonValidoException,
                 RichiestaConvenzionamentoGestitaException, RichiestaNonAutorizzataException {
     // Le richieste di convenzionamento possono essere approvate solo dagli impiegati dell'ufficio
@@ -189,7 +195,9 @@ public class ConvenzioniService {
       throw new RichiestaConvenzionamentoGestitaException();
     } else {
       richiesta.setStatus(RichiestaConvenzionamento.APPROVATA);
+      return richiesta;
     }
+    
   }
   
   /**
@@ -197,6 +205,8 @@ public class ConvenzioniService {
    * 
    * @param idRichiesta Long che rappresenta l'identificatore della richiesta di convenzionamento
    *                    da rifiutare
+   * 
+   * @return la richiesta di convenzionamento che stata rifiutata
    * 
    * @throws IdRichiestaConvenzionamentoNonValidoException se non esiste alcuna richiesta di
    *         convenzionamento nel sistema con identificatore uguale ad idRichiesta
@@ -211,7 +221,7 @@ public class ConvenzioniService {
    *         impiegato dell'ufficio tirocini 
    */
   @Transactional(rollbackFor = Exception.class)
-  public void rifiutaRichiestaConvenzionamento(long idRichiesta, String commento)
+  public RichiestaConvenzionamento rifiutaRichiestaConvenzionamento(long idRichiesta, String commento)
          throws IdRichiestaConvenzionamentoNonValidoException,
                 RichiestaConvenzionamentoGestitaException,
                 CommentoRichiestaConvenzionamentoNonValidoException,
@@ -236,6 +246,7 @@ public class ConvenzioniService {
     }
     
     validaCommento(commento, richiesta);
+    return richiesta;
   }
   
   /**

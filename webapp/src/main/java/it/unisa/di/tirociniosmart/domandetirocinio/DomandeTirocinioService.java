@@ -8,6 +8,8 @@ import it.unisa.di.tirociniosmart.utenza.RichiestaNonAutorizzataException;
 import it.unisa.di.tirociniosmart.utenza.UtenteRegistrato;
 import it.unisa.di.tirociniosmart.utenza.UtenzaService;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class DomandeTirocinioService {
    * @param domanda {@link DomandaTirocinio} per cui si vuole registrare una domanda di tirocinio.
    *                 Non è necessario specificare la data della domanda di tirocinio ad essa
    *                 associata poiché è il metodo stesso ad impostarla.
+   *  
+   * @return la domanda tirocinio passata come parametro a cui è stato aggiunto anche l'id             
    *                 
    * @throws RichiestaNonAutorizzataException se l'utente autenticato non è autorizzato a svolgere
    *         la seguente operazione
@@ -60,7 +64,7 @@ public class DomandeTirocinioService {
    * @pre domanda != null
    */
   @Transactional(rollbackFor = Exception.class)
-  public void registraDomandaTirocinio(DomandaTirocinio domanda) 
+  public DomandaTirocinio registraDomandaTirocinio(DomandaTirocinio domanda) 
       throws RichiestaNonAutorizzataException, 
       DataDiInizioTirocinioNonValidaException, 
       DataDiFineTirocinioNonValidaException,
@@ -91,7 +95,8 @@ public class DomandeTirocinioService {
     domanda.setData(LocalDateTime.now());
     
     // Registra le informazioni
-    domandaRepository.save(domanda);
+    domanda = domandaRepository.save(domanda);
+    return domanda;
     
   }
   
@@ -101,6 +106,8 @@ public class DomandeTirocinioService {
    * 
    * @param idDomanda Long che rappresenta l'identificatore della domanda di tirocinio
    *                  da accettare
+   * 
+   * @return la domanda tirocinio che è stata accettata
    * 
    * @throws IdDomandaTirocinioNonValidoException se non esiste alcuna domanda di
    *         tirocinio nel sistema con identificatore uguale ad idDomanda
@@ -113,7 +120,7 @@ public class DomandeTirocinioService {
    *         rappresentata dal delegato
    */
   @Transactional(rollbackFor = Exception.class)
-  public void accettaDomandaTirocinio(long idDomanda, String commentoAzienda)
+  public DomandaTirocinio accettaDomandaTirocinio(long idDomanda, String commentoAzienda)
          throws IdDomandaTirocinioNonValidoException,
                 DomandaTirocinioGestitaException, RichiestaNonAutorizzataException {
     UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
@@ -142,6 +149,7 @@ public class DomandeTirocinioService {
     } else {
       domanda.setStatus(DomandaTirocinio.ACCETTATA);
       domanda.setCommentoAzienda(commentoAzienda);
+      return domanda;
     }
   }
   
@@ -151,6 +159,8 @@ public class DomandeTirocinioService {
    * 
    * @param idDomanda Long che rappresenta l'identificatore della domanda di tirocinio
    *                  da rifiutare
+   * 
+   * @return la domanda di tirocinio che è stata rifiutata
    * 
    * @throws IdDomandaTirocinioNonValidoException se non esiste alcuna domanda di tirocinio
    *         nel sistema con identificatore uguale ad idDomanda
@@ -166,7 +176,7 @@ public class DomandeTirocinioService {
    *         rappresentata dal delegato
    */
   @Transactional(rollbackFor = Exception.class)
-  public void rifiutaDomandaTirocinio(long idDomanda, String commento)
+  public DomandaTirocinio rifiutaDomandaTirocinio(long idDomanda, String commento)
          throws IdDomandaTirocinioNonValidoException,
                 DomandaTirocinioGestitaException,
                 CommentoDomandaTirocinioNonValidoException, RichiestaNonAutorizzataException {
@@ -198,6 +208,7 @@ public class DomandeTirocinioService {
     }
     
     domanda.setCommentoAzienda(validaCommento(commento));
+    return domanda;
   }
   
   /**
@@ -206,6 +217,8 @@ public class DomandeTirocinioService {
    * 
    * @param idDomanda Long che rappresenta l'identificatore della domanda di tirocinio
    *                  da respingere
+   * 
+   * @return la domanda di tirocinio che è stata approvata
    * 
    * @throws IdDomandaTirocinioNonValidoException se non esiste alcuna domanda di
    *         tirocinio nel sistema con identificatore uguale ad idDomanda
@@ -217,7 +230,7 @@ public class DomandeTirocinioService {
    *         si trova in uno stato diverso da accettata
    */
   @Transactional(rollbackFor = Exception.class)
-  public void approvaDomandaTirocinio(long idDomanda)
+  public DomandaTirocinio approvaDomandaTirocinio(long idDomanda)
          throws IdDomandaTirocinioNonValidoException,
                 StatoDomandaNonIdoneoException, RichiestaNonAutorizzataException {
     UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
@@ -235,6 +248,7 @@ public class DomandeTirocinioService {
     
     if (domanda.getStatus() == DomandaTirocinio.ACCETTATA) {
       domanda.setStatus(DomandaTirocinio.APPROVATA);
+      return domanda;
     } else {
       throw new StatoDomandaNonIdoneoException();
     }
@@ -333,6 +347,8 @@ public class DomandeTirocinioService {
    * @param idDomanda Long che rappresenta l'identificatore della domanda di tirocinio
    *                  da rifiutare
    * 
+   * @return la domanda tirocinio che è stata respinta
+   * 
    * @throws RichiestaNonAutorizzataException se l'utente che richiede l'approvazione della domanda
    *         non è un impiegato dell'ufficio tirocini
    *         
@@ -346,7 +362,7 @@ public class DomandeTirocinioService {
    *         domanda è nullo o vuoto
    */
   @Transactional(rollbackFor = Exception.class)
-  public void respingiDomandaTirocinio(long idDomanda, String commento)
+  public DomandaTirocinio respingiDomandaTirocinio(long idDomanda, String commento)
          throws IdDomandaTirocinioNonValidoException, StatoDomandaNonIdoneoException,
                 CommentoDomandaTirocinioNonValidoException, RichiestaNonAutorizzataException {
     UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
@@ -370,6 +386,7 @@ public class DomandeTirocinioService {
     }
     
     domanda.setCommentoImpiegato(validaCommento(commento));
+    return domanda;
   }
   
   /**

@@ -49,10 +49,12 @@ public class StudentiService {
    *                 Non è necessario specificare la data della richiesta di iscrizione ad essa
    *                 associata poiché è il metodo stesso ad impostarla.
    * 
+   * @result lo studente passato come parametro la cui richiest iscrizione è stata registrata
+   * 
    * @pre studente != null
    */
   @Transactional(rollbackFor = Exception.class)
-  public void registraRichiestaIscrizione(Studente studente) 
+  public Studente registraRichiestaIscrizione(Studente studente) 
          throws UsernameNonValidoException, PasswordNonValidaException, UsernameEsistenteException,
                 EmailEsistenteException, EmailNonValidaException, 
                 NomeNonValidoException, CognomeNonValidoException, 
@@ -83,7 +85,8 @@ public class StudentiService {
     richiesta.setDataRichiesta(LocalDateTime.now());
     
     // Registra le informazioni
-    studenteRepository.save(studente);
+     studente = studenteRepository.save(studente);
+     return studente;
   }
   
   /**
@@ -91,6 +94,8 @@ public class StudentiService {
    * 
    * @param idRichiesta Long che rappresenta l'identificatore della richiesta di iscrizione
    *                    da approvare
+   *                   
+   * @return la richiesta iscrizione che è stata approvata                   
    * 
    * @throws IdRichiestaIscrizioneNonValidoException se non esiste alcuna richiesta di
    *         iscrizione nel sistema con identificatore uguale ad idRichiesta
@@ -102,7 +107,7 @@ public class StudentiService {
    *         d'iscrizione non è un delegato dell'ufficio tirocini
    */
   @Transactional(rollbackFor = Exception.class)
-  public void approvaRichiestaIscrizione(long idRichiesta)
+  public RichiestaIscrizione approvaRichiestaIscrizione(long idRichiesta)
          throws IdRichiestaIscrizioneNonValidoException,
                 RichiestaIscrizioneGestitaException, RichiestaNonAutorizzataException {
     // Solamente gli impiegati dell'ufficio tirocini possono approvare le richieste d'iscrizione
@@ -121,6 +126,7 @@ public class StudentiService {
       throw new RichiestaIscrizioneGestitaException();
     } else {
       richiesta.setStatus(RichiestaIscrizione.APPROVATA);
+      return richiesta;
     }
   }
   
@@ -149,6 +155,8 @@ public class StudentiService {
    * @param idRichiesta Long che rappresenta l'identificatore della richiesta di iscrizione
    *                    da rifiutare
    * 
+   * @return la richiesta iscrizione che è stata rifiutata
+   * 
    * @throws IdRichiestaIscrizioneNonValidoException se non esiste alcuna richiesta di
    *         iscrizione nel sistema con identificatore uguale ad idRichiesta
    * 
@@ -162,7 +170,7 @@ public class StudentiService {
    *        d'iscrizione non è un impiegato dell'ufficio tirocini
    */
   @Transactional(rollbackFor = Exception.class)
-  public void rifiutaRichiestaIscrizione(long idRichiesta, String commento)
+  public RichiestaIscrizione rifiutaRichiestaIscrizione(long idRichiesta, String commento)
          throws IdRichiestaIscrizioneNonValidoException, RichiestaIscrizioneGestitaException,
                 CommentoRichiestaIscrizioneNonValidoException, RichiestaNonAutorizzataException {
     // Solamente gli impiegati dell'ufficio tirocini possono rifiutare le richieste d'iscrizione
@@ -184,6 +192,7 @@ public class StudentiService {
     }
     
     richiesta.setCommentoUfficioTirocini(validaCommentoRichiesta(commento));
+    return richiesta;
   }
   
   /**

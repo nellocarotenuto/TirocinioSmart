@@ -42,6 +42,8 @@ public class ProgettiFormativiService {
    *        Non è necessario impostare l'azienda che eroga il progetto dato che questa viene
    *        inserita in base al delegato autenticato nel sistema.
    * 
+   * @return Il progetto formativo preso come parametro a cui è stato aggiunto anche l'id
+   * 
    * @pre progetto != null
    * 
    * @throws RichiestaNonAutorizzataException se l'utente che richiede l'esecuzione del metodo non
@@ -56,7 +58,7 @@ public class ProgettiFormativiService {
    *         caratteri
    */
   @Transactional(rollbackFor = Exception.class)
-  public void aggiungiProgettoFormativo(ProgettoFormativo progetto)
+  public ProgettoFormativo aggiungiProgettoFormativo(ProgettoFormativo progetto)
          throws RichiestaNonAutorizzataException, NomeProgettoNonValidoException,
                 DescrizioneProgettoNonValidaException {
     if (!(utenzaService.getUtenteAutenticato() instanceof DelegatoAziendale)) {
@@ -71,7 +73,8 @@ public class ProgettiFormativiService {
     Azienda azienda = delegato.getAzienda();
     progetto.setAzienda(azienda);
    
-    progettoFormativoRepository.save(progetto);
+    progetto = progettoFormativoRepository.save(progetto);
+    return progetto;
   }
   
   /**
@@ -105,6 +108,8 @@ public class ProgettiFormativiService {
    * 
    * @param idProgetto long che rappresenta l'identificatore del progetto
    *         
+   * @return il progetto formativo che è stato archiviato        
+   *         
    * @throws IdProgettoFormativoInesistenteException se l'identificatore passato come parametro 
    *         non si riferisce ad alcun progetto
    *         
@@ -113,7 +118,7 @@ public class ProgettiFormativiService {
    *         associato all'azienda rappresentata dal delegato
    */
   @Transactional(rollbackFor = Exception.class)
-  public void archiviaProgettoFormativo(long idProgetto) 
+  public ProgettoFormativo archiviaProgettoFormativo(long idProgetto) 
       throws IdProgettoFormativoInesistenteException, RichiestaNonAutorizzataException {
     UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
     
@@ -136,6 +141,7 @@ public class ProgettiFormativiService {
     }
     
     progetto.setStatus(ProgettoFormativo.ARCHIVIATO);
+    return progetto;
   }
   
   /**
