@@ -509,9 +509,10 @@ public class DomandeTirocinioService {
     }
   }
   
+  
   /**
-   * Permette di ottenere la lsita dei tirocini in corso in base al periodo di tirocinio specificato
-   * nelle varie domande.
+   * Permette di ottenere la lsita dei tirocini in corso nella data corrente in base al periodo
+   * di tirocinio specificato nelle varie domande.
    * 
    * @return Lista delle domande di tirocinio il cui periodo inizia prima della data odierna e
    *         termina dopo di essa
@@ -519,7 +520,28 @@ public class DomandeTirocinioService {
    * @throws RichiestaNonAutorizzataException se l'utente che richiede di visualizzare l'elenco dei
    *         tirocini in corso non è dotato dei permessi necessari per l'operazione
    */
-  public List<DomandaTirocinio> elencaTirociniInCorso() throws RichiestaNonAutorizzataException {
+  public List<DomandaTirocinio> elencaTirociniInCorso()
+         throws RichiestaNonAutorizzataException {
+    LocalDate giorno = LocalDate.now();
+    return elencaTirociniInCorso(giorno);
+  }
+  
+  /**
+   * Permette di ottenere la lsita dei tirocini in corso in una determinata data in base al periodo
+   * di tirocinio specificato nelle varie domande.
+   * 
+   * @param giorno LocalDate che indica il giorno di cui si vogliono ottenere i tirocini in corso.
+   * 
+   * @return Lista delle domande di tirocinio il cui periodo inizia prima della data odierna e
+   *         termina dopo di essa
+   *         
+   * @pre giorno != null
+   *         
+   * @throws RichiestaNonAutorizzataException se l'utente che richiede di visualizzare l'elenco dei
+   *         tirocini in corso non è dotato dei permessi necessari per l'operazione
+   */
+  public List<DomandaTirocinio> elencaTirociniInCorso(LocalDate giorno)
+         throws RichiestaNonAutorizzataException {    
     UtenteRegistrato utente = utenzaService.getUtenteAutenticato();
     
     List<DomandaTirocinio> domandeApprovate;
@@ -541,12 +563,11 @@ public class DomandeTirocinioService {
       throw new RichiestaNonAutorizzataException();
     }
     
-    LocalDate oggi = LocalDate.now();
     List<DomandaTirocinio> tirociniInCorso = new ArrayList<DomandaTirocinio>();
     for (DomandaTirocinio domanda : domandeApprovate) {
-      if ((domanda.getInizioTirocinio().isBefore(oggi)
-          || domanda.getInizioTirocinio().isEqual(oggi))
-          && domanda.getFineTirocinio().isAfter(oggi)) {
+      if ((domanda.getInizioTirocinio().isBefore(giorno)
+          || domanda.getInizioTirocinio().isEqual(giorno))
+          && domanda.getFineTirocinio().isAfter(giorno)) {
         tirociniInCorso.add(domanda);
       }
     }
