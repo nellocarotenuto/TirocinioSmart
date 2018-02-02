@@ -2,14 +2,14 @@ package it.unisa.di.tirociniosmart.convenzioni;
 
 /**
  * Eccezione lanciata quando si tenta di associare ad una richiesta di convenzionamento un commento
- * nullo o vuoto.
+ * non valido.
  */
 public class CommentoRichiestaConvenzionamentoNonValidoException extends Exception {
 
   private static final long serialVersionUID = -3341469093182023509L;
   
   /** Stringa che definisce il messaggio di default utilizzato nell'eccezione. */
-  private static final String messaggioDefault = "Richiesta di convenzionamento già gestita";
+  private static final String messaggioDefault = "Commento non valido";
   
   /**
    * Costruisce un'eccezione che ha come messaggio {@link #messaggioDefault}.

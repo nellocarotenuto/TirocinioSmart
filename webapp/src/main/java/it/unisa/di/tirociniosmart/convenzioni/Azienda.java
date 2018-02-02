@@ -19,7 +19,7 @@ import javax.persistence.OneToOne;
 public class Azienda {
 
   /**
-   * Costruisce un oggetto Azienda vuoto che deve essere popolata con i metodi setters.
+   * Costruisce un oggetto Azienda vuoto che deve essere popolato con i metodi setters.
    */
   public Azienda() {
     this.richiestaConvenzionamento = new RichiestaConvenzionamento(this);
