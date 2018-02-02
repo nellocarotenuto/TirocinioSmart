@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @see Azienda
  * @see AziendaRepository
+ * @see RichiestaConvenzionamentoRepository
  */
 @Service
 public class ConvenzioniService {
@@ -163,7 +164,8 @@ public class ConvenzioniService {
    * @param idRichiesta Long che rappresenta l'identificatore della richiesta di convenzionamento
    *                    da approvare
    *                    
-   * @return la richiesta di convenzionamento che è stata approvata
+   * @return richiesta oggetto {@link RichiestaConvenzionamento} che rappresenta la richiesta di 
+   *         convenzionamento che è stata approvata
    * 
    * @throws IdRichiestaConvenzionamentoNonValidoException se non esiste alcuna richiesta di
    *         convenzionamento nel sistema con identificatore uguale ad idRichiesta
@@ -206,7 +208,8 @@ public class ConvenzioniService {
    * @param idRichiesta Long che rappresenta l'identificatore della richiesta di convenzionamento
    *                    da rifiutare
    * 
-   * @return la richiesta di convenzionamento che stata rifiutata
+   * @return  richiesta oggetto {@link RichiestaConvenzionamento} che rappresenta la richiesta 
+   *          di convenzionamento che è stata rifiutata
    * 
    * @throws IdRichiestaConvenzionamentoNonValidoException se non esiste alcuna richiesta di
    *         convenzionamento nel sistema con identificatore uguale ad idRichiesta
@@ -281,7 +284,8 @@ public class ConvenzioniService {
   }
   
   /**
-   * Permette di ottenere la lista delle richieste di convenzionamento non ancora gestite.
+   * Permette di ottenere la lista delle richieste di convenzionamento non ancora approvate o 
+   * rifiutate.
    * 
    * @return Lista di {@link RichiestaConvenzionamento} il cui status è "in attesa"
    * 
@@ -312,8 +316,7 @@ public class ConvenzioniService {
   }
   
   /**
-   * Permette di ottenere un'azienda presente nel sistema a partire dalla stringa che ne rappresenta
-   * l'identificatore.
+   * Permette di ottenere un'azienda presente nel sistema a partire dal suo identificatore.
    * 
    * @param idAzienda Stringa che rappresenta l'identificatore dell'azienda che si vuole ottenere
    * 
