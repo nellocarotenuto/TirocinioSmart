@@ -364,11 +364,13 @@ public class DomandaTirocinioRepositoryIT {
     Studente studente = new Studente();
     studente.setUsername("FrancescoF");
     List<DomandaTirocinio> domandeStudente = new ArrayList<DomandaTirocinio>();
+    
     for (DomandaTirocinio domanda: listaDomande) {
-      if (domanda.getStudente().equals(studente.getUsername())) {
+      if (domanda.getStudente().getUsername().equals(studente.getUsername())) {
         domandeStudente.add(domanda);
       }
     }
+    
     //Controlla che la lista delle domande ottenuta dalla repository sia uguale alla lista delle 
     //domande definite per il test
     List<DomandaTirocinio> domandeStudenteSalvate = 
