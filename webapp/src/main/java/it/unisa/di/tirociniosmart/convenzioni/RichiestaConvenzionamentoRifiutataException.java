@@ -10,7 +10,7 @@ public class RichiestaConvenzionamentoRifiutataException
   private static final long serialVersionUID = 3285140313419999571L;
   
   /** Stringa che definisce il messaggio di default utilizzato nell'eccezione. */
-  private static final String messaggioDefault = "Richiesta di convenzionamento già gestita";
+  private static final String messaggioDefault = "Richiesta di convenzionamento rifiutata";
   
   /**
    * Costruisce un'eccezione che ha come messaggio {@link #messaggioDefault}.
