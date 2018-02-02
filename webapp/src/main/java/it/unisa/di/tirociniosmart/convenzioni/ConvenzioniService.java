@@ -222,7 +222,7 @@ public class ConvenzioniService {
    */
   @Transactional(rollbackFor = Exception.class)
   public RichiestaConvenzionamento rifiutaRichiestaConvenzionamento(long idRichiesta,
-                                                                                    String commento)
+                                                                    String commento)
          throws IdRichiestaConvenzionamentoNonValidoException,
                 RichiestaConvenzionamentoGestitaException,
                 CommentoRichiestaConvenzionamentoNonValidoException,
