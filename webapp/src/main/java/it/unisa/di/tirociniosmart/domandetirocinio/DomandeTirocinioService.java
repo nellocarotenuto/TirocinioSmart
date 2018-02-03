@@ -37,7 +37,7 @@ public class DomandeTirocinioService {
   /**
    * Permette di richiedere al sistema il salvataggio di una domanda di tirocinio. 
    * 
-   * @param domanda {@link DomandaTirocinio} per cui si vuole registrare una domanda di tirocinio.
+   * @param domanda {@link DomandaTirocinio} che si vuole registrare sul database.
    *                 Non è necessario specificare la data della domanda di tirocinio ad essa
    *                 associata poiché è il metodo stesso ad impostarla.
    *  
@@ -105,7 +105,8 @@ public class DomandeTirocinioService {
    * @param idDomanda Long che rappresenta l'identificatore della domanda di tirocinio
    *                  da accettare
    * 
-   * @return la domanda tirocinio che è stata accettata
+   * @return domanda oggetto {@link DomandaTirocinio} che rappresenta la domanda tirocinio che è 
+   *                 stata accettata
    * 
    * @throws IdDomandaTirocinioNonValidoException se non esiste alcuna domanda di
    *         tirocinio nel sistema con identificatore uguale ad idDomanda
@@ -158,7 +159,8 @@ public class DomandeTirocinioService {
    * @param idDomanda Long che rappresenta l'identificatore della domanda di tirocinio
    *                  da rifiutare
    * 
-   * @return la domanda di tirocinio che è stata rifiutata
+   * @return domanda oggetto {@link DomandaTirocinio} che rappresenta la domanda che è stata 
+   *                 rifiutata
    * 
    * @throws IdDomandaTirocinioNonValidoException se non esiste alcuna domanda di tirocinio
    *         nel sistema con identificatore uguale ad idDomanda
@@ -169,7 +171,7 @@ public class DomandeTirocinioService {
    * @throws CommentoDomandaTirocinioNonValidoException se il commento da associare alla
    *         domanda è nullo o vuoto
    *         
-   * @throws RichiestaNonAutorizzataException se l'utente che richiede l'accettazione di una domanda
+   * @throws RichiestaNonAutorizzataException se l'utente che richiede il rifiuto di una domanda
    *         non è un delegato aziendale oppure se la domanda non è associata all'azienda
    *         rappresentata dal delegato
    */
@@ -216,7 +218,8 @@ public class DomandeTirocinioService {
    * @param idDomanda Long che rappresenta l'identificatore della domanda di tirocinio
    *                  da respingere
    * 
-   * @return la domanda di tirocinio che è stata approvata
+   * @return domanda ogetto {@link DomandaTirocinio} che rappresenta la domanda di tirocinio che è 
+   *                 stata approvata
    * 
    * @throws IdDomandaTirocinioNonValidoException se non esiste alcuna domanda di
    *         tirocinio nel sistema con identificatore uguale ad idDomanda
@@ -343,11 +346,12 @@ public class DomandeTirocinioService {
    * presente nel sistema.
    * 
    * @param idDomanda Long che rappresenta l'identificatore della domanda di tirocinio
-   *                  da rifiutare
+   *                  da respingere
    * 
-   * @return la domanda tirocinio che è stata respinta
+   * @return domanda oggetto {@link DomandaTirocinio} che rappresenta la domanda tirocinio che è 
+   *         stata respinta
    * 
-   * @throws RichiestaNonAutorizzataException se l'utente che richiede l'approvazione della domanda
+   * @throws RichiestaNonAutorizzataException se l'utente che richiede di respingere la domanda
    *         non è un impiegato dell'ufficio tirocini
    *         
    * @throws IdDomandaTirocinioNonValidoException se non esiste alcuna domanda di tirocinio
@@ -392,7 +396,7 @@ public class DomandeTirocinioService {
    * 
    * @param commento Stringa che rappresenta il commento da controllare
    * 
-   * @return La stringa che rappresenta il commento da controllare bonificata
+   * @return commento Stringa che rappresenta il commento da controllare bonificata
    * 
    * @throws CommentoDomandaTirocinioNonValidoException se il commento passato come parametro
    *         è nullo oppure è rappresentato da una stringa con lunghezza minore di 2
@@ -423,7 +427,7 @@ public class DomandeTirocinioService {
    * 
    * @return Oggetto LocalDate che rappresenta la data di inizio da controllare bonificata
    * 
-   * @throws DataDiFineTirocinioNonValidaException se la data è nulla o se non rispetta i 
+   * @throws DataDiInizioTirocinioNonValidaException se la data è nulla o se non rispetta i 
    *         parametri stabiliti
    */
   public LocalDate validaDataDiInizioTirocinio(LocalDate dataInizio, LocalDate dataFine) 
@@ -469,15 +473,14 @@ public class DomandeTirocinioService {
   }
   
   /**
-   * Controlla che il numero di cfu specificato sia rientri nell'intervallo
-   * prestabilito.
+   * Controlla che il numero di cfu specificato  rientri nell'intervallo prestabilito.
    * 
    * @param cfu int che rappresenta il numero di cfu da controllare
    * 
    * @return int che rappresenta l'intero da controllare bonificato
    * 
-   * @throws NumeroCfuNonValidoException se il numero di cfu non rispetta i 
-   *         parametri stabiliti
+   * @throws NumeroCfuNonValidoException se il numero di cfu non rientra nel range che va da 
+   *         {@link DomandaTirocinio#MIN_CFU} a {@link DomandaTirocinio#MAX_CFU}
    */
   public int validaCfu(Integer cfu) throws NumeroCfuNonValidoException {
     if (cfu == null) {
@@ -496,9 +499,11 @@ public class DomandeTirocinioService {
    * 
    * @param progetto {@link ProgettoFormativo} che rappresenta il progetto formativo da controllare
    * 
-   * @return Oggetto {@link ProgettoFormativo} che rappresenta il progetto da controllare bonificato
+   * @return progetto Oggetto {@link ProgettoFormativo} che rappresenta il progetto da controllare 
+   *         bonificato
    * 
-   * @throws ProgettoFormativoArchiviatoException se il progetto formativo è archiviato
+   * @throws ProgettoFormativoArchiviatoException se il progetto formativo si trova nello stato
+   *         {@link ProgettoFormativo#ARCHIVIATO}
    */
   public ProgettoFormativo verificaStatoProgettoFormativo(ProgettoFormativo progetto) 
       throws ProgettoFormativoArchiviatoException {
@@ -511,10 +516,10 @@ public class DomandeTirocinioService {
   
   
   /**
-   * Permette di ottenere la lsita dei tirocini in corso nella data corrente in base al periodo
+   * Permette di ottenere la lista dei tirocini in corso nella data corrente in base al periodo
    * di tirocinio specificato nelle varie domande.
    * 
-   * @return Lista delle domande di tirocinio il cui periodo inizia prima della data odierna e
+   * @return Lista {@link DomandaTirocinio} il cui periodo inizia prima della data odierna e
    *         termina dopo di essa
    *         
    * @throws RichiestaNonAutorizzataException se l'utente che richiede di visualizzare l'elenco dei
@@ -527,7 +532,7 @@ public class DomandeTirocinioService {
   }
   
   /**
-   * Permette di ottenere la lsita dei tirocini in corso in una determinata data in base al periodo
+   * Permette di ottenere la lista dei tirocini in corso in una determinata data in base al periodo
    * di tirocinio specificato nelle varie domande.
    * 
    * @param giorno LocalDate che indica il giorno di cui si vogliono ottenere i tirocini in corso.
