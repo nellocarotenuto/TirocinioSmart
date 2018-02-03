@@ -20,8 +20,8 @@ public interface ProgettoFormativoRepository extends JpaRepository<ProgettoForma
    *           tirocinio
    *           
    * @return Oggetto {@link ProgettoFormativo} che rappresenta il progetto formativo. <b>Può
-   *          essere null</b> se nel database non è presente un progetto formativo 
-   *          con l'id passato come parametro
+   *         essere null</b> se nel database non è presente un progetto formativo 
+   *         con l'id passato come parametro
    * 
    * @pre id > 0
    * 
@@ -29,12 +29,12 @@ public interface ProgettoFormativoRepository extends JpaRepository<ProgettoForma
   ProgettoFormativo findById(long id);
   
   /**
-   * Permette di ottenere l'elenco dei progetti formativi di una determina azienda e determinato
+   * Permette di ottenere l'elenco dei progetti formativi di una determina azienda e con determinato
    * status.
    * 
    * @param idAzienda Stringa che rappresenta l'id dell'azienda 
    * 
-   * @param status int che rapressenta lo statud del progetto
+   * @param status int che rapressenta lo status del progetto
    *           
    * @return Lista di {@link ProgettoFormativo} che rappresenta la lista dei progetti formativi
    *                                         

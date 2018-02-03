@@ -1,7 +1,7 @@
 package it.unisa.di.tirociniosmart.progettiformativi;
 
 /**
- * Eccezione lanciata quando il controllo sulla descrizione di un progetto fallisce perché questo 
+ * Eccezione lanciata quando il controllo sulla descrizione di un progetto fallisce perché questa 
  * non è valida oppure è nulla.
  */
 public class DescrizioneProgettoNonValidaException extends Exception {

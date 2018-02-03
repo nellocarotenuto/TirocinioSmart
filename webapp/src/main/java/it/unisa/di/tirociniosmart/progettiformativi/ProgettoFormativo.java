@@ -25,7 +25,7 @@ import javax.persistence.OneToMany;
 public class ProgettoFormativo {
 
   /**
-   * Costruisce un oggetto ProgettoFormativo vuoto che deve essere popolata con i metodi setters.
+   * Costruisce un oggetto ProgettoFormativo vuoto che deve essere popolato con i metodi setters.
    */
   public ProgettoFormativo() {
     this.domandeTirocinio = new ArrayList<DomandaTirocinio>();

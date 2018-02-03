@@ -2,14 +2,14 @@ package it.unisa.di.tirociniosmart.progettiformativi;
 
 /**
  * Eccezione lanciata quando si tenta di utilizzare un progetto formativo il cui identificatore non
- *  è presente nel sistema.
+ * è presente nel sistema.
  */
 public class IdProgettoFormativoInesistenteException extends Exception {
 
   private static final long serialVersionUID = -4233914057337092277L;
   
   /** Stringa che definisce il messaggio di default utilizzato nell'eccezione. */
-  private static final String messaggioDefault = "Progetto non esistente già";
+  private static final String messaggioDefault = "Progetto non esistente";
   
   /**
    * Costruisce un'eccezione che ha come messaggio {@link #messaggioDefault}.

@@ -84,7 +84,7 @@ public class ProgettiFormativiService {
    * @param idAzienda Stringa che rappresenta l'identificatore dell'azienda
    * 
    * @return Lista di oggetti {@link ProgettoFormativo} associati all'azienda che ha idAzienda come
-   *         parametro
+   *         identificatore
    *         
    * @throws IdAziendaNonValidoException se l'identificatore passato come parametro non si riferisce
    *         ad alcun azienda
@@ -115,7 +115,7 @@ public class ProgettiFormativiService {
    *         
    * @throws RichiestaNonAutorizzataException se l'utente che richiede l'esecuzione del metodo non
    *         è un delegato aziendale oppure se il progetto identificato da idProgetto non è
-   *         associato all'azienda rappresentata dal delegato
+   *         associato all'azienda rappresentata dal delegato autenticato nel sistema
    */
   @Transactional(rollbackFor = Exception.class)
   public ProgettoFormativo archiviaProgettoFormativo(long idProgetto) 
@@ -147,9 +147,9 @@ public class ProgettiFormativiService {
   /**
    * Permette di ottenere un progetto formativo tramite id.
    * 
-   * @param id long che rappresenta l'identificatore del progetto
+   * @param id long che rappresenta l'identificatore del progetto che si vuole ricercare
    * 
-   * @return l'oggetto ProgettoFormativo
+   * @return l'oggetto {@link ProgettoFormativo} che rappresenta il progetto formativo ricercato
    * 
    * @throws IdProgettoFormativoInesistenteException se l'identificatore passato come parametro
    *         non si riferisce ad alcun progetto
@@ -167,11 +167,6 @@ public class ProgettiFormativiService {
     
     return progettoFormativo;
   }
-  
-  
-  
-  
-  
   
   /**
    * Controlla che il nome di un progetto sia specificato e che la sua lunghezza rispetti 
