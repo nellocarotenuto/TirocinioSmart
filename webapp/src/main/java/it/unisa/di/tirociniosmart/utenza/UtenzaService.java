@@ -43,7 +43,7 @@ public class UtenzaService {
    * 
    * @param username Stringa che rappresenta l'username da controllare
    * 
-   * @return La stringa che rappresenta l'username da controllare bonificata
+   * @return username La stringa che rappresenta l'username da controllare bonificata
    * 
    * @throws UsernameNonValidoException se l'username non è specificato oppure se non rispetta il
    *         formato {@link UtenteRegistrato#USERNAME_PATTERN}
@@ -72,7 +72,7 @@ public class UtenzaService {
    * 
    * @param password Stringa che rappresenta la password da controllare
    * 
-   * @return La stessa stringa passata come parametro
+   * @return passsword Stringa che rappresenta la password da controllare bonifica
    * 
    * @throws PasswordNonValidaException se la password non è specificata oppure se non rispetta il
    *         formato {@link UtenteRegistrato#PASSWORD_PATTERN}
@@ -96,7 +96,7 @@ public class UtenzaService {
    * @return La stringa che rappresenta l'e-mail da controllare bonificata
    * 
    * @throws EmailNonValidaException se l'e-mail non è specificata oppure se non rispetta il formato
-   *                                 {@link UtenteRegistrato#EMAIL_PATTERN}
+   *         {@link UtenteRegistrato#EMAIL_PATTERN}
    * 
    * @throws EmailEsistenteException se l'e-mail specificata è gia presente nel sistema
    */
@@ -171,12 +171,12 @@ public class UtenzaService {
   }
   
   /**
-   * Controlla che il sesso di un utente sia sia specificato e che rispetti una delle costanti
-   * prestabilite.
+   * Controlla che il sesso di un utente sia sia specificato e che sia rappresentato da una delle 
+   * costanti prestabilite.
    * 
    * @param sesso Carattere che rappresenta il sesso da controllare
    * 
-   * @return Lo stesso carattere ricevuto come parametro
+   * @return sesso Carattere che rappresenta il sesso da controllare bonificato
    * 
    * @throws SessoNonValidoException se il sesso del delegato non è una delle costanti
    *         {@link UtenteRegistrato#SESSO_MASCHILE} e {@link UtenteRegistrato#SESSO_FEMMINILE}
@@ -202,7 +202,7 @@ public class UtenzaService {
    * 
    * @param telefono Stringa che rappresenta il numero di telefono da controllare
    * 
-   * @return La stringa che rappresenta il numero di telefono da controllare bonificata
+   * @return telefono La stringa che rappresenta il numero di telefono da controllare bonificata
    * 
    * @throws TelefonoNonValidoException se il numero di telefono del delegato non è specificato o
    *         non rispetta il formato definito in {@link UtenteRegistrato#TELEFONO_PATTERN}

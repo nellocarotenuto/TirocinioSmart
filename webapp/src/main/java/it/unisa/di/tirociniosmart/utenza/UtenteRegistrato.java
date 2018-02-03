@@ -13,7 +13,7 @@ import javax.persistence.InheritanceType;
 public abstract class UtenteRegistrato {
 
   /**
-   * Determina se due oggetti rappresentano lo stesso utente agli username dei suddetti.
+   * Determina se due oggetti rappresentano lo stesso utente sulla base degli username dei suddetti.
    */
   @Override
   public boolean equals(Object object) {
@@ -123,7 +123,7 @@ public abstract class UtenteRegistrato {
   }
 
   /**
-   * Permette di specificare il nome dell'utente.
+   * Permette di specificare il cognome dell'utente.
    * 
    * @param cognome Stringa che rappresenta il cognome dell'utente
    * 

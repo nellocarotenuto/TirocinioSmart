@@ -13,8 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface UtenteRegistratoRepository extends JpaRepository<UtenteRegistrato, String> {
 
   /**
-   * Permette di verificare se un'utente esiste nel database attraverso la 
-   * propria username.
+   * Permette di verificare se un'utente esiste nel database attraverso la propria username.
    * 
    * @param username Stringa che rappresenta il nome utente di un utente 
    *               

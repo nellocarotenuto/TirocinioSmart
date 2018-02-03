@@ -9,7 +9,7 @@ public class PasswordNonValidaException extends Exception {
   private static final long serialVersionUID = -6604897505412217805L;
   
   /** Stringa che definisce il messaggio di default utilizzato nell'eccezione. */
-  private static final String messaggioDefault = "Username non valido";
+  private static final String messaggioDefault = "Password non valido";
   
   /**
    * Costruisce un'eccezione che ha come messaggio {@link #messaggioDefault}.
