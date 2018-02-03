@@ -12,7 +12,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class StudenteRepositoryIT {
    */
   @Before
   public void salvaDelegati() {
-listaStudenti = new ArrayList<Studente>();
+    listaStudenti = new ArrayList<Studente>();
     
     // Crea lo studente #1 
     Studente studente1 = new Studente();
