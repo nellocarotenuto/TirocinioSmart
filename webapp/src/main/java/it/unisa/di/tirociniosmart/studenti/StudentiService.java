@@ -49,7 +49,7 @@ public class StudentiService {
    *                 Non è necessario specificare la data della richiesta di iscrizione ad essa
    *                 associata poiché è il metodo stesso ad impostarla.
    * 
-   * @result lo studente passato come parametro la cui richiest iscrizione è stata registrata
+   * @result lo studente passato come parametro la cui richiesta d'iscrizione è stata registrata
    * 
    * @pre studente != null
    */
@@ -90,21 +90,23 @@ public class StudentiService {
   }
   
   /**
-   * Permette di approvare una richiesta di iscrizione già presente nel sistema.
+   * Permette ad un impiegato dell'ufficio tirocini di approvare una richiesta di iscrizione già 
+   * presente nel sistema.
    * 
    * @param idRichiesta Long che rappresenta l'identificatore della richiesta di iscrizione
    *                    da approvare
    *                   
-   * @return la richiesta iscrizione che è stata approvata                   
+   * @return richiesta Oggetto {@link RichiestaIscrizione} che rappresenta la richiesta d'iscrizione
+   *                   che è stata approvata                   
    * 
    * @throws IdRichiestaIscrizioneNonValidoException se non esiste alcuna richiesta di
    *         iscrizione nel sistema con identificatore uguale ad idRichiesta
    * 
    * @throws RichiestaIscrizioneGestitaException se la richiesta identificata da idRichiesta
-   *         si trova in uno stato diverso da quello in attesa
+   *         si trova in uno stato diverso da quello "in attesa"
    *         
    * @throws RichiestaNonAutorizzataException se l'utente che tenta di approvare la richiesta
-   *         d'iscrizione non è un delegato dell'ufficio tirocini
+   *         d'iscrizione non è un impiegato dell'ufficio tirocini
    */
   @Transactional(rollbackFor = Exception.class)
   public RichiestaIscrizione approvaRichiestaIscrizione(long idRichiesta)
@@ -131,10 +133,10 @@ public class StudentiService {
   }
   
   /**
-   * Permette di ottenere la lista delle richieste d'iscrizione in attesa di essere gestite.ù
+   * Permette di ottenere la lista delle richieste d'iscrizione in attesa di essere gestite.
    * 
    * @return Lista di {@link RichiestaIscrizione} contenente tutte le richieste d'iscrizione non
-   *         ancora gestite
+   *         ancora gestite con status uguale a {@link RichiestaIscrizione#IN_ATTESA}
    */
   @Transactional
   public List<RichiestaIscrizione> elencaListaRichiesteIscrizione()
@@ -150,18 +152,20 @@ public class StudentiService {
   }
   
   /**
-   * Permette di rifiutare una richiesta di iscrizione già presente nel sistema.
+   * Permette ad un impiegato dell'ufficio tirocini di rifiutare una richiesta di iscrizione già 
+   * presente nel sistema.
    * 
    * @param idRichiesta Long che rappresenta l'identificatore della richiesta di iscrizione
    *                    da rifiutare
    * 
-   * @return la richiesta iscrizione che è stata rifiutata
+   * @return richiesta {@link RichiestaIscrizioneGestitaException} che rappresenta la richiesta 
+   *         di iscrizione che è stata rifiutata
    * 
    * @throws IdRichiestaIscrizioneNonValidoException se non esiste alcuna richiesta di
    *         iscrizione nel sistema con identificatore uguale ad idRichiesta
    * 
    * @throws RichiestaIscrizioneGestitaException se la richiesta identificata da idRichiesta
-   *         si trova in uno stato diverso da quello in attesa
+   *         si trova in uno stato diverso da quello "in attesa"
    *         
    * @throws CommentoRichiestaIscrizioneNonValidoException se il commento da associare alla
    *         richiesta è nullo o vuoto
@@ -203,7 +207,8 @@ public class StudentiService {
    * @return La stringa che rappresenta il commento da controllare bonificata
    * 
    * @throws CommentoRichiestaIscrizioneNonValidoException se il commento passato come parametro
-   *         è nullo oppure è rappresentato da una stringa con un numero di caratteri minore di 2
+   *         è nullo oppure è rappresentato da una stringa con un numero di caratteri 
+   *         {@link RichiestaIscrizione#MIN_LUNGHEZZA_COMMENTO}
    */
   public String validaCommentoRichiesta(String commento) 
         throws CommentoRichiestaIscrizioneNonValidoException {
@@ -259,7 +264,7 @@ public class StudentiService {
    * 
    * @return La stringa che rappresenta l'indirizzo da controllare bonificata
    * 
-   * @throws IndirizzoStudenteNonValidoException se l'indirizzo dell'azienda è nullo o se la sua
+   * @throws IndirizzoStudenteNonValidoException se l'indirizzo dello studente è nullo o se la sua
    *         lunghezza non rientra nell'intervallo che va da 
    *         {@link Studente#MIN_LUNGHEZZA_INDIRIZZO} a {@link Studente#MAX_LUNGHEZZA_INDIRIZZO}
    */
@@ -288,7 +293,7 @@ public class StudentiService {
    * @return Oggetto LocalDate che rappresenta la data di nascita da controllare bonificata
    * 
    * @throws DataDiNascitaStudenteNonValidaException se la data è nulla o se la distanza
-   *         dall'anno corrette è maggiore di {#MAX_DISTANZA_ANNO_NASCITA} o è minore di
+   *         dall'anno corrente è maggiore di {#MAX_DISTANZA_ANNO_NASCITA} o è minore di
    *         {#MIN_DISTANZA_ANNO_NASCITA}
    */
   public LocalDate validaDataDiNascitaStudente(LocalDate dataDiNascita) 

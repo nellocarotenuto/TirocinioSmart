@@ -1,7 +1,8 @@
 package it.unisa.di.tirociniosmart.studenti;
 
 /**
- * Eccezione lanciata quando si fa riferimento ad una richiesta di iscrizione già gestita.
+ * Eccezione lanciata quando si fa riferimento ad una richiesta di iscrizione già gestita ovvero che
+ * è stata già approvata o rifiutata.
  */
 public class RichiestaIscrizioneGestitaException extends Exception {
   

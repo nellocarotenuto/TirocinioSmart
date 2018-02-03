@@ -23,7 +23,7 @@ import javax.persistence.OneToOne;
 public class Studente extends UtenteRegistrato {
   
   /**
-   * Costruisce un oggetto Studente vuoto che deve essere popolata con i metodi setters.
+   * Costruisce un oggetto Studente vuoto che deve essere popolato con i metodi setters.
    */
   public Studente() {
     this.richiestaIscrizione = new RichiestaIscrizione(this);
@@ -31,7 +31,7 @@ public class Studente extends UtenteRegistrato {
   }
   
   /**
-   * Determina se due oggetti rappresentano lo stesso delegato guardando agli username dei suddetti.
+   * Determina se due oggetti rappresentano lo stesso studente guardando agli username dei suddetti.
    */
   @Override
   public boolean equals(Object object) {

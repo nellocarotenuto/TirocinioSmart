@@ -32,12 +32,12 @@ public interface RichiestaIscrizioneRepository extends JpaRepository<RichiestaIs
   /**
    * Permette di ottenere una richiesta d'iscrizione a partire dal suo identificatore.
    * 
-   * @param id Numero di tipo long che rappresenta l'identificativo della richiesta di
+   * @param id Numero di tipo long che rappresenta l'identificatore della richiesta di
    *           iscrizione
    *           
    * @return Oggetto {@link RichiestaIscrizione} che rappresenta la richiesta d'iscrizione. <b>Può
-   *          essere null</b> se nel database non è presente una richiesta d'iscrizione 
-   *          con l'id passato come parametro
+   *         essere null</b> se nel database non è presente una richiesta d'iscrizione 
+   *         con l'id passato come parametro
    * 
    * @pre id > 0
    * 
