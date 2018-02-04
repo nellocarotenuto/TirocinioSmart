@@ -158,6 +158,7 @@
               <head>Risultato del test:</head>
             </tag>
           </tags>
+          <additionalparam>-Xdoclint:none</additionalparam>
         </configuration>             
       </plugin>
       <plugin>
