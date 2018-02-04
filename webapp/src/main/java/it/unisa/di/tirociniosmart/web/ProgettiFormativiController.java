@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 /**
  * Controller che espone via web i servizi relativi ai progetti formativi.
  * 
- * @see progettiFormativiService
+ * @see ProgettiFormativiService
  * @see ProgettoFormativo
  */
 @Controller

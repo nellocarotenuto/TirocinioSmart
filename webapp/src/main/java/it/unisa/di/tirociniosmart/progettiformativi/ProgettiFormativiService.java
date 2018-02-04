@@ -204,7 +204,7 @@ public class ProgettiFormativiService {
    * @return La stringa che rappresenta la descrizione da controllare bonificata
    * 
    * @throws DescrizioneProgettoNonValidaException se la descrizione è nulla oppure se la sua
-   *         lunghezza è minore di {@link ProgettoFormativo#MAX_LUNGHEZZA_DESCRIZIONE}
+   *         lunghezza è minore di {@link ProgettoFormativo#MIN_LUNGHEZZA_DESCRIZIONE}
    */
   public String validaDescrizione(String descrizione) 
         throws DescrizioneProgettoNonValidaException {

@@ -25,9 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * Controller che espone via web i servizi relativi alle convenzioni.
+ * Controller che espone via web i servizi relativi agli studenti ed alle relative richieste
+ * d'iscrizione.
  * 
- * @see ConvenzioniService
+ * @see StudentiService
+ * @see Studente
+ * @see RichiestaIscrizione
  */
 @Controller
 public class RichiestaIscrizioneController {

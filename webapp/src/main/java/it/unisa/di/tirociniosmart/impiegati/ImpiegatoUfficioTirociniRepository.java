@@ -19,7 +19,7 @@ public interface ImpiegatoUfficioTirociniRepository extends
    * @param password Stringa che rappresenta la password dell'impiegato
    * @param username Stringa che rappresenta il nome utente dell'impiegato     
    * 
-   * @return  Oggetto {@link ImpiegatoUfficioTirocinio} che rappresenta l'impiegato 
+   * @return  Oggetto {@link ImpiegatoUfficioTirocini} che rappresenta l'impiegato 
    *          dell'Ufficio Tirocini. <b>Può essere null</b> se nel database non è presente un 
    *          impiegato con username e password passati come parametro
    * 

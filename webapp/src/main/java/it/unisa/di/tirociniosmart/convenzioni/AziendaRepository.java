@@ -16,7 +16,7 @@ public interface AziendaRepository extends JpaRepository<Azienda, String> {
   /**
    * Permette di ottenere l'elenco delle aziende salvate nel Database.
    * 
-   * @return lista di {@link azienda} che rappresenta la lista delle aziende
+   * @return lista di {@link Azienda} che rappresenta la lista delle aziende
    */
   List<Azienda> findAll();
 

@@ -14,9 +14,9 @@ public class RegistrazioneController {
   /**
    * Mostra i form di registrazione per studenti e aziende.
    * 
-   * @param model
+   * @param model Incapsula gli attributi disponibili
    * 
-   * @return
+   * @return Il nome della vista delegata per la presentazione dei form
    */
   @RequestMapping(value = "/registrazione", method = RequestMethod.GET)
   public String mostraForm(Model model) {

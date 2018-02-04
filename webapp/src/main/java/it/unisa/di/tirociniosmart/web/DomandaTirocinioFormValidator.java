@@ -15,13 +15,11 @@ import org.springframework.validation.Validator;
 
 
 /**
- * Classe che definisce un validatore per {@link ConvenzionamentoForm} tramite i servizi offerti da
- * {@link UtenzaService} e {@link ConvenzioniService}. Il controllo viene effettuato su tutti i
- * campi del form.
+ * Classe che definisce un validatore per {@link DomandaTirocinioForm} tramite i servizi offerti da
+ * {@link DomandeTirocinioService}. Il controllo viene effettuato su tutti i campi del form.
  *
- * @see ConvenzionamentoForm
- * @see ConvenzioniService
- * @see UtenzaService
+ * @see DomandaTirocinioForm
+ * @see DomandeTirocinioService
  */
 @Component
 public class DomandaTirocinioFormValidator implements Validator {

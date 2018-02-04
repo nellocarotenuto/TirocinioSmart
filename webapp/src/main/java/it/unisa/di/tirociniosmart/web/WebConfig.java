@@ -1,5 +1,8 @@
 package it.unisa.di.tirociniosmart.web;
 
+import it.unisa.di.tirociniosmart.utenza.AutenticazioneHolder;
+import it.unisa.di.tirociniosmart.utenza.UtenzaService;
+
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -49,7 +49,7 @@ public class StudentiService {
    *                 Non è necessario specificare la data della richiesta di iscrizione ad essa
    *                 associata poiché è il metodo stesso ad impostarla.
    * 
-   * @result lo studente passato come parametro la cui richiesta d'iscrizione è stata registrata
+   * @return Lo studente passato come parametro la cui richiesta d'iscrizione è stata registrata
    * 
    * @pre studente != null
    */
@@ -170,7 +170,7 @@ public class StudentiService {
    * @throws CommentoRichiestaIscrizioneNonValidoException se il commento da associare alla
    *         richiesta è nullo o vuoto
    *         
-   * @trows RichiestaNonAutorizzataException se l'utente che tenta di rifiutare la richiesta
+   * @throws RichiestaNonAutorizzataException se l'utente che tenta di rifiutare la richiesta
    *        d'iscrizione non è un impiegato dell'ufficio tirocini
    */
   @Transactional(rollbackFor = Exception.class)

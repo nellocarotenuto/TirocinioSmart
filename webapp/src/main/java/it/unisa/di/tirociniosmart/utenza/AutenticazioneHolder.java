@@ -1,11 +1,9 @@
 package it.unisa.di.tirociniosmart.utenza;
 
 /**
- * Classe utilizzata per tenere traccia dell'utente autenticato all'interno del sistema. L'iniezione
- * avviene tramite {@link AutenticazioneInterceptor}.
- * 
- * @see UtenteRegistrato
- * @see AutenticazioneInterceptor
+ * Classe utilizzata per tenere traccia dell'utente autenticato all'interno del sistema. In pratica,
+ * tramite questa classe è possibile specificare l'username dell'utente autenticato in maniera da
+ * renderlo visibile a livello di thread.
  */
 public class AutenticazioneHolder {
   

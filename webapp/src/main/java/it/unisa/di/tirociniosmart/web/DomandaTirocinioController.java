@@ -96,7 +96,7 @@ public class DomandaTirocinioController {
    * eventualmente la registrazione.
    * 
    * 
-   * @param domandaTirocinioForm {@link domandaTirocinioForm} che incapsula gli input utente.
+   * @param domandaTirocinioForm {@link DomandaTirocinioForm} che incapsula gli input utente.
    *        <b>Iniettato dalla dispatcher servlet </b>
    *        
    * @param result Incapsula gli errori di validazione per poi passarli alla vista delegata per la 
