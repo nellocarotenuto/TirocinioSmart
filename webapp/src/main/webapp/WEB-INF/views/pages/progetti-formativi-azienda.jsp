@@ -16,6 +16,8 @@
 <spring:message var="tooltipAziendaIndirizzo" code="tooltip.azienda.indirizzo" />
 <spring:message var="tooltipCommonEmail" code="tooltip.common.email" />
 <spring:message var="tooltipAziendaTelefono" code="tooltip.azienda.telefono" />
+<spring:message var="tooltipAziendaAccessibilità" code="tooltip.azienda.accessibilità" />
+<spring:message var="tooltipAziendaSenzaBarriere" code="tooltip.azienda.senzaBarriere" />
 
 
 <%-- Inclusione header --%>
@@ -108,6 +110,24 @@
                <c:out value="${azienda.delegato.telefono}" />
              </div>
           </div>
+          
+          
+          <%-- Grado accessibilità --%>
+          <c:if test="${azienda.senzaBarriere}">
+            <div class="row valign-wrapper">
+              <div class="col s1">
+                 <a class="tooltipped tooltipped-icon"
+                    data-position="right"
+                    data-delay="50"
+                    data-tooltip="<c:out value="${tooltipAziendaAccessibilità}"/>">
+                    <i class="small material-icons">accessible</i>
+                 </a>
+               </div>
+               <div class="col s11">
+                 <c:out value="${tooltipAziendaSenzaBarriere}" />
+               </div>
+            </div>
+          </c:if>
           
           
         </div>
