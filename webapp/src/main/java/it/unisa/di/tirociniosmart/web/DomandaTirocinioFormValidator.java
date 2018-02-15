@@ -6,6 +6,7 @@ import it.unisa.di.tirociniosmart.domandetirocinio.DataDiInizioTirocinioNonValid
 import it.unisa.di.tirociniosmart.domandetirocinio.DomandeTirocinioService;
 import it.unisa.di.tirociniosmart.domandetirocinio.NumeroCfuNonValidoException;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,16 +66,32 @@ public class DomandaTirocinioFormValidator implements Validator {
         throw new DataDiFineTirocinioNonValidaException();
       }
       
-      LocalDate dateStart = LocalDate.of(form.getAnnoInizio(),
-                                    form.getMeseInizio(), 
-                                    form.getGiornoInizio());
+      // Crea oggetti LocalDate per la validazione
+      LocalDate dataInizio;
+      LocalDate dateFine;
       
-      LocalDate dateFinish = LocalDate.of(form.getAnnoFine(), 
-                                           form.getMeseInizio(),
-                                           form.getGiornoFine());
+      // Cerca di popolare la data d'inizio a partire dagli interi presenti nel form
+      try {
+        dataInizio = LocalDate.of(form.getAnnoInizio(),
+                                  form.getMeseInizio(), 
+                                  form.getGiornoInizio());
+      } catch (DateTimeException e) {
+        throw new DataDiInizioTirocinioNonValidaException();
+      }
       
-      domandeService.validaDataDiInizioTirocinio(dateStart,dateFinish);
-      domandeService.validaDataDiFineTirocinio(dateStart, dateFinish);
+      // Cerca di popolare la data di fine a partire dagli interi presenti nel form
+      try { 
+        dateFine = LocalDate.of(form.getAnnoFine(), 
+                                form.getMeseFine(),
+                                form.getGiornoFine());
+      } catch (DateTimeException e) {
+        throw new DataDiFineTirocinioNonValidaException();
+      }
+      
+      // Controlla che rispettino i vincoli (quella di fine segua quella d'inizio)
+      domandeService.validaDataDiInizioTirocinio(dataInizio, dateFine);
+      domandeService.validaDataDiFineTirocinio(dataInizio, dateFine);
+      
     } catch (DataDiInizioTirocinioNonValidaException e) {
       errors.rejectValue("giornoInizio", "domandaTirocinioForm.dataInizio.nonValida");
       errors.rejectValue("meseInizio", "domandaTirocinioForm.dataInizio.nonValida");
