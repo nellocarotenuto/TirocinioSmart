@@ -1342,9 +1342,17 @@ public class DomandeTirocinioServiceIT {
     domanda.setStatus(DomandaTirocinio.IN_ATTESA);
     domanda.setCfu(8);
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 03, 11));
-    domanda.setFineTirocinio(LocalDate.of(2018, 04, 01));
     domanda.setCommentoStudente("commento studente");
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio = dataInizioTirocinio;
+    dataFineTirocinio = dataFineTirocinio.plusDays(40);
+    domanda.setFineTirocinio(dataFineTirocinio);
     
     // Crea una domanda di tirocinio #2
     DomandaTirocinio domanda2 = new DomandaTirocinio();
@@ -1353,9 +1361,17 @@ public class DomandeTirocinioServiceIT {
     domanda2.setStatus(DomandaTirocinio.IN_ATTESA);
     domanda2.setCfu(8);
     domanda2.setData(LocalDateTime.now());
-    domanda2.setInizioTirocinio(LocalDate.of(2018, 02, 11));
-    domanda2.setFineTirocinio(LocalDate.of(2018, 03, 01));
     domanda2.setCommentoStudente("commento studente");
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio2 = LocalDate.now();
+    dataInizioTirocinio2 = dataInizioTirocinio2.plusDays(1);
+    domanda2.setInizioTirocinio(dataInizioTirocinio2);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio2 = dataInizioTirocinio2;
+    dataFineTirocinio2 = dataFineTirocinio2.plusDays(40);
+    domanda2.setFineTirocinio(dataFineTirocinio2);
     
     //Effettua login dello studente
     try {
@@ -1607,9 +1623,17 @@ public class DomandeTirocinioServiceIT {
     domanda.setStatus(DomandaTirocinio.IN_ATTESA);
     domanda.setCfu(8);
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 03, 11));
-    domanda.setFineTirocinio(LocalDate.of(2018, 04, 01));
     domanda.setCommentoStudente("commento studente");
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio = dataInizioTirocinio;
+    dataFineTirocinio = dataFineTirocinio.plusDays(40);
+    domanda.setFineTirocinio(dataFineTirocinio);
     
     // Crea una domanda di tirocinio #2
     DomandaTirocinio domanda2 = new DomandaTirocinio();
@@ -1618,9 +1642,17 @@ public class DomandeTirocinioServiceIT {
     domanda2.setStatus(DomandaTirocinio.IN_ATTESA);
     domanda2.setCfu(8);
     domanda2.setData(LocalDateTime.now());
-    domanda2.setInizioTirocinio(LocalDate.of(2018, 02, 11));
-    domanda2.setFineTirocinio(LocalDate.of(2018, 03, 01));
     domanda2.setCommentoStudente("commento studente");
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio2 = LocalDate.now();
+    dataInizioTirocinio2 = dataInizioTirocinio2.plusDays(1);
+    domanda2.setInizioTirocinio(dataInizioTirocinio2);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio2 = dataInizioTirocinio2;
+    dataFineTirocinio2 = dataFineTirocinio2.plusDays(40);
+    domanda2.setFineTirocinio(dataFineTirocinio2);
     
     //Effettua login dello studente
     try {

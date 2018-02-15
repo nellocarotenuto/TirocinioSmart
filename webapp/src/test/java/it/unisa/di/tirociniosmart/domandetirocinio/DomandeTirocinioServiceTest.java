@@ -2891,10 +2891,18 @@ public class DomandeTirocinioServiceTest {
     domanda.setCfu(6);
     domanda.setCommentoStudente("Mi piace il progetto!");
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 2, 11));
-    domanda.setFineTirocinio(LocalDate.of(2018, 3, 31));
     domanda.setProgettoFormativo(progetto);
-      
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio = dataInizioTirocinio;
+    dataFineTirocinio = dataFineTirocinio.plusDays(40);
+    domanda.setFineTirocinio(dataFineTirocinio);
+    
     //Stabilisce che l'utente autenticato sia uno studente
     when(utenzaService.getUtenteAutenticato()).thenReturn(studente);
     try {
@@ -2904,7 +2912,6 @@ public class DomandeTirocinioServiceTest {
             | DataDiFineTirocinioNonValidaException | NumeroCfuNonValidoException
             | CommentoDomandaTirocinioNonValidoException | ProgettoFormativoArchiviatoException e) {
       fail(e.getMessage());
-      e.printStackTrace();
     } 
   }
     
@@ -3212,9 +3219,17 @@ public class DomandeTirocinioServiceTest {
     domanda.setCfu(6);
     domanda.setCommentoStudente("Mi piace il progetto!");
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 2, 11));
-    domanda.setFineTirocinio(LocalDate.of(2018, 1, 1));
     domanda.setProgettoFormativo(progetto);
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio = dataInizioTirocinio;
+    dataFineTirocinio = dataFineTirocinio.minusDays(40);
+    domanda.setFineTirocinio(dataFineTirocinio);
     
     //Stabilisce che l'utente autenticato sia uno studente
     when(utenzaService.getUtenteAutenticato()).thenReturn(studente);
@@ -3225,7 +3240,6 @@ public class DomandeTirocinioServiceTest {
         | NumeroCfuNonValidoException | CommentoDomandaTirocinioNonValidoException 
         | ProgettoFormativoArchiviatoException e) {
       fail(e.getMessage());
-      e.printStackTrace();
     } 
   }
   
@@ -3276,8 +3290,12 @@ public class DomandeTirocinioServiceTest {
     domanda.setCfu(6);
     domanda.setCommentoStudente("Mi piace il progetto!");
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 2, 11));
     domanda.setProgettoFormativo(progetto);
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
     
     //Stabilisce che l'utente autenticato sia uno studente
     when(utenzaService.getUtenteAutenticato()).thenReturn(studente);
@@ -3288,7 +3306,6 @@ public class DomandeTirocinioServiceTest {
         | NumeroCfuNonValidoException | CommentoDomandaTirocinioNonValidoException 
         | ProgettoFormativoArchiviatoException e) {
       fail(e.getMessage());
-      e.printStackTrace();
     } 
   }
   
@@ -3339,9 +3356,17 @@ public class DomandeTirocinioServiceTest {
     domanda.setCfu(0);
     domanda.setCommentoStudente("Mi piace il progetto!");
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 2, 11));
-    domanda.setFineTirocinio(LocalDate.of(2018, 3, 31));
     domanda.setProgettoFormativo(progetto);
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio = dataInizioTirocinio;
+    dataFineTirocinio = dataFineTirocinio.plusDays(40);
+    domanda.setFineTirocinio(dataFineTirocinio);
     
     //Stabilisce che l'utente autenticato sia uno studente
     when(utenzaService.getUtenteAutenticato()).thenReturn(studente);
@@ -3402,9 +3427,17 @@ public class DomandeTirocinioServiceTest {
     DomandaTirocinio domanda = new DomandaTirocinio();
     domanda.setCommentoStudente("Mi piace il progetto!");
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 2, 11));
-    domanda.setFineTirocinio(LocalDate.of(2018, 3, 31));
     domanda.setProgettoFormativo(progetto);
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio = dataInizioTirocinio;
+    dataFineTirocinio = dataFineTirocinio.plusDays(40);
+    domanda.setFineTirocinio(dataFineTirocinio);
     
     //Stabilisce che l'utente autenticato sia uno studente
     when(utenzaService.getUtenteAutenticato()).thenReturn(studente);
@@ -3415,7 +3448,6 @@ public class DomandeTirocinioServiceTest {
         | DataDiFineTirocinioNonValidaException | CommentoDomandaTirocinioNonValidoException
         | ProgettoFormativoArchiviatoException e) {
       fail(e.getMessage());
-      e.printStackTrace();
     } 
   }
   
@@ -3466,9 +3498,17 @@ public class DomandeTirocinioServiceTest {
     domanda.setCfu(30);
     domanda.setCommentoStudente("Mi piace il progetto!");
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 2, 11));
-    domanda.setFineTirocinio(LocalDate.of(2018, 3, 31));
     domanda.setProgettoFormativo(progetto);
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio = dataInizioTirocinio;
+    dataFineTirocinio = dataFineTirocinio.plusDays(40);
+    domanda.setFineTirocinio(dataFineTirocinio);
     
     //Stabilisce che l'utente autenticato sia uno studente
     when(utenzaService.getUtenteAutenticato()).thenReturn(studente);
@@ -3529,9 +3569,17 @@ public class DomandeTirocinioServiceTest {
     domanda.setCfu(6);
     domanda.setCommentoStudente(null);
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 2, 11));
-    domanda.setFineTirocinio(LocalDate.of(2018, 3, 31));
     domanda.setProgettoFormativo(progetto);
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio = dataInizioTirocinio;
+    dataFineTirocinio = dataFineTirocinio.plusDays(40);
+    domanda.setFineTirocinio(dataFineTirocinio);
     
     //Stabilisce che l'utente autenticato sia uno studente
     when(utenzaService.getUtenteAutenticato()).thenReturn(studente);
@@ -3542,7 +3590,6 @@ public class DomandeTirocinioServiceTest {
         | DataDiFineTirocinioNonValidaException | NumeroCfuNonValidoException
         | ProgettoFormativoArchiviatoException e) {
       fail(e.getMessage());
-      e.printStackTrace();
     } 
   }
   
@@ -3593,9 +3640,17 @@ public class DomandeTirocinioServiceTest {
     domanda.setCfu(6);
     domanda.setCommentoStudente("Mi piace il progetto!");
     domanda.setData(LocalDateTime.now());
-    domanda.setInizioTirocinio(LocalDate.of(2018, 2, 11));
-    domanda.setFineTirocinio(LocalDate.of(2018, 3, 31));
     domanda.setProgettoFormativo(progetto);
+    
+    // Definisci dinamicamente la data di inizio tirocinio
+    LocalDate dataInizioTirocinio = LocalDate.now();
+    dataInizioTirocinio = dataInizioTirocinio.plusDays(1);
+    domanda.setInizioTirocinio(dataInizioTirocinio);
+    
+    // Definisci dinamicamente la data di fine tirocinio
+    LocalDate dataFineTirocinio = dataInizioTirocinio;
+    dataFineTirocinio = dataFineTirocinio.plusDays(40);
+    domanda.setFineTirocinio(dataFineTirocinio);
     
     //Stabilisce che l'utente autenticato sia uno studente
     when(utenzaService.getUtenteAutenticato()).thenReturn(studente);
