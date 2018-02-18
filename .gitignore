@@ -84,3 +84,6 @@ Users/
 # Compiled scss
 .sass-cache
 *.scssc
+
+# Build war
+!docs/build/TirocinioSmart.war
